@@ -1,6 +1,6 @@
 # ChronoShade
 
-<img src="./screenshots/1.png" width="400" style="border-radius: 8px;" alt="Theme Screenshot" />
+![Screenshot](./screenshots/2.png)
 
 ## Overview
 
@@ -28,6 +28,7 @@ ChronoShade automatically switches between light and dark themes based on sunset
 ## Supported Languages
 
 ChronoShade is available in 15 languages:
+
 - English
 - Chinese (Simplified & Traditional)
 - French
