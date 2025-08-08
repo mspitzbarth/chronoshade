@@ -1,0 +1,15 @@
+{
+  "displayName": "ChronoShade",
+  "description": "Gün doğumu/gün batımı saatlerine veya özel programlara göre açık ve koyu temalar arasında otomatik olarak geçiş yapar. Editörlerinin gün boyunca doğal ışığa uyum sağlamasını isteyen geliştiriciler için mükemmeldir. İngilizce, Japonca, İspanyolca, Fransızca, Almanca ve Çince dahil olmak üzere birçok dilde mevcuttur.",
+  "command.switchTheme": "ChronoShade: Tema Değiştir",
+  "command.previewTheme": "ChronoShade: Temayı Önizle",
+  "command.toggleSunset": "ChronoShade: Gün Batımında Otomatik Geçişi Aç/Kapat",
+  "viewContainer.title": "ChronoShade",
+  "view.name": "ChronoShade",
+  "configuration.title": "ChronoShade Ayarları",
+  "config.dayTheme": "Gündüz uygulanacak tema.",
+  "config.nightTheme": "Gece uygulanacak tema.",
+  "config.manualSunset": "Gün batımı saatini manuel olarak ayarla (24 saat formatı).",
+  "config.manualSunrise": "Gün doğumu saatini manuel olarak ayarla (24 saat formatı).",
+  "config.overrideThemeSwitch": "Özel gündüz/gece saatlerini etkinleştir veya devre dışı bırak."
+}

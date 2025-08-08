@@ -1,0 +1,8 @@
+{
+  "ChronoShade extension activated!": "Rozšíření ChronoShade aktivováno!",
+  "[ChronoShade] Theme switching is disabled.": "[ChronoShade] Přepínání tématu je zakázáno.",
+  "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] Neplatný čas začátku dne: {0}, používá se výchozí 06:00",
+  "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] Neplatný čas začátku noci: {0}, používá se výchozí 18:00",
+  "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: Nepodařilo se přepnout téma. Zkontrolujte svá nastavení.",
+  "ChronoShade extension deactivated.": "Rozšíření ChronoShade deaktivováno."
+}

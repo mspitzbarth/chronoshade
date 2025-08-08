@@ -1,0 +1,8 @@
+{
+  "ChronoShade extension activated!": "Extension ChronoShade activée !",
+  "[ChronoShade] Theme switching is disabled.": "[ChronoShade] Le changement de thème est désactivé.",
+  "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] Heure de début de journée invalide : {0}, utilisation de 06:00 par défaut",
+  "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] Heure de début de nuit invalide : {0}, utilisation de 18:00 par défaut",
+  "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade : Échec du changement de thème. Veuillez vérifier vos paramètres.",
+  "ChronoShade extension deactivated.": "Extension ChronoShade désactivée."
+}

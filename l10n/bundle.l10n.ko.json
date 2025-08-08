@@ -1,0 +1,8 @@
+{
+  "ChronoShade extension activated!": "ChronoShade 확장이 활성화되었습니다!",
+  "[ChronoShade] Theme switching is disabled.": "[ChronoShade] 테마 전환이 비활성화되었습니다.",
+  "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] 유효하지 않은 낮 시작 시간: {0}, 기본값 06:00 사용",
+  "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] 유효하지 않은 밤 시작 시간: {0}, 기본값 18:00 사용",
+  "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: 테마 전환에 실패했습니다. 설정을 확인해주세요.",
+  "ChronoShade extension deactivated.": "ChronoShade 확장이 비활성화되었습니다."
+}

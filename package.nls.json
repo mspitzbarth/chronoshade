@@ -1,0 +1,16 @@
+{
+  "displayName": "ChronoShade",
+  "description": "Automatically switches between light and dark themes based on sunrise/sunset times or custom schedules. Perfect for developers who want their editor to adapt to natural lighting throughout the day.",
+  "command.switchTheme": "ChronoShade: Switch Theme",
+  "command.previewTheme": "ChronoShade: Preview Theme",
+  "viewContainer.title": "ChronoShade",
+  "view.name": "ChronoShade",
+  "configuration.title": "ChronoShade Settings",
+  "config.dayTheme": "Theme to apply during the day.",
+  "config.nightTheme": "Theme to apply at night.",
+  "config.manualSunset": "Manually set the sunset time (24-hour format).",
+  "config.manualSunrise": "Manually set the sunrise time (24-hour format).",
+  "config.overrideThemeSwitch": "Enable or disable custom day/night times.",
+  "config.dayTimeStart": "Daytime start time (24-hour format).",
+  "config.nightTimeStart": "Nighttime start time (24-hour format)."
+}

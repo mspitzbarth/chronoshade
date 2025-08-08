@@ -1,0 +1,8 @@
+{
+  "ChronoShade extension activated!": "ChronoShade kiterjesztés aktiválva!",
+  "[ChronoShade] Theme switching is disabled.": "[ChronoShade] A téma váltás le van tiltva.",
+  "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] Érvénytelen nap kezdési idő: {0}, alapértelmezett 06:00 használata",
+  "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] Érvénytelen éjszaka kezdési idő: {0}, alapértelmezett 18:00 használata",
+  "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: Nem sikerült váltani a témát. Ellenőrizze a beállításokat.",
+  "ChronoShade extension deactivated.": "ChronoShade kiterjesztés deaktiválva."
+}

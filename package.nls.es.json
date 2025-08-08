@@ -1,0 +1,17 @@
+{
+  "displayName": "ChronoShade",
+  "description": "Cambia automáticamente entre temas claros y oscuros basándose en los horarios de amanecer/atardecer o horarios personalizados. Perfecto para desarrolladores que quieren que su editor se adapte a la iluminación natural durante el día. Disponible en 15 idiomas incluyendo inglés, chino, francés, alemán, italiano, español, japonés, coreano, portugués, turco, polaco, checo, húngaro y búlgaro.",
+  "command.switchTheme": "ChronoShade: Cambiar Tema",
+  "command.previewTheme": "ChronoShade: Vista Previa del Tema",
+  "command.toggleSunset": "ChronoShade: Alternar Cambio Automático al Atardecer",
+  "viewContainer.title": "ChronoShade",
+  "view.name": "ChronoShade",
+  "configuration.title": "Configuración de ChronoShade",
+  "config.dayTheme": "Tema a aplicar durante el día.",
+  "config.nightTheme": "Tema a aplicar durante la noche.",
+  "config.manualSunset": "Establecer manualmente la hora del atardecer (formato 24 horas).",
+  "config.manualSunrise": "Establecer manualmente la hora del amanecer (formato 24 horas).",
+  "config.overrideThemeSwitch": "Habilitar o deshabilitar horarios personalizados de día/noche.",
+  "config.dayTimeStart": "Hora de inicio del día (formato 24 horas).",
+  "config.nightTimeStart": "Hora de inicio de la noche (formato 24 horas).",
+}

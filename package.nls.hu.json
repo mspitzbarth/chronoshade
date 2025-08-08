@@ -1,0 +1,15 @@
+{
+  "displayName": "ChronoShade",
+  "description": "Automatikusan vált a világos és sötét témák között a napkelte/napnyugta időpontok vagy egyéni ütemezések alapján. Tökéletes azoknak a fejlesztőknek, akik szeretnék, ha szerkesztőjük alkalmazkodna a természetes világításhoz a nap folyamán. Több nyelven elérhető, beleértve az angol, japán, spanyol, francia, német és kínai nyelveket.",
+  "command.switchTheme": "ChronoShade: Téma váltás",
+  "command.previewTheme": "ChronoShade: Téma előnézet",
+  "command.toggleSunset": "ChronoShade: Napnyugtakori automatikus váltás ki/be",
+  "viewContainer.title": "ChronoShade",
+  "view.name": "ChronoShade",
+  "configuration.title": "ChronoShade beállítások",
+  "config.dayTheme": "Nappal alkalmazandó téma.",
+  "config.nightTheme": "Éjjel alkalmazandó téma.",
+  "config.manualSunset": "Napnyugta idejének kézi beállítása (24 órás formátum).",
+  "config.manualSunrise": "Napkelte idejének kézi beállítása (24 órás formátum).",
+  "config.overrideThemeSwitch": "Egyéni nappali/éjszakai idők engedélyezése vagy letiltása."
+}

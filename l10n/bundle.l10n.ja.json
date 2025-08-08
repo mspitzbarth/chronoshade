@@ -1,0 +1,8 @@
+{
+  "ChronoShade extension activated!": "ChronoShade拡張機能が有効化されました！",
+  "[ChronoShade] Theme switching is disabled.": "[ChronoShade] テーマの切り替えが無効になっています。",
+  "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] 無効な昼間開始時刻: {0}、デフォルトの06:00を使用します",
+  "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] 無効な夜間開始時刻: {0}、デフォルトの18:00を使用します",
+  "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: テーマの切り替えに失敗しました。設定を確認してください。",
+  "ChronoShade extension deactivated.": "ChronoShade拡張機能が無効化されました。"
+}

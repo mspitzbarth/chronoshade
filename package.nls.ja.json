@@ -1,0 +1,17 @@
+{
+  "displayName": "ChronoShade",
+  "description": "日の出・日の入り時刻またはカスタムスケジュールに基づいて、ライトテーマとダークテーマを自動的に切り替えます。一日を通じて自然な光に合わせてエディターを適応させたい開発者に最適です。英語、中国語、フランス語、ドイツ語、イタリア語、スペイン語、日本語、韓国語、ポルトガル語、トルコ語、ポーランド語、チェコ語、ハンガリー語、ブルガリア語を含む15言語で利用可能です。",
+  "command.switchTheme": "ChronoShade: テーマを切り替え",
+  "command.previewTheme": "ChronoShade: テーマをプレビュー",
+  "command.toggleSunset": "ChronoShade: 日没時自動切り替えの切り替え",
+  "viewContainer.title": "ChronoShade",
+  "view.name": "ChronoShade",
+  "configuration.title": "ChronoShade 設定",
+  "config.dayTheme": "日中に適用するテーマ。",
+  "config.nightTheme": "夜間に適用するテーマ。",
+  "config.manualSunset": "日の入り時刻を手動設定（24時間形式）。",
+  "config.manualSunrise": "日の出時刻を手動設定（24時間形式）。",
+  "config.overrideThemeSwitch": "カスタム昼・夜時刻を有効または無効にする。",
+  "config.dayTimeStart": "昼間開始時刻（24時間形式）。",
+  "config.nightTimeStart": "夜間開始時刻（24時間形式）。",
+}

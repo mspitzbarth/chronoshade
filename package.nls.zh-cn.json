@@ -1,0 +1,17 @@
+{
+  "displayName": "ChronoShade",
+  "description": "根据日出/日落时间或自定义时间表自动在明亮和暗色主题之间切换。非常适合希望编辑器在一天中适应自然光线的开发者。支持多种语言，包括英语、日语、西班牙语、法语、德语和中文。",
+  "command.switchTheme": "ChronoShade：切换主题",
+  "command.previewTheme": "ChronoShade：预览主题",
+  "command.toggleSunset": "ChronoShade：切换日落自动切换",
+  "viewContainer.title": "ChronoShade",
+  "view.name": "ChronoShade",
+  "configuration.title": "ChronoShade 设置",
+  "config.dayTheme": "白天应用的主题。",
+  "config.nightTheme": "夜间应用的主题。",
+  "config.manualSunset": "手动设置日落时间（24小时格式）。",
+  "config.manualSunrise": "手动设置日出时间（24小时格式）。",
+  "config.overrideThemeSwitch": "启用或禁用自定义白天/夜间时间。",
+  "config.dayTimeStart": "白天开始时间（24小时格式）。",
+  "config.nightTimeStart": "夜间开始时间（24小时格式）。",
+}

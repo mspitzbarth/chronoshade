@@ -1,0 +1,15 @@
+{
+  "displayName": "ChronoShade",
+  "description": "Automatycznie przełącza między jasnymi i ciemnymi motywami w oparciu o czasy wschodu/zachodu słońca lub niestandardowe harmonogramy. Idealne dla programistów, którzy chcą, aby ich edytor dostosowywał się do naturalnego oświetlenia w ciągu dnia. Dostępne w wielu językach, w tym angielskim, japońskim, hiszpańskim, francuskim, niemieckim i chińskim.",
+  "command.switchTheme": "ChronoShade: Przełącz motyw",
+  "command.previewTheme": "ChronoShade: Podgląd motywu",
+  "command.toggleSunset": "ChronoShade: Przełącz automatyczne przełączanie o zachodzie",
+  "viewContainer.title": "ChronoShade",
+  "view.name": "ChronoShade",
+  "configuration.title": "Ustawienia ChronoShade",
+  "config.dayTheme": "Motyw do zastosowania w ciągu dnia.",
+  "config.nightTheme": "Motyw do zastosowania w nocy.",
+  "config.manualSunset": "Ręcznie ustaw czas zachodu słońca (format 24-godzinny).",
+  "config.manualSunrise": "Ręcznie ustaw czas wschodu słońca (format 24-godzinny).",
+  "config.overrideThemeSwitch": "Włącz lub wyłącz niestandardowe czasy dnia/nocy."
+}

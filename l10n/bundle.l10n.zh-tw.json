@@ -1,0 +1,8 @@
+{
+  "ChronoShade extension activated!": "ChronoShade擴充功能已啟動！",
+  "[ChronoShade] Theme switching is disabled.": "[ChronoShade] 主題切換已停用。",
+  "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] 無效的白天開始時間：{0}，使用預設的06:00",
+  "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] 無效的夜間開始時間：{0}，使用預設的18:00",
+  "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade：切換主題失敗。請檢查您的設定。",
+  "ChronoShade extension deactivated.": "ChronoShade擴充功能已停用。"
+}

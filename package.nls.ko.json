@@ -1,0 +1,15 @@
+{
+  "displayName": "ChronoShade",
+  "description": "일출/일몰 시간이나 사용자 정의 일정에 따라 밝은 테마와 어두운 테마 사이를 자동으로 전환합니다. 하루 종일 자연광에 맞춰 에디터를 적응시키고 싶은 개발자에게 완벽합니다. 영어, 일본어, 스페인어, 프랑스어, 독일어, 중국어를 포함한 여러 언어로 제공됩니다.",
+  "command.switchTheme": "ChronoShade: 테마 전환",
+  "command.previewTheme": "ChronoShade: 테마 미리보기",
+  "command.toggleSunset": "ChronoShade: 일몰 자동 전환 토글",
+  "viewContainer.title": "ChronoShade",
+  "view.name": "ChronoShade",
+  "configuration.title": "ChronoShade 설정",
+  "config.dayTheme": "낮에 적용할 테마입니다.",
+  "config.nightTheme": "밤에 적용할 테마입니다.",
+  "config.manualSunset": "일몰 시간을 수동으로 설정합니다 (24시간 형식).",
+  "config.manualSunrise": "일출 시간을 수동으로 설정합니다 (24시간 형식).",
+  "config.overrideThemeSwitch": "사용자 정의 낮/밤 시간을 활성화하거나 비활성화합니다."
+}

@@ -1,0 +1,8 @@
+{
+  "ChronoShade extension activated!": "ChronoShade uzantısı etkinleştirildi!",
+  "[ChronoShade] Theme switching is disabled.": "[ChronoShade] Tema değiştirme devre dışı.",
+  "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] Geçersiz gündüz başlangıç saati: {0}, varsayılan 06:00 kullanılıyor",
+  "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] Geçersiz gece başlangıç saati: {0}, varsayılan 18:00 kullanılıyor",
+  "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: Tema değiştirilemedi. Lütfen ayarlarınızı kontrol edin.",
+  "ChronoShade extension deactivated.": "ChronoShade uzantısı devre dışı bırakıldı."
+}
