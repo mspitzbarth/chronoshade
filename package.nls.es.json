@@ -14,4 +14,7 @@
   "config.overrideThemeSwitch": "Habilitar o deshabilitar horarios personalizados de día/noche.",
   "config.dayTimeStart": "Hora de inicio del día (formato 24 horas).",
   "config.nightTimeStart": "Hora de inicio de la noche (formato 24 horas).",
+  "config.useLocationBasedTimes": "Usar coordenadas GPS para determinar automáticamente los horarios de amanecer/atardecer en lugar de horarios manuales.",
+  "config.latitude": "Su coordenada de latitud (para cálculo automático de amanecer/atardecer).",
+  "config.longitude": "Su coordenada de longitud (para cálculo automático de amanecer/atardecer)."
 }

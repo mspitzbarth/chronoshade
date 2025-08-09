@@ -4,5 +4,20 @@
   "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] 無効な昼間開始時刻: {0}、デフォルトの06:00を使用します",
   "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] 無効な夜間開始時刻: {0}、デフォルトの18:00を使用します",
   "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: テーマの切り替えに失敗しました。設定を確認してください。",
-  "ChronoShade extension deactivated.": "ChronoShade拡張機能が無効化されました。"
+  "ChronoShade extension deactivated.": "ChronoShade拡張機能が無効化されました。",
+  "Please configure a day theme first in ChronoShade settings.": "まずChronoShade設定で昼のテーマを設定してください。",
+  "Please configure a night theme first in ChronoShade settings.": "まずChronoShade設定で夜のテーマを設定してください。",
+  "Switched to day theme: {0}": "昼のテーマに切り替えました: {0}",
+  "Switched to night theme: {0}": "夜のテーマに切り替えました: {0}",
+  "[ChronoShade] Using location-based times: sunrise {0}, sunset {1}": "[ChronoShade] 位置ベースの時刻を使用: 日の出 {0}, 日の入り {1}",
+  "[ChronoShade] Failed to fetch location-based times, falling back to manual times: {0}": "[ChronoShade] 位置ベースの時刻取得に失敗、手動時刻にフォールバック: {0}",
+  "[ChronoShade] Invalid coordinates: lat={0}, lng={1}": "[ChronoShade] 無効な座標: lat={0}, lng={1}",
+  "[ChronoShade] Error fetching sunrise/sunset times: {0}": "[ChronoShade] 日の出/日の入り時刻取得エラー: {0}",
+  "Failed to fetch sunrise/sunset times. Please check your internet connection and coordinates.": "日の出/日の入り時刻の取得に失敗。インターネット接続と座標を確認してください。",
+  "Latitude and longitude must be valid numbers.": "緯度と経度は有効な数値である必要があります。",
+  "Latitude must be between -90 and 90 degrees.": "緯度は-90度から90度の間である必要があります。",
+  "Longitude must be between -180 and 180 degrees.": "経度は-180度から180度の間である必要があります。",
+  "Fetching sunrise/sunset times for your location...": "あなたの位置の日の出/日の入り時刻を取得中...",
+  "Location test successful! Sunrise: {0}, Sunset: {1}": "位置テスト成功！日の出: {0}, 日の入り: {1}",
+  "Location test failed: {0}": "位置テスト失敗: {0}"
 }

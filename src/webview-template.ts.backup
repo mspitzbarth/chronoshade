@@ -1,6 +1,9 @@
 import * as vscode from "vscode";
 
-export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): string {
+export function getWebviewContent(
+  webview: vscode.Webview,
+  extensionUri: vscode.Uri
+): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +28,7 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
         }
 
         .section {
-            margin-bottom: 24px;
+            margin-bottom: 32px;
             padding: 0;
             background: transparent;
             border: none;
@@ -366,6 +369,16 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
 
         <div class="section">
             <div class="section-title">
+                Manual Theme Control
+            </div>
+            <div class="quick-actions">
+                <button class="button" id="switchToDay">Switch to Day</button>
+                <button class="button" id="switchToNight">Switch to Night</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
                 Theme Selection
             </div>
             <div class="form-group">
@@ -402,6 +415,17 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
             </div>
             
             <div id="switchSettings" class="hidden">
+                <div class="form-group">
+                    <label id="timeSourceLabel">Time Source</label>
+                    <div class="checkbox-group">
+                        <input type="radio" id="useManualTimes" name="timeSource" value="manual" checked>
+                        <label for="useManualTimes">Manual time input</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="radio" id="useLocationTimes" name="timeSource" value="location">
+                        <label for="useLocationTimes">Use GPS coordinates (automatic)</label>
+                    </div>
+                </div>
                 <div class="schedule-timeline">
                     <div class="timeline-header">Today's Schedule</div>
                     <div class="timeline-bar" id="timelineBar">
@@ -445,6 +469,24 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
                     </div>
                 </div>
 
+                <div id="locationTimes" class="hidden">
+                    <div class="form-group">
+                        <label id="gpsCoordinatesLabel">GPS Coordinates</label>
+                        <div class="time-inputs">
+                            <div>
+                                <label for="latitude">Latitude</label>
+                                <input type="number" id="latitude" min="-90" max="90" step="0.000001" placeholder="e.g. 40.7128">
+                                <div class="error-message" id="latitudeError">Invalid latitude</div>
+                            </div>
+                            <div>
+                                <label for="longitude">Longitude</label>
+                                <input type="number" id="longitude" min="-180" max="180" step="0.000001" placeholder="e.g. -74.0060">
+                                <div class="error-message" id="longitudeError">Invalid longitude</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -470,12 +512,19 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
             dayThemeSwatch: document.getElementById('dayThemeSwatch'),
             nightThemeSwatch: document.getElementById('nightThemeSwatch'),
             enableAutoSwitch: document.getElementById('enableAutoSwitch'),
+            useManualTimes: document.getElementById('useManualTimes'),
+            useLocationTimes: document.getElementById('useLocationTimes'),
             dayTimeStart: document.getElementById('dayTimeStart'),
             nightTimeStart: document.getElementById('nightTimeStart'),
+            latitude: document.getElementById('latitude'),
+            longitude: document.getElementById('longitude'),
             switchSettings: document.getElementById('switchSettings'),
             manualTimes: document.getElementById('manualTimes'),
+            locationTimes: document.getElementById('locationTimes'),
             previewDay: document.getElementById('previewDay'),
             previewNight: document.getElementById('previewNight'),
+            switchToDay: document.getElementById('switchToDay'),
+            switchToNight: document.getElementById('switchToNight'),
             saveSettings: document.getElementById('saveSettings'),
             status: document.getElementById('status'),
             currentTimeMarker: document.getElementById('currentTimeMarker'),
@@ -487,8 +536,21 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
         // Event listeners
         elements.enableAutoSwitch.addEventListener('change', function() {
             elements.switchSettings.classList.toggle('hidden', !this.checked);
-            updateLocationVisibility();
+            updateTimeSourceVisibility();
         });
+
+        elements.useManualTimes.addEventListener('change', function() {
+            if (this.checked) {
+                updateTimeSourceVisibility();
+            }
+        });
+
+        elements.useLocationTimes.addEventListener('change', function() {
+            if (this.checked) {
+                updateTimeSourceVisibility();
+            }
+        });
+
 
 
 
@@ -548,8 +610,51 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
             }
         });
 
+        elements.switchToDay.addEventListener('click', function() {
+            vscode.postMessage({ command: 'forceDayTheme' });
+            // Disable automatic theme switching to prevent override
+            elements.enableAutoSwitch.checked = false;
+            elements.switchSettings.classList.add('hidden');
+            vscode.postMessage({ command: 'disableAutoSwitch' });
+            // Inform user about the auto-switch being disabled
+            showStatus(t('Day theme applied. Automatic theme switching disabled.'), 'info');
+        });
+
+        elements.switchToNight.addEventListener('click', function() {
+            vscode.postMessage({ command: 'forceNightTheme' });
+            // Disable automatic theme switching to prevent override
+            elements.enableAutoSwitch.checked = false;
+            elements.switchSettings.classList.add('hidden');
+            vscode.postMessage({ command: 'disableAutoSwitch' });
+            // Inform user about the auto-switch being disabled
+            showStatus(t('Night theme applied. Automatic theme switching disabled.'), 'info');
+        });
+
         elements.saveSettings.addEventListener('click', function() {
-            // Validate all time inputs before saving
+            // If using location-based times, validate GPS coordinates and fetch times first
+            if (elements.useLocationTimes.checked) {
+                const lat = parseFloat(elements.latitude.value);
+                const lng = parseFloat(elements.longitude.value);
+                
+                if (isNaN(lat) || isNaN(lng)) {
+                    showStatus('Please enter valid latitude and longitude values', 'error');
+                    return;
+                }
+                
+                // Show loading status
+                showStatus('Fetching sunrise/sunset times...', 'info');
+                
+                // Send testLocation command first, then save will be handled in the response
+                vscode.postMessage({ 
+                    command: 'testLocation', 
+                    latitude: lat, 
+                    longitude: lng,
+                    saveAfterFetch: true
+                });
+                return;
+            }
+            
+            // For manual times, validate time inputs before saving
             const dayTimeValid = validateTimeInput({ target: elements.dayTimeStart });
             const nightTimeValid = validateTimeInput({ target: elements.nightTimeStart });
             
@@ -578,15 +683,20 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
                 nightTheme: elements.nightTheme.value,
                 overrideThemeSwitch: elements.enableAutoSwitch.checked,
                 dayTimeStart: elements.dayTimeStart.value,
-                nightTimeStart: elements.nightTimeStart.value
+                nightTimeStart: elements.nightTimeStart.value,
+                useLocationBasedTimes: elements.useLocationTimes.checked,
+                latitude: parseFloat(elements.latitude.value) || 0,
+                longitude: parseFloat(elements.longitude.value) || 0
             };
 
             vscode.postMessage({ command: 'saveSettings', ...settings });
             showStatus(t('Settings saved!'), 'success');
         });
 
-        function updateLocationVisibility() {
-            // Location functionality removed - always show manual times
+        function updateTimeSourceVisibility() {
+            const useLocation = elements.useLocationTimes.checked;
+            elements.manualTimes.classList.toggle('hidden', useLocation);
+            elements.locationTimes.classList.toggle('hidden', !useLocation);
         }
 
         // Localization functions
@@ -602,6 +712,9 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
         async function loadTranslations(language) {
             const defaultTranslations = {
                 'Current Theme: Loading...': 'Current Theme: Loading...',
+                'Manual Theme Control': 'Manual Theme Control',
+                'Switch to Day': 'Switch to Day',
+                'Switch to Night': 'Switch to Night',
                 'Theme Selection': 'Theme Selection',
                 'Day Theme': 'Day Theme',
                 'Select day theme...': 'Select day theme...',
@@ -625,7 +738,16 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
                 'Day and night times cannot be the same': 'Day and night times cannot be the same',
                 'Day start time must be earlier than night start time': 'Day start time must be earlier than night start time',
                 'Settings saved!': 'Settings saved!',
-                'Current Theme: {0}': 'Current Theme: {0}'
+                'Settings saved with GPS times!': 'Settings saved with GPS times!',
+                'Day theme applied. Automatic theme switching disabled.': 'Day theme applied. Automatic theme switching disabled.',
+                'Night theme applied. Automatic theme switching disabled.': 'Night theme applied. Automatic theme switching disabled.',
+                'Current Theme: {0}': 'Current Theme: {0}',
+                'Time Source': 'Time Source',
+                'Manual time input': 'Manual time input',
+                'Use GPS coordinates (automatic)': 'Use GPS coordinates (automatic)',
+                'GPS Coordinates': 'GPS Coordinates',
+                'Latitude': 'Latitude',
+                'Longitude': 'Longitude'
             };
 
             translations = defaultTranslations;
@@ -646,19 +768,28 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
             // Update static text elements
             const textElements = [
                 { id: 'currentThemeText', key: 'Current Theme: Loading...', keepCurrentTheme: true },
-                { selector: '.section-title', index: 0, key: 'Theme Selection' },
+                { selector: '.section-title', index: 0, key: 'Manual Theme Control' },
+                { id: 'switchToDay', key: 'Switch to Day' },
+                { id: 'switchToNight', key: 'Switch to Night' },
+                { selector: '.section-title', index: 1, key: 'Theme Selection' },
                 { selector: 'label[for="dayTheme"]', key: 'Day Theme' },
                 { selector: 'option[value=""]', index: 0, key: 'Select day theme...' },
                 { selector: 'label[for="nightTheme"]', key: 'Night Theme' },
                 { selector: 'option[value=""]', index: 1, key: 'Select night theme...' },
                 { id: 'previewDay', key: 'Preview Day' },
                 { id: 'previewNight', key: 'Preview Night' },
-                { selector: '.section-title', index: 1, key: 'Auto-Switch Settings' },
+                { selector: '.section-title', index: 2, key: 'Auto-Switch Settings' },
                 { selector: 'label[for="enableAutoSwitch"]', key: 'Enable automatic theme switching' },
+                { id: 'timeSourceLabel', key: 'Time Source' },
+                { selector: 'label[for="useManualTimes"]', key: 'Manual time input' },
+                { selector: 'label[for="useLocationTimes"]', key: 'Use GPS coordinates (automatic)' },
+                { id: 'gpsCoordinatesLabel', key: 'GPS Coordinates' },
                 { selector: '.timeline-header', key: 'Today\\'s Schedule' },
                 { id: 'switchTimesLabel', key: 'Switch Times' },
                 { selector: 'label[for="dayTimeStart"]', key: 'Day Start' },
                 { selector: 'label[for="nightTimeStart"]', key: 'Night Start' },
+                { selector: 'label[for="latitude"]', key: 'Latitude' },
+                { selector: 'label[for="longitude"]', key: 'Longitude' },
                 { id: 'saveSettings', key: 'Save Settings' }
             ];
 
@@ -735,6 +866,12 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
             elements.dayTimeStart.value = isValidTimeFormat(dayTime) ? dayTime : '06:00';
             elements.nightTimeStart.value = isValidTimeFormat(nightTime) ? nightTime : '18:00';
             
+            // Set location settings
+            elements.useLocationTimes.checked = settings.useLocationBasedTimes || false;
+            elements.useManualTimes.checked = !settings.useLocationBasedTimes;
+            elements.latitude.value = settings.latitude || '';
+            elements.longitude.value = settings.longitude || '';
+            
             // Update theme swatches and buttons
             updateThemeSwatches();
             
@@ -743,7 +880,7 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
             
             // Update visibility
             elements.switchSettings.classList.toggle('hidden', !elements.enableAutoSwitch.checked);
-            updateLocationVisibility();
+            updateTimeSourceVisibility();
         }
 
         function showStatus(message, type = 'success') {
@@ -933,6 +1070,42 @@ export function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.
                     if (message.translations) {
                         translations = { ...translations, ...message.translations };
                         updateUIText();
+                    }
+                    break;
+                case 'locationTestResult':
+                    if (message.success) {
+                        // Update time inputs with fetched times
+                        elements.dayTimeStart.value = message.times.sunrise;
+                        elements.nightTimeStart.value = message.times.sunset;
+                        
+                        // Update timeline with new times
+                        const updatedSettings = {
+                            ...currentSettings,
+                            dayTimeStart: message.times.sunrise,
+                            nightTimeStart: message.times.sunset
+                        };
+                        updateTimeline(updatedSettings);
+                        
+                        // If this was triggered by save, automatically save the settings
+                        if (message.saveAfterFetch) {
+                            const settings = {
+                                dayTheme: elements.dayTheme.value,
+                                nightTheme: elements.nightTheme.value,
+                                overrideThemeSwitch: elements.enableAutoSwitch.checked,
+                                dayTimeStart: message.times.sunrise,
+                                nightTimeStart: message.times.sunset,
+                                useLocationBasedTimes: elements.useLocationTimes.checked,
+                                latitude: parseFloat(elements.latitude.value) || 0,
+                                longitude: parseFloat(elements.longitude.value) || 0
+                            };
+
+                            vscode.postMessage({ command: 'saveSettings', ...settings });
+                            showStatus(t('Settings saved with GPS times!'), 'success');
+                        } else {
+                            showStatus('GPS times fetched successfully!', 'success');
+                        }
+                    } else {
+                        showStatus('Failed to fetch GPS times: ' + (message.error || 'Unknown error'), 'error');
                     }
                     break;
             }

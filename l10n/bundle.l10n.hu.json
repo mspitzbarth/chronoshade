@@ -4,5 +4,20 @@
   "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] Érvénytelen nap kezdési idő: {0}, alapértelmezett 06:00 használata",
   "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] Érvénytelen éjszaka kezdési idő: {0}, alapértelmezett 18:00 használata",
   "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: Nem sikerült váltani a témát. Ellenőrizze a beállításokat.",
-  "ChronoShade extension deactivated.": "ChronoShade kiterjesztés deaktiválva."
+  "ChronoShade extension deactivated.": "ChronoShade kiterjesztés deaktiválva.",
+  "Please configure a day theme first in ChronoShade settings.": "Először állítsa be a nappali témát a ChronoShade beállításaiban.",
+  "Please configure a night theme first in ChronoShade settings.": "Először állítsa be az éjszakai témát a ChronoShade beállításaiban.",
+  "Switched to day theme: {0}": "Átváltva nappali témára: {0}",
+  "Switched to night theme: {0}": "Átváltva éjszakai témára: {0}",
+  "[ChronoShade] Using location-based times: sunrise {0}, sunset {1}": "[ChronoShade] Helyzét alapú idők használata: napkelte {0}, napnyugta {1}",
+  "[ChronoShade] Failed to fetch location-based times, falling back to manual times: {0}": "[ChronoShade] Nem sikerült lekérni a helyzét alapú időket, visszaváltás kézi időkre: {0}",
+  "[ChronoShade] Invalid coordinates: lat={0}, lng={1}": "[ChronoShade] Érvénytelen koordináták: szél={0}, hossz={1}",
+  "[ChronoShade] Error fetching sunrise/sunset times: {0}": "[ChronoShade] Hiba a napkelte/napnyugta idők lekérése közben: {0}",
+  "Failed to fetch sunrise/sunset times. Please check your internet connection and coordinates.": "Nem sikerült lekérni a napkelte/napnyugta időket. Ellenőrizze az internet kapcsolatot és a koordinátákat.",
+  "Latitude and longitude must be valid numbers.": "A szélesség és hosszúság érvényes számok kell, hogy legyenek.",
+  "Latitude must be between -90 and 90 degrees.": "A szélességnek -90 és 90 fok között kell lennie.",
+  "Longitude must be between -180 and 180 degrees.": "A hosszúságnak -180 és 180 fok között kell lennie.",
+  "Fetching sunrise/sunset times for your location...": "Napkelte/napnyugta idők lekérése a tartózkodási helyéhez...",
+  "Location test successful! Sunrise: {0}, Sunset: {1}": "Helyzét teszt sikeres! Napkelte: {0}, Napnyugta: {1}",
+  "Location test failed: {0}": "Helyzét teszt sikertelen: {0}"
 }

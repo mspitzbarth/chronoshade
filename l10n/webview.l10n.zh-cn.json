@@ -1,9 +1,12 @@
 {
   "Current Theme: Loading...": "当前主题：加载中...",
+  "Manual Theme Control": "手动主题控制",
+  "Switch to Day": " 切换到日间",
+  "Switch to Night": " 切换到夜间",
   "Theme Selection": "主题选择",
   "Day Theme": "日间主题",
   "Select day theme...": "选择日间主题...",
-  "Night Theme": "夜间主题", 
+  "Night Theme": "夜间主题",
   "Select night theme...": "选择夜间主题...",
   "Preview Day": "日间预览",
   "Preview Night": "夜间预览",
@@ -23,5 +26,13 @@
   "Day and night times cannot be the same": "日间和夜间时间不能相同",
   "Day start time must be earlier than night start time": "日间开始时间必须早于夜间开始时间",
   "Settings saved!": "设置已保存！",
-  "Current Theme: {0}": "当前主题：{0}"
+  "Current Theme: {0}": "当前主题：{0}",
+  "Time Source": "时间源",
+  "Manual time input": "手动时间输入",
+  "Use GPS coordinates (automatic)": "使用GPS坐标（自动）",
+  "GPS Coordinates": "GPS坐标",
+  "Latitude": "纬度",
+  "Longitude": "经度",
+  "Fetch times": "测试位置和获取时间",
+  "Please enter valid latitude and longitude values": "请输入有效的纬度和经度值"
 }

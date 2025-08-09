@@ -1,9 +1,12 @@
 {
   "Current Theme: Loading...": "Current Theme: Loading...",
+  "Manual Theme Control": "Manual Theme Control",
+  "Switch to Day": " Switch to Day",
+  "Switch to Night": " Switch to Night",
   "Theme Selection": "Theme Selection",
   "Day Theme": "Day Theme",
   "Select day theme...": "Select day theme...",
-  "Night Theme": "Night Theme", 
+  "Night Theme": "Night Theme",
   "Select night theme...": "Select night theme...",
   "Preview Day": "Preview Day",
   "Preview Night": "Preview Night",
@@ -27,5 +30,13 @@
   "ChronoShade settings saved successfully!": "ChronoShade settings saved successfully!",
   "Previewing theme: {0}. Reverting in 5 seconds...": "Previewing theme: {0}. Reverting in 5 seconds...",
   "Reverted back to: {0}": "Reverted back to: {0}",
-  "Switched to theme: {0}": "Switched to theme: {0}"
+  "Switched to theme: {0}": "Switched to theme: {0}",
+  "Time Source": "Time Source",
+  "Manual time input": "Manual time input",
+  "Use GPS coordinates (automatic)": "Use GPS coordinates (automatic)",
+  "GPS Coordinates": "GPS Coordinates",
+  "Latitude": "Latitude",
+  "Longitude": "Longitude",
+  "Fetch times": "Fetch times",
+  "Please enter valid latitude and longitude values": "Please enter valid latitude and longitude values"
 }

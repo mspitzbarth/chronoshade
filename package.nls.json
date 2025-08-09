@@ -12,5 +12,8 @@
   "config.manualSunrise": "Manually set the sunrise time (24-hour format).",
   "config.overrideThemeSwitch": "Enable or disable custom day/night times.",
   "config.dayTimeStart": "Daytime start time (24-hour format).",
-  "config.nightTimeStart": "Nighttime start time (24-hour format)."
+  "config.nightTimeStart": "Nighttime start time (24-hour format).",
+  "config.useLocationBasedTimes": "Use GPS coordinates to automatically determine sunrise/sunset times instead of manual times.",
+  "config.latitude": "Your latitude coordinate (for automatic sunrise/sunset calculation).",
+  "config.longitude": "Your longitude coordinate (for automatic sunrise/sunset calculation)."
 }

@@ -11,5 +11,10 @@
   "config.nightTheme": "Éjjel alkalmazandó téma.",
   "config.manualSunset": "Napnyugta idejének kézi beállítása (24 órás formátum).",
   "config.manualSunrise": "Napkelte idejének kézi beállítása (24 órás formátum).",
-  "config.overrideThemeSwitch": "Egyéni nappali/éjszakai idők engedélyezése vagy letiltása."
+  "config.overrideThemeSwitch": "Egyéni nappali/éjszakai idők engedélyezése vagy letiltása.",
+  "config.dayTimeStart": "Nappali idő kezdete (24 órás formátum).",
+  "config.nightTimeStart": "Éjszakai idő kezdete (24 órás formátum).",
+  "config.useLocationBasedTimes": "GPS koordináták használata a napkelte/napnyugta idők automatikus meghatározásához a kézi idők helyett.",
+  "config.latitude": "Az Ön szélességi koordinátája (automatikus napkelte/napnyugta számításhoz).",
+  "config.longitude": "Az Ön hosszúsági koordinátája (automatikus napkelte/napnyugta számításhoz)."
 }

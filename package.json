@@ -2,12 +2,12 @@
   "name": "chronoshade",
   "displayName": "%displayName%",
   "description": "%description%",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "markusmorita",
   "engines": {
     "vscode": "^1.98.0"
   },
-  "icon": "resources/media/icon.png",
+  "icon": "resources/media/logo.png",
   "categories": [
     "Themes",
     "Other"
@@ -105,6 +105,25 @@
           "type": "string",
           "default": "18:00",
           "description": "%config.nightTimeStart%"
+        },
+        "chronoShade.useLocationBasedTimes": {
+          "type": "boolean",
+          "default": false,
+          "description": "%config.useLocationBasedTimes%"
+        },
+        "chronoShade.latitude": {
+          "type": "number",
+          "default": 0,
+          "description": "%config.latitude%",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "chronoShade.longitude": {
+          "type": "number",
+          "default": 0,
+          "description": "%config.longitude%",
+          "minimum": -180,
+          "maximum": 180
         }
       }
     }
@@ -118,7 +137,8 @@
     "test": "vscode-test",
     "package": "pnpm run l10n:extract && pnpm vsce package --no-dependencies",
     "publish": "pnpm vsce publish --no-dependencies",
-    "l10n:extract": "npx @vscode/l10n-dev export --outDir ./l10n ./src"
+    "l10n:extract": "npx @vscode/l10n-dev export --outDir ./l10n ./src",
+    "dev:install": "pnpm run package && code --install-extension chronoshade-$(node -p \"require('./package.json').version\").vsix"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",

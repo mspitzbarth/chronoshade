@@ -14,4 +14,7 @@
   "config.overrideThemeSwitch": "カスタム昼・夜時刻を有効または無効にする。",
   "config.dayTimeStart": "昼間開始時刻（24時間形式）。",
   "config.nightTimeStart": "夜間開始時刻（24時間形式）。",
+  "config.useLocationBasedTimes": "GPS座標を使用して手動時刻の代わりに日の出/日の入り時刻を自動判定。",
+  "config.latitude": "あなたの緯度座標（自動日の出/日の入り計算用）。",
+  "config.longitude": "あなたの経度座標（自動日の出/日の入り計算用）。"
 }

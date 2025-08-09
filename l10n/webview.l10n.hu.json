@@ -1,9 +1,12 @@
 {
   "Current Theme: Loading...": "Jelenlegi téma: Betöltés...",
+  "Manual Theme Control": "Kézi Téma Vezérlés",
+  "Switch to Day": " Váltás Nappalra",
+  "Switch to Night": " Váltás Éjszakára",
   "Theme Selection": "Téma kiválasztása",
   "Day Theme": "Nappali téma",
   "Select day theme...": "Nappali téma kiválasztása...",
-  "Night Theme": "Éjszakai téma", 
+  "Night Theme": "Éjszakai téma",
   "Select night theme...": "Éjszakai téma kiválasztása...",
   "Preview Day": "Nappali előnézet",
   "Preview Night": "Éjszakai előnézet",
@@ -23,5 +26,13 @@
   "Day and night times cannot be the same": "A nappali és éjszakai idők nem lehetnek azonosak",
   "Day start time must be earlier than night start time": "A nap kezdeti időpontjának korábbnak kell lennie az éjszaka kezdeténél",
   "Settings saved!": "Beállítások elmentve!",
-  "Current Theme: {0}": "Jelenlegi téma: {0}"
+  "Current Theme: {0}": "Jelenlegi téma: {0}",
+  "Time Source": "Időforrás",
+  "Manual time input": "Kézi időmegadás",
+  "Use GPS coordinates (automatic)": "GPS koordináták használata (automatikus)",
+  "GPS Coordinates": "GPS koordináták",
+  "Latitude": "Szélesség",
+  "Longitude": "Hosszúság",
+  "Fetch times": "Hely tesztelése és idők lekérése",
+  "Please enter valid latitude and longitude values": "Kérem, adjon meg érvényes szélességi és hosszúsági értékeket"
 }

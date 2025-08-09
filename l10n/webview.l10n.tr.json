@@ -1,9 +1,12 @@
 {
   "Current Theme: Loading...": "Geçerli Tema: Yükleniyor...",
+  "Manual Theme Control": "Manuel Tema Kontrolü",
+  "Switch to Day": " Gündüze Geç",
+  "Switch to Night": " Geceye Geç",
   "Theme Selection": "Tema Seçimi",
   "Day Theme": "Gündüz Teması",
   "Select day theme...": "Gündüz teması seç...",
-  "Night Theme": "Gece Teması", 
+  "Night Theme": "Gece Teması",
   "Select night theme...": "Gece teması seç...",
   "Preview Day": "Gündüz Önizleme",
   "Preview Night": "Gece Önizleme",
@@ -23,5 +26,13 @@
   "Day and night times cannot be the same": "Gündüz ve gece zamanları aynı olamaz",
   "Day start time must be earlier than night start time": "Gündüz başlangıç saati gece başlangıç saatinden önce olmalıdır",
   "Settings saved!": "Ayarlar kaydedildi!",
-  "Current Theme: {0}": "Geçerli Tema: {0}"
+  "Current Theme: {0}": "Geçerli Tema: {0}",
+  "Time Source": "Zaman Kaynağı",
+  "Manual time input": "Manuel zaman girişi",
+  "Use GPS coordinates (automatic)": "GPS koordinatlarını kullan (otomatik)",
+  "GPS Coordinates": "GPS Koordinatları",
+  "Latitude": "Enlem",
+  "Longitude": "Boylam",
+  "Fetch times": "Konumu Test Et ve Zamanları Al",
+  "Please enter valid latitude and longitude values": "Lütfen geçerli enlem ve boylam değerleri girin"
 }
