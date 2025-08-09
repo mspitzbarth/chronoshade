@@ -19,27 +19,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
-
-      # 👇 Make pnpm available
-      - name: Enable Corepack and activate pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@9 --activate
-          pnpm --version
+          cache: npm
 
       - name: Install deps
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Build
-        run: pnpm build
+        run: npm run build
 
       - name: Read version
         run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
 
       - name: Package (.vsix)
-        run: pnpm run package
+        run: npm run package
 
       - name: Upload VSIX artifact
         uses: actions/upload-artifact@v4
@@ -52,4 +44,4 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: pnpm dlx @vscode/vsce publish --packagePath chronoshade-${{ env.VERSION }}.vsix
+        run: npx @vscode/vsce publish --packagePath chronoshade-${{ env.VERSION }}.vsix
