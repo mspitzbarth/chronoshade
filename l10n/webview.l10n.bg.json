@@ -1,9 +1,12 @@
 {
   "Current Theme: Loading...": "Текуща тема: Зареждане...",
+  "Manual Theme Control": "Ръчно управление на темата",
+  "Switch to Day": " Превключи на ден",
+  "Switch to Night": " Превключи на нощ",
   "Theme Selection": "Избор на тема",
   "Day Theme": "Дневна тема",
   "Select day theme...": "Изберете дневна тема...",
-  "Night Theme": "Нощна тема", 
+  "Night Theme": "Нощна тема",
   "Select night theme...": "Изберете нощна тема...",
   "Preview Day": "Преглед на деня",
   "Preview Night": "Преглед на нощта",
@@ -23,5 +26,13 @@
   "Day and night times cannot be the same": "Времената за ден и нощ не могат да са еднакви",
   "Day start time must be earlier than night start time": "Часът на начало на деня трябва да е по-рано от часа на начало на нощта",
   "Settings saved!": "Настройките са запазени!",
-  "Current Theme: {0}": "Текуща тема: {0}"
+  "Current Theme: {0}": "Текуща тема: {0}",
+  "Time Source": "Източник на време",
+  "Manual time input": "Ръчно въвеждане на време",
+  "Use GPS coordinates (automatic)": "Използване на GPS координати (автоматично)",
+  "GPS Coordinates": "GPS координати",
+  "Latitude": "Широчина",
+  "Longitude": "Дължина",
+  "Fetch times": "Тест на мястото и вземане на времена",
+  "Please enter valid latitude and longitude values": "Моля, въведете валидни стойности за широчина и дължина"
 }

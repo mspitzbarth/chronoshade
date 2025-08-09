@@ -1,9 +1,12 @@
 {
   "Current Theme: Loading...": "Bieżący motyw: Ładowanie...",
+  "Manual Theme Control": "Ręczna Kontrola Motywu",
+  "Switch to Day": " Przełącz na Dzień",
+  "Switch to Night": " Przełącz na Noc",
   "Theme Selection": "Wybór motywu",
   "Day Theme": "Motyw dzienny",
   "Select day theme...": "Wybierz motyw dzienny...",
-  "Night Theme": "Motyw nocny", 
+  "Night Theme": "Motyw nocny",
   "Select night theme...": "Wybierz motyw nocny...",
   "Preview Day": "Podgląd dnia",
   "Preview Night": "Podgląd nocy",
@@ -23,5 +26,13 @@
   "Day and night times cannot be the same": "Czas dnia i nocy nie może być identyczny",
   "Day start time must be earlier than night start time": "Czas początku dnia musi być wcześniejszy niż czas początku nocy",
   "Settings saved!": "Ustawienia zapisane!",
-  "Current Theme: {0}": "Bieżący motyw: {0}"
+  "Current Theme: {0}": "Bieżący motyw: {0}",
+  "Time Source": "Źródło czasu",
+  "Manual time input": "Ręczne wprowadzanie czasu",
+  "Use GPS coordinates (automatic)": "Użyj współrzędnych GPS (automatycznie)",
+  "GPS Coordinates": "Współrzędne GPS",
+  "Latitude": "Szerokość geograficzna",
+  "Longitude": "Długość geograficzna",
+  "Fetch times": "Testuj lokalizację i pobierz godziny",
+  "Please enter valid latitude and longitude values": "Proszę wprowadzić prawidłowe wartości szerokości i długości geograficznej"
 }

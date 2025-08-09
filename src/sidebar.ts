@@ -1,7 +1,8 @@
 // src/sidebar.ts
 import * as vscode from "vscode";
 import { CONFIG_KEYS } from "./constants";
-import { getWebviewContent } from "./webview-template";
+import { getWebviewContent } from "./webview";
+import { SunriseSunsetService } from "./sunriseSunsetService";
 
 let lastAppliedTheme: string | undefined;
 
@@ -47,6 +48,18 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
         case "getTranslations":
           await this.handleGetTranslations(message.language, webviewView);
           break;
+        case "forceDayTheme":
+          await this.handleForceDayTheme();
+          break;
+        case "forceNightTheme":
+          await this.handleForceNightTheme();
+          break;
+        case "testLocation":
+          await this.handleTestLocation(message.latitude, message.longitude, webviewView, message.saveAfterFetch);
+          break;
+        case "disableAutoSwitch":
+          await this.handleDisableAutoSwitch(config);
+          break;
         default:
           break;
       }
@@ -79,6 +92,9 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       overrideThemeSwitch: config.get(CONFIG_KEYS.OVERRIDE_THEME_SWITCH),
       dayTimeStart: config.get(CONFIG_KEYS.MANUAL_SUNRISE),
       nightTimeStart: config.get(CONFIG_KEYS.MANUAL_SUNSET),
+      useLocationBasedTimes: config.get(CONFIG_KEYS.USE_LOCATION_BASED_TIMES),
+      latitude: config.get(CONFIG_KEYS.LATITUDE),
+      longitude: config.get(CONFIG_KEYS.LONGITUDE),
       language: vscode.env.language,
     };
 
@@ -165,6 +181,13 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       message.overrideThemeSwitch,
       true
     );
+    await config.update(
+      CONFIG_KEYS.USE_LOCATION_BASED_TIMES,
+      message.useLocationBasedTimes,
+      true
+    );
+    await config.update(CONFIG_KEYS.LATITUDE, message.latitude, true);
+    await config.update(CONFIG_KEYS.LONGITUDE, message.longitude, true);
 
     if (message.overrideThemeSwitch) {
       vscode.commands.executeCommand("chronoShade.startIntervalCheck");
@@ -236,10 +259,130 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
     return hours * 60 + minutes;
   }
 
+  private async handleForceDayTheme() {
+    const config = vscode.workspace.getConfiguration("chronoShade");
+    const dayTheme = config.get(CONFIG_KEYS.DAY_THEME);
+    
+    if (!dayTheme) {
+      vscode.window.showWarningMessage(
+        vscode.l10n.t("Please configure a day theme first in ChronoShade settings.")
+      );
+      return;
+    }
+
+    await vscode.workspace
+      .getConfiguration("workbench")
+      .update("colorTheme", dayTheme, true);
+
+    vscode.window.showInformationMessage(
+      vscode.l10n.t("Switched to day theme: {0}", dayTheme)
+    );
+
+    // Update current theme display after a short delay
+    setTimeout(() => {
+      if (this._view) {
+        this.handleGetCurrentTheme(this._view);
+      }
+    }, 500);
+  }
+
+  private async handleForceNightTheme() {
+    const config = vscode.workspace.getConfiguration("chronoShade");
+    const nightTheme = config.get(CONFIG_KEYS.NIGHT_THEME);
+    
+    if (!nightTheme) {
+      vscode.window.showWarningMessage(
+        vscode.l10n.t("Please configure a night theme first in ChronoShade settings.")
+      );
+      return;
+    }
+
+    await vscode.workspace
+      .getConfiguration("workbench")
+      .update("colorTheme", nightTheme, true);
+
+    vscode.window.showInformationMessage(
+      vscode.l10n.t("Switched to night theme: {0}", nightTheme)
+    );
+
+    // Update current theme display after a short delay
+    setTimeout(() => {
+      if (this._view) {
+        this.handleGetCurrentTheme(this._view);
+      }
+    }, 500);
+  }
+
+  private async handleTestLocation(
+    latitude: number, 
+    longitude: number, 
+    webviewView: vscode.WebviewView,
+    saveAfterFetch?: boolean
+  ) {
+    try {
+      // Validate coordinates
+      if (!SunriseSunsetService.validateCoordinates(latitude, longitude)) {
+        const error = SunriseSunsetService.getCoordinateValidationError(latitude, longitude);
+        vscode.window.showErrorMessage(error);
+        return;
+      }
+
+      // Show progress message
+      vscode.window.showInformationMessage(
+        vscode.l10n.t("Fetching sunrise/sunset times for your location...")
+      );
+
+      // Fetch times
+      const times = await SunriseSunsetService.getSunriseSunsetTimes(latitude, longitude);
+      
+      // Show success message
+      vscode.window.showInformationMessage(
+        vscode.l10n.t("Location test successful! Sunrise: {0}, Sunset: {1}", times.sunrise, times.sunset)
+      );
+
+      // Update the webview with the fetched times (for preview)
+      webviewView.webview.postMessage({
+        command: 'locationTestResult',
+        success: true,
+        times: times,
+        saveAfterFetch: saveAfterFetch
+      });
+
+    } catch (error) {
+      console.error('Location test failed:', error);
+      vscode.window.showErrorMessage(
+        vscode.l10n.t("Location test failed: {0}", String(error))
+      );
+      
+      webviewView.webview.postMessage({
+        command: 'locationTestResult',
+        success: false,
+        error: String(error)
+      });
+    }
+  }
+
+  private async handleDisableAutoSwitch(config: vscode.WorkspaceConfiguration) {
+    // Disable automatic theme switching
+    await config.update(CONFIG_KEYS.OVERRIDE_THEME_SWITCH, false, true);
+    
+    // Stop interval check
+    vscode.commands.executeCommand("chronoShade.stopIntervalCheck");
+    
+    // Show confirmation message
+    vscode.window.showInformationMessage(
+      vscode.l10n.t("Automatic theme switching disabled")
+    );
+  }
+
   private isValidTimeFormat(timeStr: string): boolean {
-    if (!timeStr) return false;
+    if (!timeStr) {
+      return false;
+    }
     const timeMatch = timeStr.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
-    if (!timeMatch) return false;
+    if (!timeMatch) {
+      return false;
+    }
     
     const hours = parseInt(timeMatch[1]);
     const minutes = parseInt(timeMatch[2]);

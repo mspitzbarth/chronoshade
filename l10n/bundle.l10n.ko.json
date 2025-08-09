@@ -4,5 +4,20 @@
   "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] 유효하지 않은 낮 시작 시간: {0}, 기본값 06:00 사용",
   "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] 유효하지 않은 밤 시작 시간: {0}, 기본값 18:00 사용",
   "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: 테마 전환에 실패했습니다. 설정을 확인해주세요.",
-  "ChronoShade extension deactivated.": "ChronoShade 확장이 비활성화되었습니다."
+  "ChronoShade extension deactivated.": "ChronoShade 확장이 비활성화되었습니다.",
+  "Please configure a day theme first in ChronoShade settings.": "먼저 ChronoShade 설정에서 낮 테마를 구성하세요.",
+  "Please configure a night theme first in ChronoShade settings.": "먼저 ChronoShade 설정에서 밤 테마를 구성하세요.",
+  "Switched to day theme: {0}": "낮 테마로 전환됨: {0}",
+  "Switched to night theme: {0}": "밤 테마로 전환됨: {0}",
+  "[ChronoShade] Using location-based times: sunrise {0}, sunset {1}": "[ChronoShade] 위치 기반 시간 사용: 일출 {0}, 일몰 {1}",
+  "[ChronoShade] Failed to fetch location-based times, falling back to manual times: {0}": "[ChronoShade] 위치 기반 시간 가져오기 실패, 수동 시간으로 복귀: {0}",
+  "[ChronoShade] Invalid coordinates: lat={0}, lng={1}": "[ChronoShade] 잘못된 좌표: lat={0}, lng={1}",
+  "[ChronoShade] Error fetching sunrise/sunset times: {0}": "[ChronoShade] 일출/일몰 시간 가져오기 오류: {0}",
+  "Failed to fetch sunrise/sunset times. Please check your internet connection and coordinates.": "일출/일몰 시간 가져오기에 실패했습니다. 인터넷 연결과 좌표를 확인해주세요.",
+  "Latitude and longitude must be valid numbers.": "위도와 경도는 유효한 숫자여야 합니다.",
+  "Latitude must be between -90 and 90 degrees.": "위도는 -90도와 90도 사이여야 합니다.",
+  "Longitude must be between -180 and 180 degrees.": "경도는 -180도와 180도 사이여야 합니다.",
+  "Fetching sunrise/sunset times for your location...": "귀하의 위치의 일출/일몰 시간을 가져오고 있습니다...",
+  "Location test successful! Sunrise: {0}, Sunset: {1}": "위치 테스트 성공! 일출: {0}, 일몰: {1}",
+  "Location test failed: {0}": "위치 테스트 실패: {0}"
 }

@@ -14,4 +14,7 @@
   "config.overrideThemeSwitch": "Benutzerdefinierte Tag-/Nachtzeiten aktivieren oder deaktivieren.",
   "config.dayTimeStart": "Tagesbeginnzeit (24-Stunden-Format).",
   "config.nightTimeStart": "Nachtbeginnzeit (24-Stunden-Format).",
+  "config.useLocationBasedTimes": "GPS-Koordinaten verwenden, um automatisch Sonnenauf-/untergangszeiten zu bestimmen statt manueller Zeiten.",
+  "config.latitude": "Ihr Breitengrad-Koordinate (für automatische Sonnenauf-/untergangsberechnung).",
+  "config.longitude": "Ihr Längengrad-Koordinate (für automatische Sonnenauf-/untergangsberechnung)."
 }

@@ -11,5 +11,10 @@
   "config.nightTheme": "Motyw do zastosowania w nocy.",
   "config.manualSunset": "Ręcznie ustaw czas zachodu słońca (format 24-godzinny).",
   "config.manualSunrise": "Ręcznie ustaw czas wschodu słońca (format 24-godzinny).",
-  "config.overrideThemeSwitch": "Włącz lub wyłącz niestandardowe czasy dnia/nocy."
+  "config.overrideThemeSwitch": "Włącz lub wyłącz niestandardowe czasy dnia/nocy.",
+  "config.dayTimeStart": "Godzina początku dnia (format 24-godzinny).",
+  "config.nightTimeStart": "Godzina początku nocy (format 24-godzinny).",
+  "config.useLocationBasedTimes": "Użyj współrzędnych GPS do automatycznego określenia czasów wschodu/zachodu słońca zamiast ręcznych czasów.",
+  "config.latitude": "Twoja współrzędna szerokości geograficznej (do automatycznego obliczania wschodu/zachodu słońca).",
+  "config.longitude": "Twoja współrzędna długości geograficznej (do automatycznego obliczania wschodu/zachodu słońca)."
 }

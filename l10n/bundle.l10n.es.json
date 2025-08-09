@@ -4,5 +4,20 @@
   "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] Hora de inicio de día inválida: {0}, usando predeterminada 06:00",
   "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] Hora de inicio de noche inválida: {0}, usando predeterminada 18:00",
   "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: Error al cambiar tema. Por favor verifique su configuración.",
-  "ChronoShade extension deactivated.": "Extensión ChronoShade desactivada."
+  "ChronoShade extension deactivated.": "Extensión ChronoShade desactivada.",
+  "Please configure a day theme first in ChronoShade settings.": "Por favor configure primero un tema de día en la configuración de ChronoShade.",
+  "Please configure a night theme first in ChronoShade settings.": "Por favor configure primero un tema de noche en la configuración de ChronoShade.",
+  "Switched to day theme: {0}": "Cambiado al tema de día: {0}",
+  "Switched to night theme: {0}": "Cambiado al tema de noche: {0}",
+  "[ChronoShade] Using location-based times: sunrise {0}, sunset {1}": "[ChronoShade] Usando horarios basados en ubicación: amanecer {0}, atardecer {1}",
+  "[ChronoShade] Failed to fetch location-based times, falling back to manual times: {0}": "[ChronoShade] Error al obtener horarios basados en ubicación, usando horarios manuales: {0}",
+  "[ChronoShade] Invalid coordinates: lat={0}, lng={1}": "[ChronoShade] Coordenadas inválidas: lat={0}, lng={1}",
+  "[ChronoShade] Error fetching sunrise/sunset times: {0}": "[ChronoShade] Error al obtener horarios de amanecer/atardecer: {0}",
+  "Failed to fetch sunrise/sunset times. Please check your internet connection and coordinates.": "Error al obtener horarios de amanecer/atardecer. Por favor verifique su conexión a internet y coordenadas.",
+  "Latitude and longitude must be valid numbers.": "La latitud y longitud deben ser números válidos.",
+  "Latitude must be between -90 and 90 degrees.": "La latitud debe estar entre -90 y 90 grados.",
+  "Longitude must be between -180 and 180 degrees.": "La longitud debe estar entre -180 y 180 grados.",
+  "Fetching sunrise/sunset times for your location...": "Obteniendo horarios de amanecer/atardecer para su ubicación...",
+  "Location test successful! Sunrise: {0}, Sunset: {1}": "Prueba de ubicación exitosa! Amanecer: {0}, Atardecer: {1}",
+  "Location test failed: {0}": "Prueba de ubicación fallida: {0}"
 }

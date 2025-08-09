@@ -11,5 +11,10 @@
   "config.nightTheme": "Gece uygulanacak tema.",
   "config.manualSunset": "Gün batımı saatini manuel olarak ayarla (24 saat formatı).",
   "config.manualSunrise": "Gün doğumu saatini manuel olarak ayarla (24 saat formatı).",
-  "config.overrideThemeSwitch": "Özel gündüz/gece saatlerini etkinleştir veya devre dışı bırak."
+  "config.overrideThemeSwitch": "Özel gündüz/gece saatlerini etkinleştir veya devre dışı bırak.",
+  "config.dayTimeStart": "Gündüz başlangıç saati (24 saat formatı).",
+  "config.nightTimeStart": "Gece başlangıç saati (24 saat formatı).",
+  "config.useLocationBasedTimes": "Manuel saatler yerine gün doğumu/batımı saatlerini otomatik olarak belirlemek için GPS koordinatlarını kullan.",
+  "config.latitude": "Enlem koordinatınız (otomatik gün doğumu/batımı hesaplaması için).",
+  "config.longitude": "Boylam koordinatınız (otomatik gün doğumu/batımı hesaplaması için)."
 }

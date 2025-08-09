@@ -11,5 +11,10 @@
   "config.nightTheme": "Tema da applicare durante la notte.",
   "config.manualSunset": "Imposta manualmente l'ora del tramonto (formato 24 ore).",
   "config.manualSunrise": "Imposta manualmente l'ora dell'alba (formato 24 ore).",
-  "config.overrideThemeSwitch": "Abilita o disabilita i tempi personalizzati giorno/notte."
+  "config.overrideThemeSwitch": "Abilita o disabilita i tempi personalizzati giorno/notte.",
+  "config.dayTimeStart": "Orario di inizio del giorno (formato 24 ore).",
+  "config.nightTimeStart": "Orario di inizio della notte (formato 24 ore).",
+  "config.useLocationBasedTimes": "Usare le coordinate GPS per determinare automaticamente gli orari di alba/tramonto invece degli orari manuali.",
+  "config.latitude": "La tua coordinata di latitudine (per il calcolo automatico di alba/tramonto).",
+  "config.longitude": "La tua coordinata di longitudine (per il calcolo automatico di alba/tramonto)."
 }

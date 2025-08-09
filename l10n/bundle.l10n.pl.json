@@ -4,5 +4,20 @@
   "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] Nieprawidłowy czas rozpoczęcia dnia: {0}, używanie domyślnego 06:00",
   "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] Nieprawidłowy czas rozpoczęcia nocy: {0}, używanie domyślnego 18:00",
   "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: Nie udało się przełączyć motywu. Sprawdź swoje ustawienia.",
-  "ChronoShade extension deactivated.": "Rozszerzenie ChronoShade dezaktywowane."
+  "ChronoShade extension deactivated.": "Rozszerzenie ChronoShade dezaktywowane.",
+  "Please configure a day theme first in ChronoShade settings.": "Najpierw skonfiguruj motyw dzienny w ustawieniach ChronoShade.",
+  "Please configure a night theme first in ChronoShade settings.": "Najpierw skonfiguruj motyw nocny w ustawieniach ChronoShade.",
+  "Switched to day theme: {0}": "Przełączono na motyw dzienny: {0}",
+  "Switched to night theme: {0}": "Przełączono na motyw nocny: {0}",
+  "[ChronoShade] Using location-based times: sunrise {0}, sunset {1}": "[ChronoShade] Używanie czasów opartych na lokalizacji: wschód słońca {0}, zachód słońca {1}",
+  "[ChronoShade] Failed to fetch location-based times, falling back to manual times: {0}": "[ChronoShade] Nie udało się pobrać czasów opartych na lokalizacji, powracanie do czasów ręcznych: {0}",
+  "[ChronoShade] Invalid coordinates: lat={0}, lng={1}": "[ChronoShade] Nieprawidłowe współrzędne: szer={0}, dłu={1}",
+  "[ChronoShade] Error fetching sunrise/sunset times: {0}": "[ChronoShade] Błąd pobierania czasów wschodu/zachodu słońca: {0}",
+  "Failed to fetch sunrise/sunset times. Please check your internet connection and coordinates.": "Nie udało się pobrać czasów wschodu/zachodu słońca. Sprawdź połączenie internetowe i współrzędne.",
+  "Latitude and longitude must be valid numbers.": "Szerokość i długość geograficzna muszą być prawidłowymi liczbami.",
+  "Latitude must be between -90 and 90 degrees.": "Szerokość geograficzna musi być między -90 a 90 stopni.",
+  "Longitude must be between -180 and 180 degrees.": "Długość geograficzna musi być między -180 a 180 stopni.",
+  "Fetching sunrise/sunset times for your location...": "Pobieranie czasów wschodu/zachodu słońca dla Twojej lokalizacji...",
+  "Location test successful! Sunrise: {0}, Sunset: {1}": "Test lokalizacji pomyślny! Wschód słońca: {0}, Zachód słońca: {1}",
+  "Location test failed: {0}": "Test lokalizacji nie powiódł się: {0}"
 }

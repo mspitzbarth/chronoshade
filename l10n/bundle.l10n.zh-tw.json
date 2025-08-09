@@ -4,5 +4,20 @@
   "[ChronoShade] Invalid day start time: {0}, using default 06:00": "[ChronoShade] 無效的白天開始時間：{0}，使用預設的06:00",
   "[ChronoShade] Invalid night start time: {0}, using default 18:00": "[ChronoShade] 無效的夜間開始時間：{0}，使用預設的18:00",
   "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade：切換主題失敗。請檢查您的設定。",
-  "ChronoShade extension deactivated.": "ChronoShade擴充功能已停用。"
+  "ChronoShade extension deactivated.": "ChronoShade擴充功能已停用。",
+  "Please configure a day theme first in ChronoShade settings.": "請先在ChronoShade設定中配置日間主題。",
+  "Please configure a night theme first in ChronoShade settings.": "請先在ChronoShade設定中配置夜間主題。",
+  "Switched to day theme: {0}": "已切換到日間主題: {0}",
+  "Switched to night theme: {0}": "已切換到夜間主題: {0}",
+  "[ChronoShade] Using location-based times: sunrise {0}, sunset {1}": "[ChronoShade] 使用基於位置的時間：日出 {0}，日落 {1}",
+  "[ChronoShade] Failed to fetch location-based times, falling back to manual times: {0}": "[ChronoShade] 獲取基於位置的時間失敗，回退到手動時間：{0}",
+  "[ChronoShade] Invalid coordinates: lat={0}, lng={1}": "[ChronoShade] 無效座標：lat={0}, lng={1}",
+  "[ChronoShade] Error fetching sunrise/sunset times: {0}": "[ChronoShade] 獲取日出/日落時間錯誤：{0}",
+  "Failed to fetch sunrise/sunset times. Please check your internet connection and coordinates.": "獲取日出/日落時間失敗。請檢查您的網路連線和座標。",
+  "Latitude and longitude must be valid numbers.": "緯度和經度必须是有效數字。",
+  "Latitude must be between -90 and 90 degrees.": "緯度必须在-90到90度之間。",
+  "Longitude must be between -180 and 180 degrees.": "經度必须在-180到180度之間。",
+  "Fetching sunrise/sunset times for your location...": "正在獲取您位置的日出/日落時間...",
+  "Location test successful! Sunrise: {0}, Sunset: {1}": "位置測試成功！日出：{0}，日落：{1}",
+  "Location test failed: {0}": "位置測試失敗：{0}"
 }

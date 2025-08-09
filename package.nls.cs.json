@@ -11,5 +11,10 @@
   "config.nightTheme": "Téma k použití v noci.",
   "config.manualSunset": "Ručně nastavit čas západu slunce (24hodinový formát).",
   "config.manualSunrise": "Ručně nastavit čas východu slunce (24hodinový formát).",
-  "config.overrideThemeSwitch": "Povolit nebo zakázat vlastní časy dne/noci."
+  "config.overrideThemeSwitch": "Povolit nebo zakázat vlastní časy dne/noci.",
+  "config.dayTimeStart": "Čas začátku dne (24hodinový formát).",
+  "config.nightTimeStart": "Čas začátku noci (24hodinový formát).",
+  "config.useLocationBasedTimes": "Použít GPS souřadnice k automatickému určení časů východu/západu slunce místo ručních časů.",
+  "config.latitude": "Vaše souřadnice zeměpisné šířky (pro automatický výpočet východu/západu slunce).",
+  "config.longitude": "Vaše souřadnice zeměpisné délky (pro automatický výpočet východu/západu slunce)."
 }

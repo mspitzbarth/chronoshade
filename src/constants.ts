@@ -4,4 +4,7 @@ export const CONFIG_KEYS = {
   MANUAL_SUNRISE: "manualSunrise",
   MANUAL_SUNSET: "manualSunset",
   OVERRIDE_THEME_SWITCH: "overrideThemeSwitch",
+  USE_LOCATION_BASED_TIMES: "useLocationBasedTimes",
+  LATITUDE: "latitude",
+  LONGITUDE: "longitude",
 };

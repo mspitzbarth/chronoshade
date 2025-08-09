@@ -11,5 +11,10 @@
   "config.nightTheme": "夜間應用的主題。",
   "config.manualSunset": "手動設定日落時間（24小時格式）。",
   "config.manualSunrise": "手動設定日出時間（24小時格式）。",
-  "config.overrideThemeSwitch": "啟用或停用自訂白天/夜間時間。"
+  "config.overrideThemeSwitch": "啟用或停用自訂白天/夜間時間。",
+  "config.dayTimeStart": "白天開始時間（24小時格式）。",
+  "config.nightTimeStart": "夜間開始時間（24小時格式）。",
+  "config.useLocationBasedTimes": "使用GPS座標自動確定日出/日落時間，而不是手動時間。",
+  "config.latitude": "您的緯度座標（用於自動日出/日落計算）。",
+  "config.longitude": "您的經度座標（用於自動日出/日落計算）。"
 }
