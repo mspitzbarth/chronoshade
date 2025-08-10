@@ -101,10 +101,23 @@ async function checkThemeSwitch() {
   const now = new Date();
   const currentTime = now.toTimeString().slice(0, 5);
 
-  const theme =
-    currentTime >= nightTimeStart || currentTime < dayTimeStart
-      ? config.get(CONFIG_KEYS.NIGHT_THEME)
-      : config.get(CONFIG_KEYS.DAY_THEME);
+  // Handle cross-midnight scenarios properly
+  // Compare times as strings first, then handle edge cases
+  let isNightTime: boolean;
+  
+  if (nightTimeStart < dayTimeStart) {
+    // Cross-midnight scenario: night time is earlier than day time
+    // Night runs from nightTimeStart (previous day) to dayTimeStart, 
+    // then continues from midnight to nightTimeStart (current day)
+    isNightTime = currentTime <= nightTimeStart || currentTime < dayTimeStart;
+  } else {
+    // Normal scenario where day starts before night (e.g., 06:00 day, 18:00 night)
+    isNightTime = currentTime >= nightTimeStart || currentTime < dayTimeStart;
+  }
+
+  const theme = isNightTime
+    ? config.get(CONFIG_KEYS.NIGHT_THEME)
+    : config.get(CONFIG_KEYS.DAY_THEME);
 
   try {
     await vscode.workspace

@@ -162,11 +162,9 @@ export function getWebviewScript(): string {
                 return;
             }
             
-            const dayStartMinutes = timeStringToMinutes(elements.dayTimeStart.value);
-            const nightStartMinutes = timeStringToMinutes(elements.nightTimeStart.value);
-            
-            if (dayStartMinutes >= nightStartMinutes) {
-                showStatus(t('Day start time must be earlier than night start time'), 'error');
+            // Only check that day and night times are not identical
+            if (elements.dayTimeStart.value === elements.nightTimeStart.value) {
+                showStatus(t('Day and night times cannot be the same'), 'error');
                 return;
             }
             
@@ -356,30 +354,65 @@ export function getWebviewScript(): string {
             const dayStartPercent = (dayStart / (24 * 60)) * 100;
             const nightStartPercent = (nightStart / (24 * 60)) * 100;
             
-            if (dayStart > 0) {
-                const nightSegment1 = document.createElement('div');
-                nightSegment1.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.NIGHT}';
-                nightSegment1.style.left = '0%';
-                nightSegment1.style.width = dayStartPercent + '%';
-                elements.timelineBar.appendChild(nightSegment1);
-            }
-            
-            if (dayStart < nightStart) {
+            if (nightStart < dayStart) {
+                // Cross-midnight scenario: night time is earlier than day time
+                // In this case: Night theme from midnight to nightStart, Day theme from nightStart to dayStart, Night theme from dayStart to midnight
+                
+                // Night segment from midnight to night start
+                if (nightStart > 0) {
+                    const nightSegment1 = document.createElement('div');
+                    nightSegment1.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.NIGHT}';
+                    nightSegment1.style.left = '0%';
+                    nightSegment1.style.width = nightStartPercent + '%';
+                    elements.timelineBar.appendChild(nightSegment1);
+                }
+                
+                // Day segment from night start to day start
+                const dayWidth = dayStartPercent - nightStartPercent;
+                const daySegment = document.createElement('div');
+                daySegment.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.DAY}';
+                daySegment.style.left = nightStartPercent + '%';
+                daySegment.style.width = dayWidth + '%';
+                elements.timelineBar.appendChild(daySegment);
+                
+                // Night segment from day start to midnight
+                if (dayStart < 24 * 60) {
+                    const nightWidth = 100 - dayStartPercent;
+                    const nightSegment2 = document.createElement('div');
+                    nightSegment2.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.NIGHT}';
+                    nightSegment2.style.left = dayStartPercent + '%';
+                    nightSegment2.style.width = nightWidth + '%';
+                    elements.timelineBar.appendChild(nightSegment2);
+                }
+            } else {
+                // Normal scenario: day starts before night
+                
+                // Night segment from midnight to day start (if day doesn't start at midnight)
+                if (dayStart > 0) {
+                    const nightSegment1 = document.createElement('div');
+                    nightSegment1.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.NIGHT}';
+                    nightSegment1.style.left = '0%';
+                    nightSegment1.style.width = dayStartPercent + '%';
+                    elements.timelineBar.appendChild(nightSegment1);
+                }
+                
+                // Day segment from day start to night start
                 const dayWidth = nightStartPercent - dayStartPercent;
                 const daySegment = document.createElement('div');
                 daySegment.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.DAY}';
                 daySegment.style.left = dayStartPercent + '%';
                 daySegment.style.width = dayWidth + '%';
                 elements.timelineBar.appendChild(daySegment);
-            }
-            
-            if (nightStart < 24 * 60 && nightStart > 0) {
-                const nightWidth = 100 - nightStartPercent;
-                const nightSegment2 = document.createElement('div');
-                nightSegment2.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.NIGHT}';
-                nightSegment2.style.left = nightStartPercent + '%';
-                nightSegment2.style.width = nightWidth + '%';
-                elements.timelineBar.appendChild(nightSegment2);
+                
+                // Night segment from night start to end of day
+                if (nightStart < 24 * 60) {
+                    const nightWidth = 100 - nightStartPercent;
+                    const nightSegment2 = document.createElement('div');
+                    nightSegment2.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.NIGHT}';
+                    nightSegment2.style.left = nightStartPercent + '%';
+                    nightSegment2.style.width = nightWidth + '%';
+                    elements.timelineBar.appendChild(nightSegment2);
+                }
             }
         }
         
@@ -395,7 +428,16 @@ export function getWebviewScript(): string {
             const dayStart = settings.dayTimeStart || elements.dayTimeStart?.value || '${WEBVIEW_CONSTANTS.DEFAULT_DAY_START}';
             const nightStart = settings.nightTimeStart || elements.nightTimeStart?.value || '${WEBVIEW_CONSTANTS.DEFAULT_NIGHT_START}';
             
-            const isNightTime = currentTime >= nightStart || currentTime < dayStart;
+            // Use the same logic as the extension for consistency
+            let isNightTime = false;
+            
+            if (nightStart < dayStart) {
+                // Cross-midnight scenario: night time is earlier than day time
+                isNightTime = currentTime <= nightStart || currentTime < dayStart;
+            } else {
+                // Normal scenario: day starts before night
+                isNightTime = currentTime >= nightStart || currentTime < dayStart;
+            }
             
             elements.themeStatusIndicator.classList.remove('${WEBVIEW_CONSTANTS.CSS_CLASSES.DAY}', '${WEBVIEW_CONSTANTS.CSS_CLASSES.NIGHT}');
             

@@ -51,4 +51,45 @@ function validateTimeInput(event) {
     
     return isValid;
 }
+
+/**
+ * Validate coordinate input (latitude/longitude)
+ */
+function validateCoordinateInput(event, type) {
+    const input = event.target;
+    const value = parseFloat(input.value);
+    const errorElement = input.id + 'Error';
+    const errorEl = document.getElementById(errorElement);
+    
+    if (!errorEl) return false;
+    
+    let isValid = true;
+    let errorMessage = '';
+    
+    if (input.value === '') {
+        isValid = false;
+        errorMessage = type === 'latitude' ? t('Latitude is required') : t('Longitude is required');
+    } else if (isNaN(value)) {
+        isValid = false;
+        errorMessage = t('Must be a valid number');
+    } else if (type === 'latitude' && (value < -90 || value > 90)) {
+        isValid = false;
+        errorMessage = t('Latitude must be between -90 and 90');
+    } else if (type === 'longitude' && (value < -180 || value > 180)) {
+        isValid = false;
+        errorMessage = t('Longitude must be between -180 and 180');
+    }
+    
+    errorEl.textContent = errorMessage;
+    
+    if (!isValid) {
+        input.classList.add('input-error');
+        errorEl.classList.add('show');
+    } else {
+        input.classList.remove('input-error');
+        errorEl.classList.remove('show');
+    }
+    
+    return isValid;
+}
 `;

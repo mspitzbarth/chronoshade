@@ -157,16 +157,7 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       return;
     }
     
-    // Ensure day starts before night
-    const dayStartMinutes = this.timeStringToMinutes(message.dayTimeStart);
-    const nightStartMinutes = this.timeStringToMinutes(message.nightTimeStart);
-    
-    if (dayStartMinutes >= nightStartMinutes) {
-      vscode.window.showErrorMessage(
-        "ChronoShade: Day start time must be earlier than night start time."
-      );
-      return;
-    }
+    // Allow any time configuration - cross-midnight scenarios are valid
 
     await config.update(CONFIG_KEYS.DAY_THEME, message.dayTheme, true);
     await config.update(CONFIG_KEYS.NIGHT_THEME, message.nightTheme, true);
