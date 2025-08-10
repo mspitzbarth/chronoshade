@@ -15,3 +15,12 @@ export function isValidTimeFormat(timeStr: string): boolean {
   const minutes = parseInt(timeMatch[2]);
   return hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59;
 }
+
+export function timeStringToMinutes(timeStr: string): number {
+  const [hours, minutes] = timeStr.split(':').map(n => parseInt(n));
+  return hours * 60 + minutes;
+}
+
+export function formatTime(hours: number, minutes: number): string {
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+}
