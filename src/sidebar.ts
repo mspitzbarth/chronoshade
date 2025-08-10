@@ -3,8 +3,18 @@ import * as vscode from "vscode";
 import { CONFIG_KEYS } from "./constants";
 import { getWebviewContent } from "./webview";
 import { SunriseSunsetService } from "./sunriseSunsetService";
-
-let lastAppliedTheme: string | undefined;
+import { isValidTimeFormat } from "./utils";
+import { ConfigurationService } from "./services/configurationService";
+import { ThemeSwitchService } from "./services/themeSwitchService";
+import { TIMEOUTS } from "./constants";
+import { 
+  WebviewMessage, 
+  SaveSettingsMessage, 
+  TestLocationMessage, 
+  PreviewThemeMessage, 
+  SwitchThemeMessage,
+  GetTranslationsMessage
+} from "./types";
 
 export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
   private _view?: vscode.WebviewView;
@@ -23,7 +33,7 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = getWebviewContent(webviewView.webview, this._extensionUri);
 
-    webviewView.webview.onDidReceiveMessage(async (message) => {
+    webviewView.webview.onDidReceiveMessage(async (message: WebviewMessage) => {
       const config = vscode.workspace.getConfiguration("chronoShade");
 
       switch (message.command) {
@@ -31,13 +41,13 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
           await this.handleGetThemes(config, webviewView);
           break;
         case "previewTheme":
-          await this.handlePreviewTheme(message.theme);
+          await this.handlePreviewTheme((message as PreviewThemeMessage).theme);
           break;
         case "switchTheme":
-          await this.handleSwitchTheme(message.theme);
+          await this.handleSwitchTheme((message as SwitchThemeMessage).theme);
           break;
         case "saveSettings":
-          await this.handleSaveSettings(config, message);
+          await this.handleSaveSettings(config, message as SaveSettingsMessage);
           break;
         case "startIntervalCheck":
           vscode.commands.executeCommand("chronoShade.startIntervalCheck");
@@ -46,7 +56,7 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
           await this.handleGetCurrentTheme(webviewView);
           break;
         case "getTranslations":
-          await this.handleGetTranslations(message.language, webviewView);
+          await this.handleGetTranslations((message as GetTranslationsMessage).language, webviewView);
           break;
         case "forceDayTheme":
           await this.handleForceDayTheme();
@@ -55,7 +65,8 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
           await this.handleForceNightTheme();
           break;
         case "testLocation":
-          await this.handleTestLocation(message.latitude, message.longitude, webviewView, message.saveAfterFetch);
+          const testMsg = message as TestLocationMessage;
+          await this.handleTestLocation(testMsg.latitude, testMsg.longitude, webviewView, testMsg.saveAfterFetch);
           break;
         case "disableAutoSwitch":
           await this.handleDisableAutoSwitch(config);
@@ -67,11 +78,11 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
 
     setTimeout(() => {
       webviewView.webview.postMessage({ command: "getThemes" });
-    }, 1000);
+    }, TIMEOUTS.WEBVIEW_INIT_DELAY);
   }
 
   private async handleGetThemes(
-    config: vscode.WorkspaceConfiguration,
+    _config: vscode.WorkspaceConfiguration,
     webviewView: vscode.WebviewView
   ) {
     const currentTheme = vscode.workspace
@@ -84,17 +95,18 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
         ext.packageJSON.contributes.themes.map((t: any) => t.label)
       );
 
+    const config = ConfigurationService.getConfiguration();
     const settings = {
       currentTheme,
       themes,
-      dayTheme: config.get(CONFIG_KEYS.DAY_THEME),
-      nightTheme: config.get(CONFIG_KEYS.NIGHT_THEME),
-      overrideThemeSwitch: config.get(CONFIG_KEYS.OVERRIDE_THEME_SWITCH),
-      dayTimeStart: config.get(CONFIG_KEYS.MANUAL_SUNRISE),
-      nightTimeStart: config.get(CONFIG_KEYS.MANUAL_SUNSET),
-      useLocationBasedTimes: config.get(CONFIG_KEYS.USE_LOCATION_BASED_TIMES),
-      latitude: config.get(CONFIG_KEYS.LATITUDE),
-      longitude: config.get(CONFIG_KEYS.LONGITUDE),
+      dayTheme: config.dayTheme,
+      nightTheme: config.nightTheme,
+      overrideThemeSwitch: config.overrideThemeSwitch,
+      dayTimeStart: config.manualSunrise,
+      nightTimeStart: config.manualSunset,
+      useLocationBasedTimes: config.useLocationBasedTimes,
+      latitude: config.latitude,
+      longitude: config.longitude,
       language: vscode.env.language,
     };
 
@@ -102,45 +114,47 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
   }
 
   private async handlePreviewTheme(theme: string) {
-    lastAppliedTheme = vscode.workspace
-      .getConfiguration("workbench")
-      .get("colorTheme") as string;
-
-    await vscode.workspace
-      .getConfiguration("workbench")
-      .update("colorTheme", theme, true);
-
-    vscode.window.showInformationMessage(
-      vscode.l10n.t("Previewing theme: {0}. Reverting in 5 seconds...", theme)
-    );
-
-    setTimeout(async () => {
-      await vscode.workspace
-        .getConfiguration("workbench")
-        .update("colorTheme", lastAppliedTheme, true);
+    try {
+      const previousTheme = await ThemeSwitchService.previewTheme(theme);
       vscode.window.showInformationMessage(
-        vscode.l10n.t("Reverted back to: {0}", lastAppliedTheme || "Previous Theme")
+        vscode.l10n.t("Previewing theme: {0}. Reverting in 5 seconds...", theme)
       );
-    }, 5000);
+      
+      setTimeout(() => {
+        vscode.window.showInformationMessage(
+          vscode.l10n.t("Reverted back to: {0}", previousTheme || "Previous Theme")
+        );
+      }, TIMEOUTS.PREVIEW_THEME_DURATION);
+    } catch (error) {
+      vscode.window.showErrorMessage(
+        vscode.l10n.t("Failed to preview theme: {0}", String(error))
+      );
+    }
   }
 
   private async handleSwitchTheme(theme: string) {
-    await vscode.workspace
-      .getConfiguration("workbench")
-      .update("colorTheme", theme, true);
+    try {
+      await vscode.workspace
+        .getConfiguration("workbench")
+        .update("colorTheme", theme, true);
 
-    vscode.window.showInformationMessage(
-      vscode.l10n.t("Switched to theme: {0}", theme)
-    );
+      vscode.window.showInformationMessage(
+        vscode.l10n.t("Switched to theme: {0}", theme)
+      );
+    } catch (error) {
+      vscode.window.showErrorMessage(
+        vscode.l10n.t("Failed to switch theme: {0}", String(error))
+      );
+    }
   }
 
   private async handleSaveSettings(
-    config: vscode.WorkspaceConfiguration,
-    message: any
+    _config: vscode.WorkspaceConfiguration,
+    message: SaveSettingsMessage
   ) {
     // Validate time formats server-side
-    const dayTimeValid = this.isValidTimeFormat(message.dayTimeStart);
-    const nightTimeValid = this.isValidTimeFormat(message.nightTimeStart);
+    const dayTimeValid = isValidTimeFormat(message.dayTimeStart);
+    const nightTimeValid = isValidTimeFormat(message.nightTimeStart);
     
     if (!dayTimeValid || !nightTimeValid) {
       vscode.window.showErrorMessage(
@@ -159,26 +173,16 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
     
     // Allow any time configuration - cross-midnight scenarios are valid
 
-    await config.update(CONFIG_KEYS.DAY_THEME, message.dayTheme, true);
-    await config.update(CONFIG_KEYS.NIGHT_THEME, message.nightTheme, true);
-    await config.update(CONFIG_KEYS.MANUAL_SUNRISE, message.dayTimeStart, true);
-    await config.update(
-      CONFIG_KEYS.MANUAL_SUNSET,
-      message.nightTimeStart,
-      true
-    );
-    await config.update(
-      CONFIG_KEYS.OVERRIDE_THEME_SWITCH,
-      message.overrideThemeSwitch,
-      true
-    );
-    await config.update(
-      CONFIG_KEYS.USE_LOCATION_BASED_TIMES,
-      message.useLocationBasedTimes,
-      true
-    );
-    await config.update(CONFIG_KEYS.LATITUDE, message.latitude, true);
-    await config.update(CONFIG_KEYS.LONGITUDE, message.longitude, true);
+    await ConfigurationService.updateConfiguration({
+      dayTheme: message.dayTheme,
+      nightTheme: message.nightTheme,
+      manualSunrise: message.dayTimeStart,
+      manualSunset: message.nightTimeStart,
+      overrideThemeSwitch: message.overrideThemeSwitch,
+      useLocationBasedTimes: message.useLocationBasedTimes,
+      latitude: message.latitude,
+      longitude: message.longitude,
+    });
 
     if (message.overrideThemeSwitch) {
       vscode.commands.executeCommand("chronoShade.startIntervalCheck");
@@ -196,7 +200,7 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       if (this._view) {
         this.handleGetCurrentTheme(this._view);
       }
-    }, 500);
+    }, TIMEOUTS.THEME_UPDATE_DELAY);
 
     vscode.window.showInformationMessage(
       vscode.l10n.t("ChronoShade settings saved successfully!")
@@ -245,63 +249,43 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
     }
   }
 
-  private timeStringToMinutes(timeStr: string): number {
-    const [hours, minutes] = timeStr.split(':').map(n => parseInt(n));
-    return hours * 60 + minutes;
-  }
 
   private async handleForceDayTheme() {
-    const config = vscode.workspace.getConfiguration("chronoShade");
-    const dayTheme = config.get(CONFIG_KEYS.DAY_THEME);
-    
-    if (!dayTheme) {
-      vscode.window.showWarningMessage(
-        vscode.l10n.t("Please configure a day theme first in ChronoShade settings.")
+    try {
+      await ThemeSwitchService.applyDayTheme();
+      const config = ConfigurationService.getConfiguration();
+      vscode.window.showInformationMessage(
+        vscode.l10n.t("Switched to day theme: {0}", config.dayTheme)
       );
-      return;
+
+      // Update current theme display after a short delay
+      setTimeout(() => {
+        if (this._view) {
+          this.handleGetCurrentTheme(this._view);
+        }
+      }, TIMEOUTS.THEME_UPDATE_DELAY);
+    } catch (error) {
+      vscode.window.showWarningMessage(String(error));
     }
-
-    await vscode.workspace
-      .getConfiguration("workbench")
-      .update("colorTheme", dayTheme, true);
-
-    vscode.window.showInformationMessage(
-      vscode.l10n.t("Switched to day theme: {0}", dayTheme)
-    );
-
-    // Update current theme display after a short delay
-    setTimeout(() => {
-      if (this._view) {
-        this.handleGetCurrentTheme(this._view);
-      }
-    }, 500);
   }
 
   private async handleForceNightTheme() {
-    const config = vscode.workspace.getConfiguration("chronoShade");
-    const nightTheme = config.get(CONFIG_KEYS.NIGHT_THEME);
-    
-    if (!nightTheme) {
-      vscode.window.showWarningMessage(
-        vscode.l10n.t("Please configure a night theme first in ChronoShade settings.")
+    try {
+      await ThemeSwitchService.applyNightTheme();
+      const config = ConfigurationService.getConfiguration();
+      vscode.window.showInformationMessage(
+        vscode.l10n.t("Switched to night theme: {0}", config.nightTheme)
       );
-      return;
+
+      // Update current theme display after a short delay
+      setTimeout(() => {
+        if (this._view) {
+          this.handleGetCurrentTheme(this._view);
+        }
+      }, TIMEOUTS.THEME_UPDATE_DELAY);
+    } catch (error) {
+      vscode.window.showWarningMessage(String(error));
     }
-
-    await vscode.workspace
-      .getConfiguration("workbench")
-      .update("colorTheme", nightTheme, true);
-
-    vscode.window.showInformationMessage(
-      vscode.l10n.t("Switched to night theme: {0}", nightTheme)
-    );
-
-    // Update current theme display after a short delay
-    setTimeout(() => {
-      if (this._view) {
-        this.handleGetCurrentTheme(this._view);
-      }
-    }, 500);
   }
 
   private async handleTestLocation(
@@ -353,9 +337,9 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
     }
   }
 
-  private async handleDisableAutoSwitch(config: vscode.WorkspaceConfiguration) {
+  private async handleDisableAutoSwitch(_config: vscode.WorkspaceConfiguration) {
     // Disable automatic theme switching
-    await config.update(CONFIG_KEYS.OVERRIDE_THEME_SWITCH, false, true);
+    await ConfigurationService.updateSingleValue('overrideThemeSwitch', false);
     
     // Stop interval check
     vscode.commands.executeCommand("chronoShade.stopIntervalCheck");
@@ -366,17 +350,4 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
     );
   }
 
-  private isValidTimeFormat(timeStr: string): boolean {
-    if (!timeStr) {
-      return false;
-    }
-    const timeMatch = timeStr.match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/);
-    if (!timeMatch) {
-      return false;
-    }
-    
-    const hours = parseInt(timeMatch[1]);
-    const minutes = parseInt(timeMatch[2]);
-    return hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59;
-  }
 }

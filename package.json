@@ -2,7 +2,7 @@
   "name": "chronoshade",
   "displayName": "%displayName%",
   "description": "%description%",
-  "version": "1.1.2",
+  "version": "1.1.1",
   "publisher": "markusmorita",
   "engines": {
     "vscode": "^1.98.0"
@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/markusmorita/chronoshade"
+    "url": "https://github.com/mspitzbarth/chronoshade"
   },
   "license": "MIT",
   "keywords": [
@@ -31,7 +31,7 @@
   ],
   "author": {
     "name": "Markus Morita",
-    "email": "markus.morita@gmail.com"
+    "email": "spitzbarth.markus@gmail.com"
   },
   "main": "./out/extension.js",
   "l10n": "./l10n",
