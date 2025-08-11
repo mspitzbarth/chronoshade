@@ -192,7 +192,14 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
 
     // Trigger immediate theme check after saving new times
     if (message.overrideThemeSwitch) {
-      vscode.commands.executeCommand("chronoShade.checkThemeSwitch");
+      await vscode.commands.executeCommand("chronoShade.checkThemeSwitch");
+      
+      // If using GPS coordinates, wait a moment for the GPS times to be fetched and then check again
+      if (message.useLocationBasedTimes) {
+        setTimeout(async () => {
+          await vscode.commands.executeCommand("chronoShade.checkThemeSwitch");
+        }, 2000); // Wait 2 seconds for GPS times to be fetched and cached
+      }
     }
 
     // Update current theme display after a short delay to allow theme switch

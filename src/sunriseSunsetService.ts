@@ -63,13 +63,23 @@ export class SunriseSunsetService {
    * Convert UTC time string to local time in HH:MM format
    */
   private static convertUtcToLocalTime(utcTimeString: string): string {
+    // Parse the UTC time string and convert to local timezone
     const utcDate = new Date(utcTimeString);
-    const localDate = new Date(utcDate.getTime());
     
-    const hours = localDate.getHours().toString().padStart(2, '0');
-    const minutes = localDate.getMinutes().toString().padStart(2, '0');
+    // Get local time by using toLocaleTimeString with proper timezone handling
+    const localTimeString = utcDate.toLocaleTimeString('en-US', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    });
     
-    return `${hours}:${minutes}`;
+    // Validate the result
+    if (!localTimeString || localTimeString === 'Invalid Date') {
+      throw new Error('Failed to convert UTC time to local time');
+    }
+    
+    return localTimeString;
   }
   
   /**

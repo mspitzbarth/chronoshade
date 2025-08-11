@@ -17,18 +17,9 @@
   "Automatic theme switching disabled": "Automatic theme switching disabled",
   "ChronoShade extension activated!": "ChronoShade extension activated!",
   "ChronoShade extension deactivated.": "ChronoShade extension deactivated.",
-  "[ChronoShade] Theme switching is disabled.": "[ChronoShade] Theme switching is disabled.",
   "Please configure a day theme first in ChronoShade settings.": "Please configure a day theme first in ChronoShade settings.",
   "Please configure a night theme first in ChronoShade settings.": "Please configure a night theme first in ChronoShade settings.",
-  "[ChronoShade] Using location-based times: sunrise {0}, sunset {1}": "[ChronoShade] Using location-based times: sunrise {0}, sunset {1}",
   "[ChronoShade] Failed to fetch location-based times, falling back to manual times: {0}": "[ChronoShade] Failed to fetch location-based times, falling back to manual times: {0}",
-  "[ChronoShade] Invalid day start time: {0}, using default {1}": "[ChronoShade] Invalid day start time: {0}, using default {1}",
-  "[ChronoShade] Invalid night start time: {0}, using default {1}": "[ChronoShade] Invalid night start time: {0}, using default {1}",
   "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: Failed to switch theme. Please check your settings.",
-  "[ChronoShade] Invalid coordinates: lat={0}, lng={1}": "[ChronoShade] Invalid coordinates: lat={0}, lng={1}",
-  "[ChronoShade] Using cached location-based times": "[ChronoShade] Using cached location-based times",
-  "[ChronoShade] Error fetching sunrise/sunset times: {0}": "[ChronoShade] Error fetching sunrise/sunset times: {0}",
-  "[ChronoShade] Fetching location-based sunrise/sunset times on startup": "[ChronoShade] Fetching location-based sunrise/sunset times on startup",
-  "[ChronoShade] Successfully cached location-based times": "[ChronoShade] Successfully cached location-based times",
-  "[ChronoShade] Failed to cache location-based times on startup: {0}": "[ChronoShade] Failed to cache location-based times on startup: {0}"
+  "[ChronoShade] Error fetching sunrise/sunset times: {0}": "[ChronoShade] Error fetching sunrise/sunset times: {0}"
 }
