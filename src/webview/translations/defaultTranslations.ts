@@ -34,6 +34,8 @@ export const defaultTranslations = {
     'Time Source': 'Time Source',
     'Manual time input': 'Manual time input',
     'Use GPS coordinates (automatic)': 'Use GPS coordinates (automatic)',
+    'Quick Select City': 'Quick Select City',
+    'Select a city...': 'Select a city...',
     'GPS Coordinates': 'GPS Coordinates',
     'Latitude': 'Latitude',
     'Longitude': 'Longitude'

@@ -307,7 +307,7 @@ export function getWebviewScript(): string {
 
         function populateCitySelect() {
             const citySelect = elements.citySelect;
-            citySelect.innerHTML = '<option value="">Select a city...</option>';
+            citySelect.innerHTML = \`<option value="">\${t('Select a city...')}</option>\`;
             
             const citiesByUTC = {
                 'UTC-8': ${JSON.stringify(DEFAULT_CITIES.slice(0, 4))},
