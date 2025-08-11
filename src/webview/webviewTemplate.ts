@@ -133,6 +133,12 @@ export function getWebviewContent(
 
                 <div id="locationTimes" class="hidden">
                     <div class="form-group">
+                        <label for="citySelect">Quick Select City</label>
+                        <select id="citySelect">
+                            <option value="">Select a city...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label id="gpsCoordinatesLabel">GPS Coordinates</label>
                         <div class="time-inputs">
                             <div>

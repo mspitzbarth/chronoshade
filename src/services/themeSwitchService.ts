@@ -11,15 +11,12 @@ export interface ThemeTimes {
 }
 
 export class ThemeSwitchService {
-  private static cachedLocationTimes: { sunrise: string; sunset: string; cachedDate: string } | null = null;
+  private static cachedLocationTimes: { sunrise: string; sunset: string; cachedDate: string; latitude: number; longitude: number } | null = null;
 
   public static async checkAndSwitchTheme(): Promise<void> {
-    console.log("Checking theme switch at:", new Date().toLocaleTimeString());
-
     const config = ConfigurationService.getConfiguration();
 
     if (!config.overrideThemeSwitch) {
-      console.log(vscode.l10n.t("[ChronoShade] Theme switching is disabled."));
       return;
     }
 
@@ -71,7 +68,6 @@ export class ThemeSwitchService {
         if (times) {
           dayTimeStart = times.sunrise;
           nightTimeStart = times.sunset;
-          console.log(vscode.l10n.t("[ChronoShade] Using location-based times: sunrise {0}, sunset {1}", dayTimeStart, nightTimeStart));
         }
       } catch (error) {
         console.warn(vscode.l10n.t("[ChronoShade] Failed to fetch location-based times, falling back to manual times: {0}", String(error)));
@@ -80,12 +76,10 @@ export class ThemeSwitchService {
     
     // Validate and sanitize time values
     if (!isValidTimeFormat(dayTimeStart)) {
-      console.warn(vscode.l10n.t("[ChronoShade] Invalid day start time: {0}, using default {1}", dayTimeStart, DEFAULTS.DAY_TIME_START));
       dayTimeStart = DEFAULTS.DAY_TIME_START;
     }
     
     if (!isValidTimeFormat(nightTimeStart)) {
-      console.warn(vscode.l10n.t("[ChronoShade] Invalid night start time: {0}, using default {1}", nightTimeStart, DEFAULTS.NIGHT_TIME_START));
       nightTimeStart = DEFAULTS.NIGHT_TIME_START;
     }
 
@@ -96,16 +90,20 @@ export class ThemeSwitchService {
     const now = new Date();
     const currentTime = now.toTimeString().slice(0, 5);
 
+    let isNightTime: boolean;
+
     // Handle cross-midnight scenarios properly
     if (nightTimeStart < dayTimeStart) {
-      // Cross-midnight scenario: night time is earlier than day time
-      // Night runs from nightTimeStart (previous day) to dayTimeStart, 
-      // then continues from midnight to nightTimeStart (current day)
-      return currentTime <= nightTimeStart || currentTime < dayTimeStart;
+      // Cross-midnight scenario: night time is earlier in the day than day time
+      // This means night theme runs from nightTimeStart to dayTimeStart (same day)
+      // Example: Night Start 05:37, Day Start 14:57 = night from 5:37 AM to 2:57 PM
+      isNightTime = currentTime >= nightTimeStart && currentTime < dayTimeStart;
     } else {
       // Normal scenario where day starts before night (e.g., 06:00 day, 18:00 night)
-      return currentTime >= nightTimeStart || currentTime < dayTimeStart;
+      isNightTime = currentTime >= nightTimeStart || currentTime < dayTimeStart;
     }
+    
+    return isNightTime;
   }
 
   private static selectTheme(config: ChronoShadeConfiguration, isNightTime: boolean): string {
@@ -114,9 +112,13 @@ export class ThemeSwitchService {
 
   private static async applyTheme(theme: string): Promise<void> {
     try {
-      await vscode.workspace
-        .getConfiguration("workbench")
-        .update("colorTheme", theme, true);
+      const currentTheme = vscode.workspace.getConfiguration("workbench").get("colorTheme");
+      
+      if (currentTheme !== theme) {
+        await vscode.workspace
+          .getConfiguration("workbench")
+          .update("colorTheme", theme, true);
+      }
     } catch (err) {
       throw new Error(vscode.l10n.t("ChronoShade: Failed to switch theme. Please check your settings."));
     }
@@ -126,14 +128,15 @@ export class ThemeSwitchService {
     const { latitude, longitude } = config;
     
     if (!latitude || !longitude || !SunriseSunsetService.validateCoordinates(latitude, longitude)) {
-      console.warn(vscode.l10n.t("[ChronoShade] Invalid coordinates: lat={0}, lng={1}", latitude || 0, longitude || 0));
       return null;
     }
     
-    // Check if we have cached times for today
+    // Check if we have cached times for today and the same coordinates
     const today = new Date().toDateString();
-    if (this.cachedLocationTimes && this.cachedLocationTimes.cachedDate === today) {
-      console.log(vscode.l10n.t("[ChronoShade] Using cached location-based times"));
+    if (this.cachedLocationTimes && 
+        this.cachedLocationTimes.cachedDate === today &&
+        this.cachedLocationTimes.latitude === latitude &&
+        this.cachedLocationTimes.longitude === longitude) {
       return {
         sunrise: this.cachedLocationTimes.sunrise,
         sunset: this.cachedLocationTimes.sunset
@@ -142,11 +145,13 @@ export class ThemeSwitchService {
     
     try {
       const times = await SunriseSunsetService.getSunriseSunsetTimes(latitude, longitude);
-      // Cache the times for today
+      // Cache the times for today and these coordinates
       this.cachedLocationTimes = {
         sunrise: times.sunrise,
         sunset: times.sunset,
-        cachedDate: today
+        cachedDate: today,
+        latitude: latitude,
+        longitude: longitude
       };
       return times;
     } catch (error) {
@@ -157,12 +162,10 @@ export class ThemeSwitchService {
 
   public static async fetchAndCacheLocationTimes(): Promise<void> {
     try {
-      console.log(vscode.l10n.t("[ChronoShade] Fetching location-based sunrise/sunset times on startup"));
       const config = ConfigurationService.getConfiguration();
       await this.getLocationBasedTimes(config);
-      console.log(vscode.l10n.t("[ChronoShade] Successfully cached location-based times"));
     } catch (error) {
-      console.warn(vscode.l10n.t("[ChronoShade] Failed to cache location-based times on startup: {0}", String(error)));
+      // Silently fail - will fetch times when needed
     }
   }
 }

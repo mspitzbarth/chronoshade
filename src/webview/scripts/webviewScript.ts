@@ -5,7 +5,7 @@ import { defaultTranslations } from '../translations/defaultTranslations';
 import { timeUtilsCode } from '../utils/timeUtils';
 import { validationUtilsCode } from '../utils/validationUtils';
 import { domUtilsCode } from '../utils/domUtils';
-import { WEBVIEW_CONSTANTS } from '../constants';
+import { WEBVIEW_CONSTANTS, DEFAULT_CITIES } from '../constants';
 
 // Export the main webview script function
 export function getWebviewScript(): string {
@@ -31,6 +31,7 @@ export function getWebviewScript(): string {
             nightTimeStart: document.getElementById('nightTimeStart'),
             latitude: document.getElementById('latitude'),
             longitude: document.getElementById('longitude'),
+            citySelect: document.getElementById('citySelect'),
             switchSettings: document.getElementById('switchSettings'),
             manualTimes: document.getElementById('manualTimes'),
             locationTimes: document.getElementById('locationTimes'),
@@ -123,6 +124,17 @@ export function getWebviewScript(): string {
                 const theme = elements.nightTheme.value;
                 if (theme) {
                     vscode.postMessage({ command: 'previewTheme', theme: theme });
+                }
+            });
+            
+            elements.citySelect.addEventListener('change', function() {
+                const selectedCityName = this.value;
+                if (selectedCityName) {
+                    const city = ${JSON.stringify(DEFAULT_CITIES)}.find(c => c.name === selectedCityName);
+                    if (city) {
+                        elements.latitude.value = city.lat.toString();
+                        elements.longitude.value = city.lng.toString();
+                    }
                 }
             });
         }
@@ -241,6 +253,7 @@ export function getWebviewScript(): string {
                 { id: 'timeSourceLabel', key: 'Time Source' },
                 { selector: 'label[for="useManualTimes"]', key: 'Manual time input' },
                 { selector: 'label[for="useLocationTimes"]', key: 'Use GPS coordinates (automatic)' },
+                { selector: 'label[for="citySelect"]', key: 'Quick Select City' },
                 { id: 'gpsCoordinatesLabel', key: 'GPS Coordinates' },
                 { selector: '.timeline-header', key: 'Today\\'s Schedule' },
                 { id: 'switchTimesLabel', key: 'Switch Times' },
@@ -292,6 +305,39 @@ export function getWebviewScript(): string {
             });
         }
 
+        function populateCitySelect() {
+            const citySelect = elements.citySelect;
+            citySelect.innerHTML = '<option value="">Select a city...</option>';
+            
+            const citiesByUTC = {
+                'UTC-8': ${JSON.stringify(DEFAULT_CITIES.slice(0, 4))},
+                'UTC-5': ${JSON.stringify(DEFAULT_CITIES.slice(4, 8))},
+                'UTC+0': ${JSON.stringify(DEFAULT_CITIES.slice(8, 12))},
+                'UTC+1': ${JSON.stringify(DEFAULT_CITIES.slice(12, 17))},
+                'UTC+2': ${JSON.stringify(DEFAULT_CITIES.slice(17, 21))},
+                'UTC+3': ${JSON.stringify(DEFAULT_CITIES.slice(21, 25))},
+                'UTC+5': ${JSON.stringify(DEFAULT_CITIES.slice(25, 28))},
+                'UTC+8': ${JSON.stringify(DEFAULT_CITIES.slice(28, 32))},
+                'UTC+9': ${JSON.stringify(DEFAULT_CITIES.slice(32, 35))},
+                'UTC+10': ${JSON.stringify(DEFAULT_CITIES.slice(35, 38))},
+                'UTC+12': ${JSON.stringify(DEFAULT_CITIES.slice(38, 41))}
+            };
+            
+            Object.entries(citiesByUTC).forEach(([utcOffset, cities]) => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = utcOffset;
+                
+                cities.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city.name;
+                    option.textContent = city.name;
+                    optgroup.appendChild(option);
+                });
+                
+                citySelect.appendChild(optgroup);
+            });
+        }
+        
         function updateUI(settings) {
             currentSettings = settings;
             
@@ -305,6 +351,8 @@ export function getWebviewScript(): string {
             if (settings.themes) {
                 populateThemeSelects(settings.themes);
             }
+            
+            populateCitySelect();
             
             elements.dayTheme.value = settings.dayTheme || '';
             elements.nightTheme.value = settings.nightTheme || '';
@@ -355,34 +403,36 @@ export function getWebviewScript(): string {
             const nightStartPercent = (nightStart / (24 * 60)) * 100;
             
             if (nightStart < dayStart) {
-                // Cross-midnight scenario: night time is earlier than day time
-                // In this case: Night theme from midnight to nightStart, Day theme from nightStart to dayStart, Night theme from dayStart to midnight
+                // Cross-midnight scenario: night time starts earlier in the day than day time
+                // Night theme runs from night start to day start (same day)
+                // Day theme runs from midnight to night start, and from day start to midnight
+                // Example: Night Start 05:37, Day Start 14:57 = day 00:00-05:37, night 05:37-14:57, day 14:57-24:00
                 
-                // Night segment from midnight to night start
+                // Day segment from midnight to night start  
                 if (nightStart > 0) {
-                    const nightSegment1 = document.createElement('div');
-                    nightSegment1.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.NIGHT}';
-                    nightSegment1.style.left = '0%';
-                    nightSegment1.style.width = nightStartPercent + '%';
-                    elements.timelineBar.appendChild(nightSegment1);
+                    const daySegment1 = document.createElement('div');
+                    daySegment1.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.DAY}';
+                    daySegment1.style.left = '0%';
+                    daySegment1.style.width = nightStartPercent + '%';
+                    elements.timelineBar.appendChild(daySegment1);
                 }
                 
-                // Day segment from night start to day start
-                const dayWidth = dayStartPercent - nightStartPercent;
-                const daySegment = document.createElement('div');
-                daySegment.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.DAY}';
-                daySegment.style.left = nightStartPercent + '%';
-                daySegment.style.width = dayWidth + '%';
-                elements.timelineBar.appendChild(daySegment);
+                // Night segment from night start to day start
+                const nightWidth = dayStartPercent - nightStartPercent;
+                const nightSegment = document.createElement('div');
+                nightSegment.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.NIGHT}';
+                nightSegment.style.left = nightStartPercent + '%';
+                nightSegment.style.width = nightWidth + '%';
+                elements.timelineBar.appendChild(nightSegment);
                 
-                // Night segment from day start to midnight
+                // Day segment from day start to midnight
                 if (dayStart < 24 * 60) {
-                    const nightWidth = 100 - dayStartPercent;
-                    const nightSegment2 = document.createElement('div');
-                    nightSegment2.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.NIGHT}';
-                    nightSegment2.style.left = dayStartPercent + '%';
-                    nightSegment2.style.width = nightWidth + '%';
-                    elements.timelineBar.appendChild(nightSegment2);
+                    const dayWidth2 = 100 - dayStartPercent;
+                    const daySegment2 = document.createElement('div');
+                    daySegment2.className = '${WEBVIEW_CONSTANTS.CSS_CLASSES.THEME_SEGMENT} ${WEBVIEW_CONSTANTS.CSS_CLASSES.DAY}';
+                    daySegment2.style.left = dayStartPercent + '%';
+                    daySegment2.style.width = dayWidth2 + '%';
+                    elements.timelineBar.appendChild(daySegment2);
                 }
             } else {
                 // Normal scenario: day starts before night

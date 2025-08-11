@@ -1,5 +1,36 @@
 # Changelog
 
+## [1.2.0] - 2025-08-11
+
+### Added
+
+- **Quick City Selection Dropdown**: Added dropdown with 36 major cities worldwide for easy GPS coordinate selection
+  - Cities organized by UTC time zones (UTC-8 through UTC+12) with clear subheaders
+  - Includes major cities: Los Angeles, New York, London, Paris, Tokyo, Sydney, and many more
+  - Automatically populates latitude/longitude fields when city is selected
+  - Provides convenient alternative to manual coordinate entry
+
+### Fixed
+
+- **GPS-Based Theme Switching**: Completely resolved issues with location-based automatic theme switching
+  - Fixed incorrect timezone conversion that was causing GPS times to be calculated wrong
+  - Resolved GPS coordinate caching bug where different locations shared the same cached sunrise/sunset times  
+  - GPS coordinates now correctly fetch and apply location-specific sunrise/sunset times
+  - Theme switching now works properly when using GPS coordinates from any location
+  - Immediate theme application after saving GPS settings with proper day/night detection
+
+- **Location-Based Time Caching**: Fixed caching system to be location-aware
+  - Cache now includes coordinates as part of the cache key
+  - Different locations no longer share incorrect cached times
+  - Cache properly invalidates when switching between different GPS coordinates
+
+### Improved
+
+- **Enhanced GPS Time Fetching**: Improved reliability and accuracy of GPS-based sunrise/sunset times
+  - Better error handling for GPS coordinate validation and API failures
+  - More robust UTC to local time conversion using proper timezone detection
+  - Immediate theme switching after GPS location changes
+
 ## [1.1.2] - 2025-08-10
 
 ### Fixed
