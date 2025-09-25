@@ -12,8 +12,11 @@
   "config.manualSunset": "Definir manualmente o horário do pôr do sol (formato 24 horas).",
   "config.manualSunrise": "Definir manualmente o horário do nascer do sol (formato 24 horas).",
   "config.overrideThemeSwitch": "Habilitar ou desabilitar horários personalizados de dia/noite.",
+  "config.useCronSchedule": "Usar expressões cron em vez de horários fixos para alternar o tema dia/noite.",
   "config.dayTimeStart": "Horário de início do dia (formato 24 horas).",
   "config.nightTimeStart": "Horário de início da noite (formato 24 horas).",
+  "config.dayCronExpression": "Expressão cron que define quando alternar para o tema diurno.",
+  "config.nightCronExpression": "Expressão cron que define quando alternar para o tema noturno.",
   "config.useLocationBasedTimes": "Usar coordenadas GPS para determinar automaticamente os horários do nascer/pôr do sol em vez de horários manuais.",
   "config.latitude": "Sua coordenada de latitude (para cálculo automático do nascer/pôr do sol).",
   "config.longitude": "Sua coordenada de longitude (para cálculo automático do nascer/pôr do sol)."

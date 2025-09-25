@@ -344,5 +344,11 @@ input[type="checkbox"] {
 .error-message.show {
     display: block;
 }
+
+.helper-text {
+    font-size: 10px;
+    color: var(--vscode-descriptionForeground);
+    margin-top: 4px;
+}
   `;
 }

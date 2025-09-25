@@ -7,6 +7,9 @@ export interface ThemeConfig {
   manualSunrise: string;
   manualSunset: string;
   overrideThemeSwitch: boolean;
+  useCronSchedule?: boolean;
+  dayCronExpression?: string;
+  nightCronExpression?: string;
 }
 
 // Message types for webview communication
@@ -34,6 +37,9 @@ export interface SaveSettingsMessage extends BaseMessage {
   nightTheme: string;
   dayTimeStart: string;
   nightTimeStart: string;
+  dayCronExpression: string;
+  nightCronExpression: string;
+  useCronSchedule: boolean;
   overrideThemeSwitch: boolean;
   useLocationBasedTimes: boolean;
   latitude: number;
@@ -96,6 +102,9 @@ export interface UpdateThemesResponse extends BaseMessage {
     overrideThemeSwitch: boolean;
     dayTimeStart: string;
     nightTimeStart: string;
+    dayCronExpression: string;
+    nightCronExpression: string;
+    useCronSchedule: boolean;
     useLocationBasedTimes: boolean;
     latitude: number;
     longitude: number;

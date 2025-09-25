@@ -12,8 +12,11 @@
   "config.manualSunset": "Ručně nastavit čas západu slunce (24hodinový formát).",
   "config.manualSunrise": "Ručně nastavit čas východu slunce (24hodinový formát).",
   "config.overrideThemeSwitch": "Povolit nebo zakázat vlastní časy dne/noci.",
+  "config.useCronSchedule": "Použijte výrazy cron místo pevných časů pro přepínání denního/nočního motivu.",
   "config.dayTimeStart": "Čas začátku dne (24hodinový formát).",
   "config.nightTimeStart": "Čas začátku noci (24hodinový formát).",
+  "config.dayCronExpression": "Výraz cron, který určuje, kdy se přepnout na denní motiv.",
+  "config.nightCronExpression": "Výraz cron, který určuje, kdy se přepnout na noční motiv.",
   "config.useLocationBasedTimes": "Použít GPS souřadnice k automatickému určení časů východu/západu slunce místo ručních časů.",
   "config.latitude": "Vaše souřadnice zeměpisné šířky (pro automatický výpočet východu/západu slunce).",
   "config.longitude": "Vaše souřadnice zeměpisné délky (pro automatický výpočet východu/západu slunce)."

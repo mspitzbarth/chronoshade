@@ -12,8 +12,11 @@
   "config.manualSunset": "일몰 시간을 수동으로 설정합니다 (24시간 형식).",
   "config.manualSunrise": "일출 시간을 수동으로 설정합니다 (24시간 형식).",
   "config.overrideThemeSwitch": "사용자 정의 낮/밤 시간을 활성화하거나 비활성화합니다.",
+  "config.useCronSchedule": "고정된 시간 대신 cron 표현식을 사용하여 낮/밤 테마 전환을 제어합니다.",
   "config.dayTimeStart": "낮 시작 시간 (24시간 형식).",
   "config.nightTimeStart": "밤 시작 시간 (24시간 형식).",
+  "config.dayCronExpression": "낮 테마로 전환할 시점을 정의하는 cron 표현식입니다.",
+  "config.nightCronExpression": "밤 테마로 전환할 시점을 정의하는 cron 표현식입니다.",
   "config.useLocationBasedTimes": "GPS 좌표를 사용하여 수동 시간 대신 일출/일몰 시간을 자동으로 결정합니다.",
   "config.latitude": "귀하의 위도 좌표 (자동 일출/일몰 계산용).",
   "config.longitude": "귀하의 경도 좌표 (자동 일출/일몰 계산용)."

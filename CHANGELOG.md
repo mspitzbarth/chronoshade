@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.0] - 2025-09-25
+
+### Added
+
+- **Cron Scheduling**: Configure day and night theme changes with cron expressions, including new settings and sidebar controls for managing complex schedules.
+
 ## [1.2.0] - 2025-08-11
 
 ### Added
@@ -13,8 +19,9 @@
 ### Fixed
 
 - **GPS-Based Theme Switching**: Completely resolved issues with location-based automatic theme switching
+
   - Fixed incorrect timezone conversion that was causing GPS times to be calculated wrong
-  - Resolved GPS coordinate caching bug where different locations shared the same cached sunrise/sunset times  
+  - Resolved GPS coordinate caching bug where different locations shared the same cached sunrise/sunset times
   - GPS coordinates now correctly fetch and apply location-specific sunrise/sunset times
   - Theme switching now works properly when using GPS coordinates from any location
   - Immediate theme application after saving GPS settings with proper day/night detection

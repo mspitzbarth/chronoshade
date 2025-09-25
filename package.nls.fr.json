@@ -12,8 +12,11 @@
   "config.manualSunset": "Définir manuellement l'heure du coucher du soleil (format 24h).",
   "config.manualSunrise": "Définir manuellement l'heure du lever du soleil (format 24h).",
   "config.overrideThemeSwitch": "Activer ou désactiver les heures personnalisées jour/nuit.",
+  "config.useCronSchedule": "Utiliser des expressions cron au lieu d'horaires fixes pour le basculement du thème jour/nuit.",
   "config.dayTimeStart": "Heure de début de journée (format 24h).",
   "config.nightTimeStart": "Heure de début de nuit (format 24h).",
+  "config.dayCronExpression": "Expression cron qui définit quand passer au thème de jour.",
+  "config.nightCronExpression": "Expression cron qui définit quand passer au thème de nuit.",
   "config.useLocationBasedTimes": "Utiliser les coordonnées GPS pour déterminer automatiquement les heures de lever/coucher de soleil au lieu des heures manuelles.",
   "config.latitude": "Votre coordonnée de latitude (pour le calcul automatique du lever/coucher de soleil).",
   "config.longitude": "Votre coordonnée de longitude (pour le calcul automatique du lever/coucher de soleil)."

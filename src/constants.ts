@@ -5,6 +5,9 @@ export const CONFIG_KEYS = {
   MANUAL_SUNSET: "manualSunset",
   OVERRIDE_THEME_SWITCH: "overrideThemeSwitch",
   USE_LOCATION_BASED_TIMES: "useLocationBasedTimes",
+  USE_CRON_SCHEDULE: "useCronSchedule",
+  DAY_CRON_EXPRESSION: "dayCronExpression",
+  NIGHT_CRON_EXPRESSION: "nightCronExpression",
   LATITUDE: "latitude",
   LONGITUDE: "longitude",
 };
@@ -24,6 +27,8 @@ export const INTERVALS = {
 export const DEFAULTS = {
   DAY_TIME_START: "06:00",
   NIGHT_TIME_START: "18:00",
+  DAY_CRON_EXPRESSION: "0 6 * * *",
+  NIGHT_CRON_EXPRESSION: "0 18 * * *",
   DAY_THEME: "Default Light+",
   NIGHT_THEME: "Default Dark+",
   LATITUDE: 0,

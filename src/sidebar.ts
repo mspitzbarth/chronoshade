@@ -1,12 +1,12 @@
 // src/sidebar.ts
 import * as vscode from "vscode";
-import { CONFIG_KEYS } from "./constants";
+import { CONFIG_KEYS, TIMEOUTS, DEFAULTS } from "./constants";
 import { getWebviewContent } from "./webview";
 import { SunriseSunsetService } from "./sunriseSunsetService";
 import { isValidTimeFormat } from "./utils";
 import { ConfigurationService } from "./services/configurationService";
 import { ThemeSwitchService } from "./services/themeSwitchService";
-import { TIMEOUTS } from "./constants";
+import { validateCronExpression } from "./cronUtils";
 import { 
   WebviewMessage, 
   SaveSettingsMessage, 
@@ -96,6 +96,8 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       );
 
     const config = ConfigurationService.getConfiguration();
+    const useCronSchedule = config.useCronSchedule;
+    const useLocationBasedTimes = useCronSchedule ? false : config.useLocationBasedTimes;
     const settings = {
       currentTheme,
       themes,
@@ -104,7 +106,10 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       overrideThemeSwitch: config.overrideThemeSwitch,
       dayTimeStart: config.manualSunrise,
       nightTimeStart: config.manualSunset,
-      useLocationBasedTimes: config.useLocationBasedTimes,
+      dayCronExpression: config.dayCronExpression,
+      nightCronExpression: config.nightCronExpression,
+      useCronSchedule: useCronSchedule,
+      useLocationBasedTimes,
       latitude: config.latitude,
       longitude: config.longitude,
       language: vscode.env.language,
@@ -152,26 +157,37 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
     _config: vscode.WorkspaceConfiguration,
     message: SaveSettingsMessage
   ) {
-    // Validate time formats server-side
-    const dayTimeValid = isValidTimeFormat(message.dayTimeStart);
-    const nightTimeValid = isValidTimeFormat(message.nightTimeStart);
-    
-    if (!dayTimeValid || !nightTimeValid) {
-      vscode.window.showErrorMessage(
-        "ChronoShade: Invalid time format. Please use HH:MM format (24-hour)."
-      );
-      return;
+    const useCronSchedule = message.useCronSchedule;
+    const useLocationBasedTimes = !useCronSchedule && message.useLocationBasedTimes;
+
+    if (useCronSchedule) {
+      if (!validateCronExpression(message.dayCronExpression) || !validateCronExpression(message.nightCronExpression)) {
+        vscode.window.showErrorMessage(
+          vscode.l10n.t("ChronoShade: Invalid cron expression. Please provide valid cron syntax for day and night schedules.")
+        );
+        return;
+      }
+    } else {
+      const dayTimeValid = isValidTimeFormat(message.dayTimeStart);
+      const nightTimeValid = isValidTimeFormat(message.nightTimeStart);
+      
+      if (!dayTimeValid || !nightTimeValid) {
+        vscode.window.showErrorMessage(
+          "ChronoShade: Invalid time format. Please use HH:MM format (24-hour)."
+        );
+        return;
+      }
+      
+      if (message.dayTimeStart === message.nightTimeStart) {
+        vscode.window.showErrorMessage(
+          "ChronoShade: Day and night times cannot be the same."
+        );
+        return;
+      }
     }
-    
-    // Ensure times are different
-    if (message.dayTimeStart === message.nightTimeStart) {
-      vscode.window.showErrorMessage(
-        "ChronoShade: Day and night times cannot be the same."
-      );
-      return;
-    }
-    
-    // Allow any time configuration - cross-midnight scenarios are valid
+
+    const sanitizedDayCron = message.dayCronExpression?.trim() || DEFAULTS.DAY_CRON_EXPRESSION;
+    const sanitizedNightCron = message.nightCronExpression?.trim() || DEFAULTS.NIGHT_CRON_EXPRESSION;
 
     await ConfigurationService.updateConfiguration({
       dayTheme: message.dayTheme,
@@ -179,7 +195,10 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       manualSunrise: message.dayTimeStart,
       manualSunset: message.nightTimeStart,
       overrideThemeSwitch: message.overrideThemeSwitch,
-      useLocationBasedTimes: message.useLocationBasedTimes,
+      useCronSchedule,
+      dayCronExpression: sanitizedDayCron,
+      nightCronExpression: sanitizedNightCron,
+      useLocationBasedTimes,
       latitude: message.latitude,
       longitude: message.longitude,
     });

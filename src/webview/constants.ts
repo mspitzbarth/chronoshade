@@ -4,6 +4,8 @@ export const WEBVIEW_CONSTANTS = {
     // Default time values
     DEFAULT_DAY_START: '06:00',
     DEFAULT_NIGHT_START: '18:00',
+    DEFAULT_DAY_CRON: '0 6 * * *',
+    DEFAULT_NIGHT_CRON: '0 18 * * *',
     
     // CSS classes
     CSS_CLASSES: {

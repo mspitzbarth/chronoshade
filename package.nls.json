@@ -11,8 +11,11 @@
   "config.manualSunset": "Manually set the sunset time (24-hour format).",
   "config.manualSunrise": "Manually set the sunrise time (24-hour format).",
   "config.overrideThemeSwitch": "Enable or disable custom day/night times.",
+  "config.useCronSchedule": "Use cron expressions instead of fixed times for day/night theme switching.",
   "config.dayTimeStart": "Daytime start time (24-hour format).",
   "config.nightTimeStart": "Nighttime start time (24-hour format).",
+  "config.dayCronExpression": "Cron expression that defines when to switch to the day theme.",
+  "config.nightCronExpression": "Cron expression that defines when to switch to the night theme.",
   "config.useLocationBasedTimes": "Use GPS coordinates to automatically determine sunrise/sunset times instead of manual times.",
   "config.latitude": "Your latitude coordinate (for automatic sunrise/sunset calculation).",
   "config.longitude": "Your longitude coordinate (for automatic sunrise/sunset calculation)."
