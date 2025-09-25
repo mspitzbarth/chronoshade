@@ -12,8 +12,11 @@
   "config.manualSunset": "手动设置日落时间（24小时格式）。",
   "config.manualSunrise": "手动设置日出时间（24小时格式）。",
   "config.overrideThemeSwitch": "启用或禁用自定义白天/夜间时间。",
+  "config.useCronSchedule": "使用 cron 表达式替代固定时间来控制昼夜主题切换。",
   "config.dayTimeStart": "白天开始时间（24小时格式）。",
   "config.nightTimeStart": "夜间开始时间（24小时格式）。",
+  "config.dayCronExpression": "定义何时切换到白天主题的 cron 表达式。",
+  "config.nightCronExpression": "定义何时切换到夜间主题的 cron 表达式。",
   "config.useLocationBasedTimes": "使用GPS坐标自动确定日出/日落时间，而不是手动时间。",
   "config.latitude": "您的纬度坐标（用于自动日出/日落计算）。",
   "config.longitude": "您的经度坐标（用于自动日出/日落计算）。"

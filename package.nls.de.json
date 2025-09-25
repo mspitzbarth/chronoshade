@@ -12,8 +12,11 @@
   "config.manualSunset": "Sonnenuntergangszeit manuell festlegen (24-Stunden-Format).",
   "config.manualSunrise": "Sonnenaufgangszeit manuell festlegen (24-Stunden-Format).",
   "config.overrideThemeSwitch": "Benutzerdefinierte Tag-/Nachtzeiten aktivieren oder deaktivieren.",
+  "config.useCronSchedule": "Cron-Ausdrücke statt fester Zeiten für den Tag-/Nacht-Designwechsel verwenden.",
   "config.dayTimeStart": "Tagesbeginnzeit (24-Stunden-Format).",
   "config.nightTimeStart": "Nachtbeginnzeit (24-Stunden-Format).",
+  "config.dayCronExpression": "Cron-Ausdruck, der bestimmt, wann zum Tagesdesign gewechselt wird.",
+  "config.nightCronExpression": "Cron-Ausdruck, der bestimmt, wann zum Nachtdesign gewechselt wird.",
   "config.useLocationBasedTimes": "GPS-Koordinaten verwenden, um automatisch Sonnenauf-/untergangszeiten zu bestimmen statt manueller Zeiten.",
   "config.latitude": "Ihr Breitengrad-Koordinate (für automatische Sonnenauf-/untergangsberechnung).",
   "config.longitude": "Ihr Längengrad-Koordinate (für automatische Sonnenauf-/untergangsberechnung)."

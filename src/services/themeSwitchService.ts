@@ -4,6 +4,7 @@ import { isValidTimeFormat } from "../utils";
 import { ConfigurationService, ChronoShadeConfiguration } from "./configurationService";
 import { SunriseSunsetService, SunriseSunsetTimes } from "../sunriseSunsetService";
 import { DEFAULTS, TIMEOUTS } from "../constants";
+import { getLastCronOccurrence, validateCronExpression } from "../cronUtils";
 
 export interface ThemeTimes {
   dayTimeStart: string;
@@ -20,10 +21,18 @@ export class ThemeSwitchService {
       return;
     }
 
-    const { dayTimeStart, nightTimeStart } = await this.getValidatedThemeTimes(config);
-    const isNightTime = this.determineIsNightTime(dayTimeStart, nightTimeStart);
+    let isNightTime: boolean | null = null;
+
+    if (config.useCronSchedule) {
+      isNightTime = this.determineIsNightTimeFromCron(config);
+    }
+
+    if (isNightTime === null) {
+      const { dayTimeStart, nightTimeStart } = await this.getValidatedThemeTimes(config);
+      isNightTime = this.determineIsNightTime(dayTimeStart, nightTimeStart);
+    }
+
     const theme = this.selectTheme(config, isNightTime);
-    
     await this.applyTheme(theme);
   }
 
@@ -62,7 +71,7 @@ export class ThemeSwitchService {
     let nightTimeStart = config.manualSunset;
     
     // Check if location-based times should be used
-    if (config.useLocationBasedTimes) {
+    if (config.useLocationBasedTimes && !config.useCronSchedule) {
       try {
         const times = await this.getLocationBasedTimes(config);
         if (times) {
@@ -110,6 +119,42 @@ export class ThemeSwitchService {
     return isNightTime ? config.nightTheme : config.dayTheme;
   }
 
+  private static determineIsNightTimeFromCron(config: ChronoShadeConfiguration): boolean | null {
+    const dayExpression = config.dayCronExpression;
+    const nightExpression = config.nightCronExpression;
+
+    if (!validateCronExpression(dayExpression) || !validateCronExpression(nightExpression)) {
+      console.warn(
+        vscode.l10n.t(
+          "[ChronoShade] Invalid cron expression detected. Falling back to manual schedule."
+        )
+      );
+      return null;
+    }
+
+    const now = new Date();
+    const lastDay = getLastCronOccurrence(dayExpression, now);
+    const lastNight = getLastCronOccurrence(nightExpression, now);
+
+    if (!lastDay && !lastNight) {
+      console.warn(
+        vscode.l10n.t(
+          "[ChronoShade] Cron expressions produced no occurrences within the lookback window. Falling back to manual schedule."
+        )
+      );
+      return null;
+    }
+
+    const lastDayTime = lastDay ? lastDay.getTime() : Number.NEGATIVE_INFINITY;
+    const lastNightTime = lastNight ? lastNight.getTime() : Number.NEGATIVE_INFINITY;
+
+    if (lastNightTime === lastDayTime) {
+      return null;
+    }
+
+    return lastNightTime > lastDayTime;
+  }
+
   private static async applyTheme(theme: string): Promise<void> {
     try {
       const currentTheme = vscode.workspace.getConfiguration("workbench").get("colorTheme");
@@ -125,8 +170,12 @@ export class ThemeSwitchService {
   }
 
   private static async getLocationBasedTimes(config: ChronoShadeConfiguration): Promise<SunriseSunsetTimes | null> {
-    const { latitude, longitude } = config;
-    
+    const { latitude, longitude, useCronSchedule } = config;
+
+    if (useCronSchedule) {
+      return null;
+    }
+
     if (!latitude || !longitude || !SunriseSunsetService.validateCoordinates(latitude, longitude)) {
       return null;
     }

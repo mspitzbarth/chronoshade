@@ -5,6 +5,7 @@ import { defaultTranslations } from '../translations/defaultTranslations';
 import { timeUtilsCode } from '../utils/timeUtils';
 import { validationUtilsCode } from '../utils/validationUtils';
 import { domUtilsCode } from '../utils/domUtils';
+import { cronUtilsCode } from '../utils/cronUtils';
 import { WEBVIEW_CONSTANTS, DEFAULT_CITIES } from '../constants';
 
 // Export the main webview script function
@@ -27,14 +28,18 @@ export function getWebviewScript(): string {
             enableAutoSwitch: document.getElementById('enableAutoSwitch'),
             useManualTimes: document.getElementById('useManualTimes'),
             useLocationTimes: document.getElementById('useLocationTimes'),
+            useCronTimes: document.getElementById('useCronTimes'),
             dayTimeStart: document.getElementById('dayTimeStart'),
             nightTimeStart: document.getElementById('nightTimeStart'),
+            dayCronExpression: document.getElementById('dayCronExpression'),
+            nightCronExpression: document.getElementById('nightCronExpression'),
             latitude: document.getElementById('latitude'),
             longitude: document.getElementById('longitude'),
             citySelect: document.getElementById('citySelect'),
             switchSettings: document.getElementById('switchSettings'),
             manualTimes: document.getElementById('manualTimes'),
             locationTimes: document.getElementById('locationTimes'),
+            cronTimes: document.getElementById('cronTimes'),
             previewDay: document.getElementById('previewDay'),
             previewNight: document.getElementById('previewNight'),
             switchToDay: document.getElementById('switchToDay'),
@@ -44,7 +49,8 @@ export function getWebviewScript(): string {
             currentTimeMarker: document.getElementById('currentTimeMarker'),
             timelineBar: document.getElementById('timelineBar'),
             dayThemeLabel: document.getElementById('dayThemeLabel'),
-            nightThemeLabel: document.getElementById('nightThemeLabel')
+            nightThemeLabel: document.getElementById('nightThemeLabel'),
+            scheduleTimeline: document.getElementById('scheduleTimeline')
         };
 
         // Utility Functions
@@ -52,6 +58,8 @@ export function getWebviewScript(): string {
         
         ${domUtilsCode}
         
+        ${cronUtilsCode}
+
         ${validationUtilsCode}
 
         // Event Listeners Setup
@@ -70,6 +78,13 @@ export function getWebviewScript(): string {
             elements.useLocationTimes.addEventListener('change', function() {
                 if (this.checked) {
                     updateTimeSourceVisibility();
+                }
+            });
+
+            elements.useCronTimes.addEventListener('change', function() {
+                if (this.checked) {
+                    updateTimeSourceVisibility();
+                    updateThemeStatusIndicator(currentSettings);
                 }
             });
 
@@ -100,6 +115,26 @@ export function getWebviewScript(): string {
             elements.nightTimeStart.addEventListener('input', function(event) {
                 validateTimeInput(event);
                 updateTimelineFromInputs();
+            });
+
+            elements.dayCronExpression.addEventListener('input', function(event) {
+                validateCronInput(event);
+                updateThemeStatusIndicator({
+                    ...currentSettings,
+                    useCronSchedule: true,
+                    dayCronExpression: elements.dayCronExpression.value,
+                    nightCronExpression: elements.nightCronExpression.value
+                });
+            });
+
+            elements.nightCronExpression.addEventListener('input', function(event) {
+                validateCronInput(event);
+                updateThemeStatusIndicator({
+                    ...currentSettings,
+                    useCronSchedule: true,
+                    dayCronExpression: elements.dayCronExpression.value,
+                    nightCronExpression: elements.nightCronExpression.value
+                });
             });
 
             // Theme selection updates
@@ -141,7 +176,11 @@ export function getWebviewScript(): string {
 
         // Main Functions
         function handleSaveSettings() {
-            if (elements.useLocationTimes.checked) {
+            const useLocation = elements.useLocationTimes.checked;
+            const useCron = elements.useCronTimes.checked;
+            const useManual = !useLocation && !useCron;
+
+            if (useLocation) {
                 const lat = parseFloat(elements.latitude.value);
                 const lng = parseFloat(elements.longitude.value);
                 
@@ -161,23 +200,29 @@ export function getWebviewScript(): string {
                 return;
             }
             
-            const dayTimeValid = validateTimeInput({ target: elements.dayTimeStart });
-            const nightTimeValid = validateTimeInput({ target: elements.nightTimeStart });
-            
-            if (!dayTimeValid || !nightTimeValid) {
-                showStatus(t('Please fix time format errors before saving'), 'error');
-                return;
+            if (useCron) {
+                const dayCronValid = validateCronInput({ target: elements.dayCronExpression });
+                const nightCronValid = validateCronInput({ target: elements.nightCronExpression });
+
+                if (!dayCronValid || !nightCronValid) {
+                    showStatus(t('Please fix cron expression errors before saving'), 'error');
+                    return;
+                }
             }
-            
-            if (elements.dayTimeStart.value === elements.nightTimeStart.value) {
-                showStatus(t('Day and night times cannot be the same'), 'error');
-                return;
-            }
-            
-            // Only check that day and night times are not identical
-            if (elements.dayTimeStart.value === elements.nightTimeStart.value) {
-                showStatus(t('Day and night times cannot be the same'), 'error');
-                return;
+
+            if (useManual) {
+                const dayTimeValid = validateTimeInput({ target: elements.dayTimeStart });
+                const nightTimeValid = validateTimeInput({ target: elements.nightTimeStart });
+                
+                if (!dayTimeValid || !nightTimeValid) {
+                    showStatus(t('Please fix time format errors before saving'), 'error');
+                    return;
+                }
+                
+                if (elements.dayTimeStart.value === elements.nightTimeStart.value) {
+                    showStatus(t('Day and night times cannot be the same'), 'error');
+                    return;
+                }
             }
             
             const settings = {
@@ -186,7 +231,10 @@ export function getWebviewScript(): string {
                 overrideThemeSwitch: elements.enableAutoSwitch.checked,
                 dayTimeStart: elements.dayTimeStart.value,
                 nightTimeStart: elements.nightTimeStart.value,
-                useLocationBasedTimes: elements.useLocationTimes.checked,
+                dayCronExpression: elements.dayCronExpression.value ? elements.dayCronExpression.value.trim() : '${WEBVIEW_CONSTANTS.DEFAULT_DAY_CRON}',
+                nightCronExpression: elements.nightCronExpression.value ? elements.nightCronExpression.value.trim() : '${WEBVIEW_CONSTANTS.DEFAULT_NIGHT_CRON}',
+                useCronSchedule: useCron,
+                useLocationBasedTimes: useLocation,
                 latitude: parseFloat(elements.latitude.value) || 0,
                 longitude: parseFloat(elements.longitude.value) || 0
             };
@@ -197,11 +245,21 @@ export function getWebviewScript(): string {
 
         function updateTimeSourceVisibility() {
             const useLocation = elements.useLocationTimes.checked;
-            elements.manualTimes.classList.toggle('${WEBVIEW_CONSTANTS.CSS_CLASSES.HIDDEN}', useLocation);
+            const useCron = elements.useCronTimes.checked;
+
+            elements.manualTimes.classList.toggle('${WEBVIEW_CONSTANTS.CSS_CLASSES.HIDDEN}', useLocation || useCron);
             elements.locationTimes.classList.toggle('${WEBVIEW_CONSTANTS.CSS_CLASSES.HIDDEN}', !useLocation);
+            elements.cronTimes.classList.toggle('${WEBVIEW_CONSTANTS.CSS_CLASSES.HIDDEN}', !useCron);
+
+            if (elements.scheduleTimeline) {
+                elements.scheduleTimeline.classList.toggle('${WEBVIEW_CONSTANTS.CSS_CLASSES.HIDDEN}', useCron);
+            }
         }
 
         function updateTimelineFromInputs() {
+            if (elements.useCronTimes.checked) {
+                return;
+            }
             const updatedSettings = {
                 ...currentSettings,
                 dayTimeStart: elements.dayTimeStart.value,
@@ -236,7 +294,7 @@ export function getWebviewScript(): string {
         }
 
         function updateUIText() {
-            const textElements = [
+        const textElements = [
                 { id: 'currentThemeText', key: 'Current Theme: Loading...', keepCurrentTheme: true },
                 { selector: '.section-title', index: 0, key: 'Manual Theme Control' },
                 { id: 'switchToDay', key: 'Switch to Day' },
@@ -253,12 +311,17 @@ export function getWebviewScript(): string {
                 { id: 'timeSourceLabel', key: 'Time Source' },
                 { selector: 'label[for="useManualTimes"]', key: 'Manual time input' },
                 { selector: 'label[for="useLocationTimes"]', key: 'Use GPS coordinates (automatic)' },
+                { selector: 'label[for="useCronTimes"]', key: 'Use cron expressions' },
                 { selector: 'label[for="citySelect"]', key: 'Quick Select City' },
                 { id: 'gpsCoordinatesLabel', key: 'GPS Coordinates' },
                 { selector: '.timeline-header', key: 'Today\\'s Schedule' },
                 { id: 'switchTimesLabel', key: 'Switch Times' },
                 { selector: 'label[for="dayTimeStart"]', key: 'Day Start' },
                 { selector: 'label[for="nightTimeStart"]', key: 'Night Start' },
+                { id: 'cronExpressionsLabel', key: 'Cron Expressions' },
+                { selector: 'label[for="dayCronExpression"]', key: 'Day Cron' },
+                { selector: 'label[for="nightCronExpression"]', key: 'Night Cron' },
+                { id: 'cronHelperText', key: 'Use standard 5-field cron syntax, e.g., 0 6 * * *' },
                 { selector: 'label[for="latitude"]', key: 'Latitude' },
                 { selector: 'label[for="longitude"]', key: 'Longitude' },
                 { id: 'saveSettings', key: 'Save Settings' }
@@ -360,12 +423,21 @@ export function getWebviewScript(): string {
             
             const dayTime = settings.dayTimeStart || '${WEBVIEW_CONSTANTS.DEFAULT_DAY_START}';
             const nightTime = settings.nightTimeStart || '${WEBVIEW_CONSTANTS.DEFAULT_NIGHT_START}';
+            const dayCron = settings.dayCronExpression || '${WEBVIEW_CONSTANTS.DEFAULT_DAY_CRON}';
+            const nightCron = settings.nightCronExpression || '${WEBVIEW_CONSTANTS.DEFAULT_NIGHT_CRON}';
             
             elements.dayTimeStart.value = isValidTimeFormat(dayTime) ? dayTime : '${WEBVIEW_CONSTANTS.DEFAULT_DAY_START}';
             elements.nightTimeStart.value = isValidTimeFormat(nightTime) ? nightTime : '${WEBVIEW_CONSTANTS.DEFAULT_NIGHT_START}';
             
-            elements.useLocationTimes.checked = settings.useLocationBasedTimes || false;
-            elements.useManualTimes.checked = !settings.useLocationBasedTimes;
+            elements.dayCronExpression.value = dayCron;
+            elements.nightCronExpression.value = nightCron;
+
+            const useCronSchedule = settings.useCronSchedule || false;
+            const useLocationSchedule = !useCronSchedule && (settings.useLocationBasedTimes || false);
+
+            elements.useCronTimes.checked = useCronSchedule;
+            elements.useLocationTimes.checked = useLocationSchedule;
+            elements.useManualTimes.checked = !useCronSchedule && !useLocationSchedule;
             elements.latitude.value = settings.latitude || '';
             elements.longitude.value = settings.longitude || '';
             
@@ -474,21 +546,40 @@ export function getWebviewScript(): string {
             if (!elements.themeStatusIndicator) return;
             
             const now = new Date();
-            const currentTime = now.toTimeString().slice(0, 5);
-            const dayStart = settings.dayTimeStart || elements.dayTimeStart?.value || '${WEBVIEW_CONSTANTS.DEFAULT_DAY_START}';
-            const nightStart = settings.nightTimeStart || elements.nightTimeStart?.value || '${WEBVIEW_CONSTANTS.DEFAULT_NIGHT_START}';
-            
-            // Use the same logic as the extension for consistency
-            let isNightTime = false;
-            
-            if (nightStart < dayStart) {
-                // Cross-midnight scenario: night time is earlier than day time
-                isNightTime = currentTime <= nightStart || currentTime < dayStart;
-            } else {
-                // Normal scenario: day starts before night
-                isNightTime = currentTime >= nightStart || currentTime < dayStart;
+            let isNightTime = null;
+            const useCron = settings.useCronSchedule || elements.useCronTimes?.checked;
+
+            if (useCron) {
+                const dayCron = (settings.dayCronExpression || elements.dayCronExpression?.value || '${WEBVIEW_CONSTANTS.DEFAULT_DAY_CRON}').trim();
+                const nightCron = (settings.nightCronExpression || elements.nightCronExpression?.value || '${WEBVIEW_CONSTANTS.DEFAULT_NIGHT_CRON}').trim();
+
+                if (dayCron && nightCron && chronoValidateCronExpression(dayCron) && chronoValidateCronExpression(nightCron)) {
+                    const lastDay = chronoGetLastCronOccurrence(dayCron, now);
+                    const lastNight = chronoGetLastCronOccurrence(nightCron, now);
+
+                    if (lastDay || lastNight) {
+                        const lastDayTime = lastDay ? lastDay.getTime() : Number.NEGATIVE_INFINITY;
+                        const lastNightTime = lastNight ? lastNight.getTime() : Number.NEGATIVE_INFINITY;
+
+                        if (lastNightTime !== lastDayTime) {
+                            isNightTime = lastNightTime > lastDayTime;
+                        }
+                    }
+                }
             }
-            
+
+            if (isNightTime === null) {
+                const currentTime = now.toTimeString().slice(0, 5);
+                const dayStart = settings.dayTimeStart || elements.dayTimeStart?.value || '${WEBVIEW_CONSTANTS.DEFAULT_DAY_START}';
+                const nightStart = settings.nightTimeStart || elements.nightTimeStart?.value || '${WEBVIEW_CONSTANTS.DEFAULT_NIGHT_START}';
+
+                if (nightStart < dayStart) {
+                    isNightTime = currentTime >= nightStart && currentTime < dayStart;
+                } else {
+                    isNightTime = currentTime >= nightStart || currentTime < dayStart;
+                }
+            }
+
             elements.themeStatusIndicator.classList.remove('${WEBVIEW_CONSTANTS.CSS_CLASSES.DAY}', '${WEBVIEW_CONSTANTS.CSS_CLASSES.NIGHT}');
             
             if (isNightTime) {
@@ -534,6 +625,9 @@ export function getWebviewScript(): string {
                                 overrideThemeSwitch: elements.enableAutoSwitch.checked,
                                 dayTimeStart: message.times.sunrise,
                                 nightTimeStart: message.times.sunset,
+                                dayCronExpression: elements.dayCronExpression.value ? elements.dayCronExpression.value.trim() : '${WEBVIEW_CONSTANTS.DEFAULT_DAY_CRON}',
+                                nightCronExpression: elements.nightCronExpression.value ? elements.nightCronExpression.value.trim() : '${WEBVIEW_CONSTANTS.DEFAULT_NIGHT_CRON}',
+                                useCronSchedule: elements.useCronTimes.checked,
                                 useLocationBasedTimes: elements.useLocationTimes.checked,
                                 latitude: parseFloat(elements.latitude.value) || 0,
                                 longitude: parseFloat(elements.longitude.value) || 0

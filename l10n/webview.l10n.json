@@ -34,9 +34,18 @@
   "Time Source": "Time Source",
   "Manual time input": "Manual time input",
   "Use GPS coordinates (automatic)": "Use GPS coordinates (automatic)",
+  "Use cron expressions": "Use cron expressions",
+  "Cron Expressions": "Cron Expressions",
+  "Day Cron": "Day Cron",
+  "Night Cron": "Night Cron",
+  "Use standard 5-field cron syntax, e.g., 0 6 * * *": "Use standard 5-field cron syntax, e.g., 0 6 * * *",
   "GPS Coordinates": "GPS Coordinates",
   "Latitude": "Latitude",
   "Longitude": "Longitude",
   "Fetch times": "Fetch times",
-  "Please enter valid latitude and longitude values": "Please enter valid latitude and longitude values"
+  "Please enter valid latitude and longitude values": "Please enter valid latitude and longitude values",
+  "Invalid cron expression": "Invalid cron expression",
+  "Cron expression is required": "Cron expression is required",
+  "Cron expression syntax is invalid": "Cron expression syntax is invalid",
+  "Please fix cron expression errors before saving": "Please fix cron expression errors before saving"
 }

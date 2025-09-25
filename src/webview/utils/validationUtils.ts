@@ -92,4 +92,40 @@ function validateCoordinateInput(event, type) {
     
     return isValid;
 }
+
+/**
+ * Validate cron expression input fields
+ */
+function validateCronInput(event) {
+    const input = event.target;
+    const errorElement = input.id === 'dayCronExpression' ?
+        document.getElementById('dayCronError') :
+        document.getElementById('nightCronError');
+
+    if (!errorElement) return false;
+
+    let isValid = true;
+    let errorMessage = t('Invalid cron expression');
+    const value = (input.value || '').trim();
+
+    if (value === '') {
+        isValid = false;
+        errorMessage = t('Cron expression is required');
+    } else if (!chronoValidateCronExpression(value)) {
+        isValid = false;
+        errorMessage = t('Cron expression syntax is invalid');
+    }
+
+    errorElement.textContent = errorMessage;
+
+    if (!isValid) {
+        input.classList.add('input-error');
+        errorElement.classList.add('show');
+    } else {
+        input.classList.remove('input-error');
+        errorElement.classList.remove('show');
+    }
+
+    return isValid;
+}
 `;

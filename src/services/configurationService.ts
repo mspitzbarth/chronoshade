@@ -8,6 +8,9 @@ export interface ChronoShadeConfiguration {
   manualSunrise: string;
   manualSunset: string;
   overrideThemeSwitch: boolean;
+  useCronSchedule: boolean;
+  dayCronExpression: string;
+  nightCronExpression: string;
   useLocationBasedTimes: boolean;
   latitude: number;
   longitude: number;
@@ -18,16 +21,22 @@ export class ConfigurationService {
   
   public static getConfiguration(): ChronoShadeConfiguration {
     const config = vscode.workspace.getConfiguration(this.SECTION);
-    
+    const useCronSchedule = config.get<boolean>(CONFIG_KEYS.USE_CRON_SCHEDULE) ?? false;
+    const locationBasedTimes = config.get<boolean>(CONFIG_KEYS.USE_LOCATION_BASED_TIMES) ?? false;
+    const useLocationBasedTimes = !useCronSchedule && locationBasedTimes;
+
     return {
-      dayTheme: config.get(CONFIG_KEYS.DAY_THEME) || DEFAULTS.DAY_THEME,
-      nightTheme: config.get(CONFIG_KEYS.NIGHT_THEME) || DEFAULTS.NIGHT_THEME,
-      manualSunrise: config.get(CONFIG_KEYS.MANUAL_SUNRISE) || DEFAULTS.DAY_TIME_START,
-      manualSunset: config.get(CONFIG_KEYS.MANUAL_SUNSET) || DEFAULTS.NIGHT_TIME_START,
-      overrideThemeSwitch: config.get(CONFIG_KEYS.OVERRIDE_THEME_SWITCH) || false,
-      useLocationBasedTimes: config.get(CONFIG_KEYS.USE_LOCATION_BASED_TIMES) || false,
-      latitude: config.get(CONFIG_KEYS.LATITUDE) || DEFAULTS.LATITUDE,
-      longitude: config.get(CONFIG_KEYS.LONGITUDE) || DEFAULTS.LONGITUDE,
+      dayTheme: config.get<string>(CONFIG_KEYS.DAY_THEME) || DEFAULTS.DAY_THEME,
+      nightTheme: config.get<string>(CONFIG_KEYS.NIGHT_THEME) || DEFAULTS.NIGHT_THEME,
+      manualSunrise: config.get<string>(CONFIG_KEYS.MANUAL_SUNRISE) || DEFAULTS.DAY_TIME_START,
+      manualSunset: config.get<string>(CONFIG_KEYS.MANUAL_SUNSET) || DEFAULTS.NIGHT_TIME_START,
+      overrideThemeSwitch: config.get<boolean>(CONFIG_KEYS.OVERRIDE_THEME_SWITCH) || false,
+      useCronSchedule,
+      dayCronExpression: config.get<string>(CONFIG_KEYS.DAY_CRON_EXPRESSION) || DEFAULTS.DAY_CRON_EXPRESSION,
+      nightCronExpression: config.get<string>(CONFIG_KEYS.NIGHT_CRON_EXPRESSION) || DEFAULTS.NIGHT_CRON_EXPRESSION,
+      useLocationBasedTimes,
+      latitude: config.get<number>(CONFIG_KEYS.LATITUDE) ?? DEFAULTS.LATITUDE,
+      longitude: config.get<number>(CONFIG_KEYS.LONGITUDE) ?? DEFAULTS.LONGITUDE,
     };
   }
 
@@ -58,6 +67,9 @@ export class ConfigurationService {
       manualSunrise: CONFIG_KEYS.MANUAL_SUNRISE,
       manualSunset: CONFIG_KEYS.MANUAL_SUNSET,
       overrideThemeSwitch: CONFIG_KEYS.OVERRIDE_THEME_SWITCH,
+      useCronSchedule: CONFIG_KEYS.USE_CRON_SCHEDULE,
+      dayCronExpression: CONFIG_KEYS.DAY_CRON_EXPRESSION,
+      nightCronExpression: CONFIG_KEYS.NIGHT_CRON_EXPRESSION,
       useLocationBasedTimes: CONFIG_KEYS.USE_LOCATION_BASED_TIMES,
       latitude: CONFIG_KEYS.LATITUDE,
       longitude: CONFIG_KEYS.LONGITUDE,

@@ -88,8 +88,12 @@ export function getWebviewContent(
                         <input type="radio" id="useLocationTimes" name="timeSource" value="location">
                         <label for="useLocationTimes">Use GPS coordinates (automatic)</label>
                     </div>
+                    <div class="checkbox-group">
+                        <input type="radio" id="useCronTimes" name="timeSource" value="cron">
+                        <label for="useCronTimes">Use cron expressions</label>
+                    </div>
                 </div>
-                <div class="schedule-timeline">
+                <div class="schedule-timeline" id="scheduleTimeline">
                     <div class="timeline-header">Today's Schedule</div>
                     <div class="timeline-bar" id="timelineBar">
                         <div class="timeline-marker" id="currentTimeMarker" style="left: 50%;"></div>
@@ -128,6 +132,25 @@ export function getWebviewContent(
                                 <div class="error-message" id="nightTimeError">Invalid time format</div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div id="cronTimes" class="hidden">
+                    <div class="form-group">
+                        <label id="cronExpressionsLabel">Cron Expressions</label>
+                        <div class="time-inputs">
+                            <div>
+                                <label for="dayCronExpression">Day Cron</label>
+                                <input type="text" id="dayCronExpression" placeholder="0 6 * * *">
+                                <div class="error-message" id="dayCronError">Invalid cron expression</div>
+                            </div>
+                            <div>
+                                <label for="nightCronExpression">Night Cron</label>
+                                <input type="text" id="nightCronExpression" placeholder="0 18 * * *">
+                                <div class="error-message" id="nightCronError">Invalid cron expression</div>
+                            </div>
+                        </div>
+                        <div class="helper-text" id="cronHelperText">Use standard 5-field cron syntax, e.g., 0 6 * * *</div>
                     </div>
                 </div>
 
@@ -170,4 +193,3 @@ export function getWebviewContent(
 </body>
 </html>`;
 }
-

@@ -1,6 +1,7 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
 import { activate, deactivate } from "../extension";
+import { validateCronExpression, getLastCronOccurrence } from "../cronUtils";
 
 suite("ChronoShade Extension Test Suite", () => {
   vscode.window.showInformationMessage("Start all tests.");
@@ -90,5 +91,37 @@ suite("ChronoShade Extension Test Suite", () => {
       expectedTheme,
       `Theme should be ${expectedTheme} based on time`
     );
+  });
+
+  test("Cron expressions validate correctly", () => {
+    assert.strictEqual(validateCronExpression("0 6 * * *"), true);
+    assert.strictEqual(validateCronExpression("*/30 9-17 * * mon-fri"), true);
+    assert.strictEqual(validateCronExpression("invalid cron"), false);
+  });
+
+  test("Cron schedule computes last occurrence", () => {
+    const reference = new Date();
+    reference.setSeconds(0, 0);
+    reference.setHours(15, 45, 0, 0);
+
+    const dayCron = "0 6 * * *";
+    const nightCron = "0 22 * * *";
+
+    const lastDay = getLastCronOccurrence(dayCron, reference);
+    const lastNight = getLastCronOccurrence(nightCron, reference);
+
+    assert.ok(lastDay, "Should resolve last day cron occurrence");
+    assert.ok(lastNight, "Should resolve last night cron occurrence");
+
+    if (lastDay && lastNight) {
+      assert.strictEqual(lastDay.getMinutes(), 0);
+      assert.strictEqual(lastDay.getHours(), 6);
+      assert.strictEqual(lastNight.getMinutes(), 0);
+      assert.strictEqual(lastNight.getHours(), 22);
+      assert.ok(
+        lastDay.getTime() > lastNight.getTime(),
+        "Last day cron occurrence should be more recent than night cron before 22:00"
+      );
+    }
   });
 });
