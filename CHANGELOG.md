@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1] - 2026-02-04
+
+### Fixed
+
+- **Configuration Error**: Resolved "Unable to write to User Settings" error caused by missing offset configuration passed from the webview.
+- **UI Crash**: Fixed a bug where the "Detect Location" button was not properly initialized, causing the settings UI to become unresponsive.
+- **Settings Persistence**: Ensured sunrise/sunset offsets are correctly saved when using GPS location features.
+
 ## [1.4.0] - 2026-01-31
 
 ### Changed

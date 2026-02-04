@@ -47,10 +47,12 @@ export class ConfigurationService {
   public static async updateConfiguration(updates: Partial<ChronoShadeConfiguration>): Promise<void> {
     const config = vscode.workspace.getConfiguration(this.SECTION);
 
-    const updatePromises = Object.entries(updates).map(([key, value]) => {
-      const configKey = this.getConfigKey(key as keyof ChronoShadeConfiguration);
-      return config.update(configKey, value, true);
-    });
+    const updatePromises = Object.entries(updates)
+      .filter(([_, value]) => value !== undefined)
+      .map(([key, value]) => {
+        const configKey = this.getConfigKey(key as keyof ChronoShadeConfiguration);
+        return config.update(configKey, value, true);
+      });
 
     await Promise.all(updatePromises);
   }

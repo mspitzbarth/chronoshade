@@ -86,6 +86,8 @@ Access ChronoShade settings through VS Code Settings (Ctrl+,) and search for "Ch
 - `chronoShade.dayCronExpression`: Cron expression that triggers the day theme
 - `chronoShade.nightCronExpression`: Cron expression that triggers the night theme
 - `chronoShade.useLocationBasedTimes`: Use GPS coordinates instead of manual times
+- `chronoShade.sunriseOffset`: Offset in minutes from sunrise time (negative for earlier, positive for later)
+- `chronoShade.sunsetOffset`: Offset in minutes from sunset time (negative for earlier, positive for later)
 
 ## Supported Languages
 

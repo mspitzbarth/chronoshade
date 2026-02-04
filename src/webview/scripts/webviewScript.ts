@@ -37,7 +37,7 @@ export function getWebviewScript(): string {
             longitude: document.getElementById('longitude'),
             sunriseOffset: document.getElementById('sunriseOffset'),
             sunsetOffset: document.getElementById('sunsetOffset'),
-            detectLocation: document.getElementById('detectLocation'),
+            detectLocationAndSave: document.getElementById('detectLocationAndSave'),
             citySelect: document.getElementById('citySelect'),
             switchSettings: document.getElementById('switchSettings'),
             manualTimes: document.getElementById('manualTimes'),
@@ -223,7 +223,6 @@ export function getWebviewScript(): string {
                 nightTimeStart: elements.nightTimeStart.value,
                 dayCronExpression: elements.dayCronExpression.value ? elements.dayCronExpression.value.trim() : '${WEBVIEW_CONSTANTS.DEFAULT_DAY_CRON}',
                 nightCronExpression: elements.nightCronExpression.value ? elements.nightCronExpression.value.trim() : '${WEBVIEW_CONSTANTS.DEFAULT_NIGHT_CRON}',
-                useCronSchedule: useCron,
                 useCronSchedule: useCron,
                 useLocationBasedTimes: useLocation,
                 latitude: parseFloat(elements.latitude.value) || 0,
@@ -627,7 +626,9 @@ export function getWebviewScript(): string {
                                 useCronSchedule: elements.useCronTimes.checked,
                                 useLocationBasedTimes: elements.useLocationTimes.checked,
                                 latitude: parseFloat(elements.latitude.value) || 0,
-                                longitude: parseFloat(elements.longitude.value) || 0
+                                longitude: parseFloat(elements.longitude.value) || 0,
+                                sunriseOffset: parseInt(elements.sunriseOffset.value) || 0,
+                                sunsetOffset: parseInt(elements.sunsetOffset.value) || 0
                             };
 
                             vscode.postMessage({ command: 'saveSettings', ...settings });
