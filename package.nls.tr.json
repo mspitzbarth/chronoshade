@@ -19,5 +19,8 @@
   "config.nightCronExpression": "Gece temasına ne zaman geçileceğini tanımlayan cron ifadesi.",
   "config.useLocationBasedTimes": "Manuel saatler yerine gün doğumu/batımı saatlerini otomatik olarak belirlemek için GPS koordinatlarını kullan.",
   "config.latitude": "Enlem koordinatınız (otomatik gün doğumu/batımı hesaplaması için).",
-  "config.longitude": "Boylam koordinatınız (otomatik gün doğumu/batımı hesaplaması için)."
+  "config.longitude": "Boylam koordinatınız (otomatik gün doğumu/batımı hesaplaması için).",
+  "config.sunriseOffset": "Offset in minutes added to the sunrise time (can be negative).",
+  "config.sunsetOffset": "Offset in minutes added to the sunset time (can be negative).",
+  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes."
 }

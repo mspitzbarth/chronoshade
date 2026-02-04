@@ -19,5 +19,8 @@
   "config.nightCronExpression": "Espressione cron che definisce quando passare al tema notturno.",
   "config.useLocationBasedTimes": "Usare le coordinate GPS per determinare automaticamente gli orari di alba/tramonto invece degli orari manuali.",
   "config.latitude": "La tua coordinata di latitudine (per il calcolo automatico di alba/tramonto).",
-  "config.longitude": "La tua coordinata di longitudine (per il calcolo automatico di alba/tramonto)."
+  "config.longitude": "La tua coordinata di longitudine (per il calcolo automatico di alba/tramonto).",
+  "config.sunriseOffset": "Offset in minuti aggiunto all'ora dell'alba (può essere negativo).",
+  "config.sunsetOffset": "Offset in minuti aggiunto all'ora del tramonto (può essere negativo).",
+  "config.systemThemeSync": "Segui automaticamente i cambiamenti del tema colore del sistema (modalità Chiaro/Scuro) per passare tra i temi Giorno e Notte configurati."
 }

@@ -19,5 +19,8 @@
   "config.nightCronExpression": "Expresión cron que define cuándo cambiar al tema nocturno.",
   "config.useLocationBasedTimes": "Usar coordenadas GPS para determinar automáticamente los horarios de amanecer/atardecer en lugar de horarios manuales.",
   "config.latitude": "Su coordenada de latitud (para cálculo automático de amanecer/atardecer).",
-  "config.longitude": "Su coordenada de longitud (para cálculo automático de amanecer/atardecer)."
+  "config.longitude": "Su coordenada de longitud (para cálculo automático de amanecer/atardecer).",
+  "config.sunriseOffset": "Desplazamiento en minutos añadido a la hora del amanecer (puede ser negativo).",
+  "config.sunsetOffset": "Desplazamiento en minutos añadido a la hora del atardecer (puede ser negativo).",
+  "config.systemThemeSync": "Seguir automáticamente los cambios de tema de color del sistema (modo Claro/Oscuro) para alternar entre los temas de Día y Noche configurados."
 }

@@ -35,6 +35,9 @@ export function getWebviewScript(): string {
             nightCronExpression: document.getElementById('nightCronExpression'),
             latitude: document.getElementById('latitude'),
             longitude: document.getElementById('longitude'),
+            sunriseOffset: document.getElementById('sunriseOffset'),
+            sunsetOffset: document.getElementById('sunsetOffset'),
+            detectLocationAndSave: document.getElementById('detectLocationAndSave'),
             citySelect: document.getElementById('citySelect'),
             switchSettings: document.getElementById('switchSettings'),
             manualTimes: document.getElementById('manualTimes'),
@@ -167,10 +170,14 @@ export function getWebviewScript(): string {
                 if (selectedCityName) {
                     const city = ${JSON.stringify(DEFAULT_CITIES)}.find(c => c.name === selectedCityName);
                     if (city) {
-                        elements.latitude.value = city.lat.toString();
                         elements.longitude.value = city.lng.toString();
                     }
                 }
+            });
+
+            elements.detectLocationAndSave.addEventListener('click', function() {
+                showStatus(t('Detecting location...'), 'info');
+                vscode.postMessage({ command: 'detectLocationAndSave' });
             });
         }
 
@@ -180,25 +187,8 @@ export function getWebviewScript(): string {
             const useCron = elements.useCronTimes.checked;
             const useManual = !useLocation && !useCron;
 
-            if (useLocation) {
-                const lat = parseFloat(elements.latitude.value);
-                const lng = parseFloat(elements.longitude.value);
-                
-                if (isNaN(lat) || isNaN(lng)) {
-                    showStatus('Please enter valid latitude and longitude values', 'error');
-                    return;
-                }
-                
-                showStatus('Fetching sunrise/sunset times...', 'info');
-                
-                vscode.postMessage({ 
-                    command: 'testLocation', 
-                    latitude: lat, 
-                    longitude: lng,
-                    saveAfterFetch: true
-                });
-                return;
-            }
+    // Logic removed: unnecessary location test blocking save.
+    // Proceed directly to saving settings.
             
             if (useCron) {
                 const dayCronValid = validateCronInput({ target: elements.dayCronExpression });
@@ -236,7 +226,9 @@ export function getWebviewScript(): string {
                 useCronSchedule: useCron,
                 useLocationBasedTimes: useLocation,
                 latitude: parseFloat(elements.latitude.value) || 0,
-                longitude: parseFloat(elements.longitude.value) || 0
+                longitude: parseFloat(elements.longitude.value) || 0,
+                sunriseOffset: parseInt(elements.sunriseOffset.value) || 0,
+                sunsetOffset: parseInt(elements.sunsetOffset.value) || 0
             };
 
             vscode.postMessage({ command: 'saveSettings', ...settings });
@@ -324,6 +316,8 @@ export function getWebviewScript(): string {
                 { id: 'cronHelperText', key: 'Use standard 5-field cron syntax, e.g., 0 6 * * *' },
                 { selector: 'label[for="latitude"]', key: 'Latitude' },
                 { selector: 'label[for="longitude"]', key: 'Longitude' },
+                { selector: 'label[for="sunriseOffset"]', key: 'Sunrise Offset (min)' },
+                { selector: 'label[for="sunsetOffset"]', key: 'Sunset Offset (min)' },
                 { id: 'saveSettings', key: 'Save Settings' }
             ];
 
@@ -440,6 +434,8 @@ export function getWebviewScript(): string {
             elements.useManualTimes.checked = !useCronSchedule && !useLocationSchedule;
             elements.latitude.value = settings.latitude || '';
             elements.longitude.value = settings.longitude || '';
+            elements.sunriseOffset.value = settings.sunriseOffset || 0;
+            elements.sunsetOffset.value = settings.sunsetOffset || 0;
             
             updateThemeSwatches();
             updateTimeline(settings);
@@ -630,7 +626,9 @@ export function getWebviewScript(): string {
                                 useCronSchedule: elements.useCronTimes.checked,
                                 useLocationBasedTimes: elements.useLocationTimes.checked,
                                 latitude: parseFloat(elements.latitude.value) || 0,
-                                longitude: parseFloat(elements.longitude.value) || 0
+                                longitude: parseFloat(elements.longitude.value) || 0,
+                                sunriseOffset: parseInt(elements.sunriseOffset.value) || 0,
+                                sunsetOffset: parseInt(elements.sunsetOffset.value) || 0
                             };
 
                             vscode.postMessage({ command: 'saveSettings', ...settings });
@@ -640,6 +638,15 @@ export function getWebviewScript(): string {
                         }
                     } else {
                         showStatus('Failed to fetch GPS times: ' + (message.error || 'Unknown error'), 'error');
+                    }
+                    break;
+                case 'locationDetected':
+                    if (message.success) {
+                        elements.latitude.value = message.latitude;
+                        elements.longitude.value = message.longitude;
+                        showStatus(message.message || t('Location detected!'), 'success');
+                    } else {
+                        showStatus(t('Location detection failed: {0}', message.error), 'error');
                     }
                     break;
             }

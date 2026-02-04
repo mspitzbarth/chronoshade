@@ -10,7 +10,7 @@ suite("ChronoShade Extension Test Suite", () => {
 
   suiteSetup(async () => {
     context = { subscriptions: [] } as unknown as vscode.ExtensionContext;
-    activate(context);
+    await activate(context);
   });
 
   suiteTeardown(() => {
@@ -77,6 +77,9 @@ suite("ChronoShade Extension Test Suite", () => {
     await config.update("manualSunrise", "07:00", true);
     await config.update("manualSunset", "19:00", true);
     await config.update("overrideThemeSwitch", true, true);
+
+    // Wait for async theme switch
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     const currentTime = new Date();
     const currentHour = currentTime.getHours();

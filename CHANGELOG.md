@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.1] - 2026-02-04
+
+### Fixed
+
+- **Configuration Error**: Resolved "Unable to write to User Settings" error caused by missing offset configuration passed from the webview.
+- **UI Crash**: Fixed a bug where the "Detect Location" button was not properly initialized, causing the settings UI to become unresponsive.
+- **Settings Persistence**: Ensured sunrise/sunset offsets are correctly saved when using GPS location features.
+
+## [1.4.0] - 2026-01-31
+
+### Changed
+
+- **Automatic Location Detection**: When valid GPS coordinates are not provided (lat/lon are 0), the extension now automatically detects your approximate location based on your IP address to calculate accurate sunrise/sunset times without manual configuration.
+
 ## [1.3.0] - 2025-09-25
 
 ### Added

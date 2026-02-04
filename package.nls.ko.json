@@ -19,5 +19,8 @@
   "config.nightCronExpression": "밤 테마로 전환할 시점을 정의하는 cron 표현식입니다.",
   "config.useLocationBasedTimes": "GPS 좌표를 사용하여 수동 시간 대신 일출/일몰 시간을 자동으로 결정합니다.",
   "config.latitude": "귀하의 위도 좌표 (자동 일출/일몰 계산용).",
-  "config.longitude": "귀하의 경도 좌표 (자동 일출/일몰 계산용)."
+  "config.longitude": "귀하의 경도 좌표 (자동 일출/일몰 계산용).",
+  "config.sunriseOffset": "Offset in minutes added to the sunrise time (can be negative).",
+  "config.sunsetOffset": "Offset in minutes added to the sunset time (can be negative).",
+  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes."
 }

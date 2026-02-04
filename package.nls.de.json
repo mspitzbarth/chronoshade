@@ -19,5 +19,8 @@
   "config.nightCronExpression": "Cron-Ausdruck, der bestimmt, wann zum Nachtdesign gewechselt wird.",
   "config.useLocationBasedTimes": "GPS-Koordinaten verwenden, um automatisch Sonnenauf-/untergangszeiten zu bestimmen statt manueller Zeiten.",
   "config.latitude": "Ihr Breitengrad-Koordinate (für automatische Sonnenauf-/untergangsberechnung).",
-  "config.longitude": "Ihr Längengrad-Koordinate (für automatische Sonnenauf-/untergangsberechnung)."
+  "config.longitude": "Ihr Längengrad-Koordinate (für automatische Sonnenauf-/untergangsberechnung).",
+  "config.sunriseOffset": "Offset in Minuten, der zur Sonnenaufgangszeit hinzugefügt wird (kann negativ sein).",
+  "config.sunsetOffset": "Offset in Minuten, der zur Sonnenuntergangszeit hinzugefügt wird (kann negativ sein).",
+  "config.systemThemeSync": "Folgt automatisch den Farbthemenänderungen des Systems (Hell-/Dunkelmodus), um zwischen Ihren konfigurierten Tag- und Nachtthemen zu wechseln."
 }
