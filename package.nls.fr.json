@@ -19,5 +19,8 @@
   "config.nightCronExpression": "Expression cron qui définit quand passer au thème de nuit.",
   "config.useLocationBasedTimes": "Utiliser les coordonnées GPS pour déterminer automatiquement les heures de lever/coucher de soleil au lieu des heures manuelles.",
   "config.latitude": "Votre coordonnée de latitude (pour le calcul automatique du lever/coucher de soleil).",
-  "config.longitude": "Votre coordonnée de longitude (pour le calcul automatique du lever/coucher de soleil)."
+  "config.longitude": "Votre coordonnée de longitude (pour le calcul automatique du lever/coucher de soleil).",
+  "config.sunriseOffset": "Décalage en minutes ajouté à l'heure du lever du soleil (peut être négatif).",
+  "config.sunsetOffset": "Décalage en minutes ajouté à l'heure du coucher du soleil (peut être négatif).",
+  "config.systemThemeSync": "Suivre automatiquement les changements de thème de couleur du système (mode Clair/Sombre) pour basculer entre vos thèmes Jour et Nuit configurés."
 }

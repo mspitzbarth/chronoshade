@@ -7,13 +7,16 @@ import { isValidTimeFormat } from "./utils";
 import { ConfigurationService } from "./services/configurationService";
 import { ThemeSwitchService } from "./services/themeSwitchService";
 import { validateCronExpression } from "./cronUtils";
-import { 
-  WebviewMessage, 
-  SaveSettingsMessage, 
-  TestLocationMessage, 
-  PreviewThemeMessage, 
+import { LocationService, IpApiResponse } from "./services/locationService";
+import {
+  WebviewMessage,
+  SaveSettingsMessage,
+  TestLocationMessage,
+  PreviewThemeMessage,
   SwitchThemeMessage,
-  GetTranslationsMessage
+  GetTranslationsMessage,
+  DetectLocationAndSaveMessage,
+  LocationDetectedResponse,
 } from "./types";
 
 export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
@@ -26,7 +29,7 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
 
   public resolveWebviewView(webviewView: vscode.WebviewView) {
     this._view = webviewView;
-    webviewView.webview.options = { 
+    webviewView.webview.options = {
       enableScripts: true,
       localResourceRoots: [this._extensionUri]
     };
@@ -71,6 +74,9 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
         case "disableAutoSwitch":
           await this.handleDisableAutoSwitch(config);
           break;
+        case "detectLocationAndSave":
+          await this.handleDetectLocationAndSave(webviewView);
+          break;
         default:
           break;
       }
@@ -112,6 +118,8 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       useLocationBasedTimes,
       latitude: config.latitude,
       longitude: config.longitude,
+      sunriseOffset: config.sunriseOffset,
+      sunsetOffset: config.sunsetOffset,
       language: vscode.env.language,
     };
 
@@ -124,7 +132,7 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       vscode.window.showInformationMessage(
         vscode.l10n.t("Previewing theme: {0}. Reverting in 5 seconds...", theme)
       );
-      
+
       setTimeout(() => {
         vscode.window.showInformationMessage(
           vscode.l10n.t("Reverted back to: {0}", previousTheme || "Previous Theme")
@@ -170,14 +178,14 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
     } else {
       const dayTimeValid = isValidTimeFormat(message.dayTimeStart);
       const nightTimeValid = isValidTimeFormat(message.nightTimeStart);
-      
+
       if (!dayTimeValid || !nightTimeValid) {
         vscode.window.showErrorMessage(
           "ChronoShade: Invalid time format. Please use HH:MM format (24-hour)."
         );
         return;
       }
-      
+
       if (message.dayTimeStart === message.nightTimeStart) {
         vscode.window.showErrorMessage(
           "ChronoShade: Day and night times cannot be the same."
@@ -188,6 +196,9 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
 
     const sanitizedDayCron = message.dayCronExpression?.trim() || DEFAULTS.DAY_CRON_EXPRESSION;
     const sanitizedNightCron = message.nightCronExpression?.trim() || DEFAULTS.NIGHT_CRON_EXPRESSION;
+
+    // Capture old config to check for changes
+    const oldConfig = ConfigurationService.getConfiguration();
 
     await ConfigurationService.updateConfiguration({
       dayTheme: message.dayTheme,
@@ -201,6 +212,8 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       useLocationBasedTimes,
       latitude: message.latitude,
       longitude: message.longitude,
+      sunriseOffset: message.sunriseOffset,
+      sunsetOffset: message.sunsetOffset,
     });
 
     if (message.overrideThemeSwitch) {
@@ -212,7 +225,7 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
     // Trigger immediate theme check after saving new times
     if (message.overrideThemeSwitch) {
       await vscode.commands.executeCommand("chronoShade.checkThemeSwitch");
-      
+
       // If using GPS coordinates, wait a moment for the GPS times to be fetched and then check again
       if (message.useLocationBasedTimes) {
         setTimeout(async () => {
@@ -220,6 +233,8 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
         }, 2000); // Wait 2 seconds for GPS times to be fetched and cached
       }
     }
+
+
 
     // Update current theme display after a short delay to allow theme switch
     setTimeout(() => {
@@ -232,15 +247,15 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       vscode.l10n.t("ChronoShade settings saved successfully!")
     );
   }
-  
+
   private async handleGetCurrentTheme(webviewView: vscode.WebviewView) {
     const currentTheme = vscode.workspace
       .getConfiguration("workbench")
       .get("colorTheme");
-    
-    webviewView.webview.postMessage({ 
-      command: "updateCurrentTheme", 
-      currentTheme 
+
+    webviewView.webview.postMessage({
+      command: "updateCurrentTheme",
+      currentTheme
     });
   }
 
@@ -248,19 +263,19 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
     try {
       const fs = await import('fs/promises');
       const path = await import('path');
-      
+
       let filePath = path.join(this._extensionUri.fsPath, 'l10n', `webview.l10n.${language}.json`);
-      
+
       // Fallback to English if language file doesn't exist
       try {
         await fs.access(filePath);
       } catch {
         filePath = path.join(this._extensionUri.fsPath, 'l10n', 'webview.l10n.json');
       }
-      
+
       const translationsContent = await fs.readFile(filePath, 'utf8');
       const translations = JSON.parse(translationsContent);
-      
+
       webviewView.webview.postMessage({
         command: 'translations',
         translations
@@ -315,8 +330,8 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
   }
 
   private async handleTestLocation(
-    latitude: number, 
-    longitude: number, 
+    latitude: number,
+    longitude: number,
     webviewView: vscode.WebviewView,
     saveAfterFetch?: boolean
   ) {
@@ -335,7 +350,7 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
 
       // Fetch times
       const times = await SunriseSunsetService.getSunriseSunsetTimes(latitude, longitude);
-      
+
       // Show success message
       vscode.window.showInformationMessage(
         vscode.l10n.t("Location test successful! Sunrise: {0}, Sunset: {1}", times.sunrise, times.sunset)
@@ -354,7 +369,7 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       vscode.window.showErrorMessage(
         vscode.l10n.t("Location test failed: {0}", String(error))
       );
-      
+
       webviewView.webview.postMessage({
         command: 'locationTestResult',
         success: false,
@@ -366,14 +381,58 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
   private async handleDisableAutoSwitch(_config: vscode.WorkspaceConfiguration) {
     // Disable automatic theme switching
     await ConfigurationService.updateSingleValue('overrideThemeSwitch', false);
-    
+
     // Stop interval check
     vscode.commands.executeCommand("chronoShade.stopIntervalCheck");
-    
+
     // Show confirmation message
     vscode.window.showInformationMessage(
       vscode.l10n.t("Automatic theme switching disabled")
     );
+  }
+
+  private async handleDetectLocationAndSave(webviewView: vscode.WebviewView) {
+    try {
+      vscode.window.showInformationMessage(vscode.l10n.t("Detecting location via IP..."));
+      const data = await LocationService.detectLocation();
+
+      if (data && typeof data.lat === 'number' && typeof data.lon === 'number') {
+        await ConfigurationService.updateSingleValue('latitude', data.lat);
+        await ConfigurationService.updateSingleValue('longitude', data.lon);
+
+        const detectedMessage = vscode.l10n.t("Location detected as {0}, {1}! Settings updated.", data.city, data.country);
+        vscode.window.showInformationMessage(detectedMessage);
+
+        webviewView.webview.postMessage({
+          command: 'locationDetected',
+          success: true,
+          latitude: data.lat,
+          longitude: data.lon,
+          message: detectedMessage
+        } as LocationDetectedResponse);
+
+        // After updating location, re-check theme in case it affects sunrise/sunset times
+        await vscode.commands.executeCommand("chronoShade.checkThemeSwitch");
+      } else {
+        const errorMessage = 'Invalid response from location service';
+        console.error('Invalid location data:', data);
+        vscode.window.showErrorMessage(vscode.l10n.t("Failed to detect location: {0}", errorMessage));
+        webviewView.webview.postMessage({
+          command: 'locationDetected',
+          success: false,
+          error: errorMessage
+        } as LocationDetectedResponse);
+      }
+    } catch (error) {
+      const errorMessage = String(error);
+      console.error('Location detection failed:', error);
+      vscode.window.showErrorMessage(vscode.l10n.t("Failed to detect location: {0}", errorMessage));
+      webviewView.webview.postMessage({
+        command: 'locationDetected',
+        success: false,
+        error: errorMessage
+      } as LocationDetectedResponse);
+    }
   }
 
 }

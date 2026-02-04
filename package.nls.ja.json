@@ -19,5 +19,8 @@
   "config.nightCronExpression": "夜のテーマに切り替えるタイミングを定義する cron 式です。",
   "config.useLocationBasedTimes": "GPS座標を使用して手動時刻の代わりに日の出/日の入り時刻を自動判定。",
   "config.latitude": "あなたの緯度座標（自動日の出/日の入り計算用）。",
-  "config.longitude": "あなたの経度座標（自動日の出/日の入り計算用）。"
+  "config.longitude": "あなたの経度座標（自動日の出/日の入り計算用）。",
+  "config.sunriseOffset": "Offset in minutes added to the sunrise time (can be negative).",
+  "config.sunsetOffset": "Offset in minutes added to the sunset time (can be negative).",
+  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes."
 }

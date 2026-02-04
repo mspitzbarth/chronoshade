@@ -19,5 +19,8 @@
   "config.nightCronExpression": "Expressão cron que define quando alternar para o tema noturno.",
   "config.useLocationBasedTimes": "Usar coordenadas GPS para determinar automaticamente os horários do nascer/pôr do sol em vez de horários manuais.",
   "config.latitude": "Sua coordenada de latitude (para cálculo automático do nascer/pôr do sol).",
-  "config.longitude": "Sua coordenada de longitude (para cálculo automático do nascer/pôr do sol)."
+  "config.longitude": "Sua coordenada de longitude (para cálculo automático do nascer/pôr do sol).",
+  "config.sunriseOffset": "Offset em minutos adicionado ao horário do nascer do sol (pode ser negativo).",
+  "config.sunsetOffset": "Offset em minutos adicionado ao horário do pôr do sol (pode ser negativo).",
+  "config.systemThemeSync": "Seguir automaticamente as mudanças de tema de cor do sistema (modo Claro/Escuro) para alternar entre os temas Diurno e Noturno configurados."
 }

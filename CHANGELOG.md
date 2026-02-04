@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.4.0] - 2026-01-31
+
+### Changed
+
+- **Automatic Location Detection**: When valid GPS coordinates are not provided (lat/lon are 0), the extension now automatically detects your approximate location based on your IP address to calculate accurate sunrise/sunset times without manual configuration.
+
 ## [1.3.0] - 2025-09-25
 
 ### Added

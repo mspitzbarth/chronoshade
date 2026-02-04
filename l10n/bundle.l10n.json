@@ -16,13 +16,18 @@
   "Location test successful! Sunrise: {0}, Sunset: {1}": "Location test successful! Sunrise: {0}, Sunset: {1}",
   "Location test failed: {0}": "Location test failed: {0}",
   "Automatic theme switching disabled": "Automatic theme switching disabled",
+  "Detecting location via IP...": "Detecting location via IP...",
+  "Location detected as {0}, {1}! Settings updated.": "Location detected as {0}, {1}! Settings updated.",
+  "Failed to detect location: {0}": "Failed to detect location: {0}",
   "ChronoShade extension activated!": "ChronoShade extension activated!",
   "ChronoShade extension deactivated.": "ChronoShade extension deactivated.",
   "Please configure a day theme first in ChronoShade settings.": "Please configure a day theme first in ChronoShade settings.",
   "Please configure a night theme first in ChronoShade settings.": "Please configure a night theme first in ChronoShade settings.",
+  "[ChronoShade] Auto-detected location: {0}, {1}": "[ChronoShade] Auto-detected location: {0}, {1}",
   "[ChronoShade] Failed to fetch location-based times, falling back to manual times: {0}": "[ChronoShade] Failed to fetch location-based times, falling back to manual times: {0}",
   "[ChronoShade] Invalid cron expression detected. Falling back to manual schedule.": "[ChronoShade] Invalid cron expression detected. Falling back to manual schedule.",
   "[ChronoShade] Cron expressions produced no occurrences within the lookback window. Falling back to manual schedule.": "[ChronoShade] Cron expressions produced no occurrences within the lookback window. Falling back to manual schedule.",
   "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: Failed to switch theme. Please check your settings.",
-  "[ChronoShade] Error fetching sunrise/sunset times: {0}": "[ChronoShade] Error fetching sunrise/sunset times: {0}"
+  "[ChronoShade] Error fetching sunrise/sunset times: {0}": "[ChronoShade] Error fetching sunrise/sunset times: {0}",
+  "ChronoShade: Failed to detect location automatically. Error: {0}": "ChronoShade: Failed to detect location automatically. Error: {0}"
 }

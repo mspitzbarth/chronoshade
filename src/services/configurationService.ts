@@ -14,11 +14,13 @@ export interface ChronoShadeConfiguration {
   useLocationBasedTimes: boolean;
   latitude: number;
   longitude: number;
+  sunriseOffset: number;
+  sunsetOffset: number;
 }
 
 export class ConfigurationService {
   private static readonly SECTION = "chronoShade";
-  
+
   public static getConfiguration(): ChronoShadeConfiguration {
     const config = vscode.workspace.getConfiguration(this.SECTION);
     const useCronSchedule = config.get<boolean>(CONFIG_KEYS.USE_CRON_SCHEDULE) ?? false;
@@ -37,17 +39,19 @@ export class ConfigurationService {
       useLocationBasedTimes,
       latitude: config.get<number>(CONFIG_KEYS.LATITUDE) ?? DEFAULTS.LATITUDE,
       longitude: config.get<number>(CONFIG_KEYS.LONGITUDE) ?? DEFAULTS.LONGITUDE,
+      sunriseOffset: config.get<number>(CONFIG_KEYS.SUNRISE_OFFSET) ?? DEFAULTS.SUNRISE_OFFSET,
+      sunsetOffset: config.get<number>(CONFIG_KEYS.SUNSET_OFFSET) ?? DEFAULTS.SUNSET_OFFSET,
     };
   }
 
   public static async updateConfiguration(updates: Partial<ChronoShadeConfiguration>): Promise<void> {
     const config = vscode.workspace.getConfiguration(this.SECTION);
-    
+
     const updatePromises = Object.entries(updates).map(([key, value]) => {
       const configKey = this.getConfigKey(key as keyof ChronoShadeConfiguration);
       return config.update(configKey, value, true);
     });
-    
+
     await Promise.all(updatePromises);
   }
 
@@ -73,8 +77,10 @@ export class ConfigurationService {
       useLocationBasedTimes: CONFIG_KEYS.USE_LOCATION_BASED_TIMES,
       latitude: CONFIG_KEYS.LATITUDE,
       longitude: CONFIG_KEYS.LONGITUDE,
+      sunriseOffset: CONFIG_KEYS.SUNRISE_OFFSET,
+      sunsetOffset: CONFIG_KEYS.SUNSET_OFFSET,
     };
-    
+
     return keyMap[key];
   }
 

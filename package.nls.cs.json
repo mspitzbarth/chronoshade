@@ -19,5 +19,8 @@
   "config.nightCronExpression": "Výraz cron, který určuje, kdy se přepnout na noční motiv.",
   "config.useLocationBasedTimes": "Použít GPS souřadnice k automatickému určení časů východu/západu slunce místo ručních časů.",
   "config.latitude": "Vaše souřadnice zeměpisné šířky (pro automatický výpočet východu/západu slunce).",
-  "config.longitude": "Vaše souřadnice zeměpisné délky (pro automatický výpočet východu/západu slunce)."
+  "config.longitude": "Vaše souřadnice zeměpisné délky (pro automatický výpočet východu/západu slunce).",
+  "config.sunriseOffset": "Offset in minutes added to the sunrise time (can be negative).",
+  "config.sunsetOffset": "Offset in minutes added to the sunset time (can be negative).",
+  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes."
 }

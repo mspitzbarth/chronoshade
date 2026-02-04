@@ -3,20 +3,21 @@ import { getWebviewScript } from "./scripts/webviewScript";
 import { getWebviewStyles } from "./styles/webviewStyles";
 
 export function getWebviewContent(
-  webview: vscode.Webview,
-  extensionUri: vscode.Uri
+    webview: vscode.Webview,
+    extensionUri: vscode.Uri
 ): string {
-  // Get the CSS content from the imported module
-  const cssContent = getWebviewStyles();
+    // Get the CSS content from the imported module
+    const cssContent = getWebviewStyles();
 
-  // Get the compiled JavaScript
-  const jsContent = getWebviewScript();
+    // Get the compiled JavaScript
+    const jsContent = getWebviewScript();
 
-  return `<!DOCTYPE html>
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource} 'unsafe-inline'; script-src ${webview.cspSource} 'unsafe-inline'; img-src ${webview.cspSource} https:; font-src ${webview.cspSource};">
     <title>ChronoShade</title>
     <style>
         ${cssContent}
@@ -132,6 +133,18 @@ export function getWebviewContent(
                                 <div class="error-message" id="nightTimeError">Invalid time format</div>
                             </div>
                         </div>
+                        <div class="offset-inputs" style="margin-top: 10px;">
+                            <div class="time-inputs">
+                                <div>
+                                    <label for="sunriseOffset">Sunrise Offset (min)</label>
+                                    <input type="number" id="sunriseOffset" value="0" placeholder="+/- min">
+                                </div>
+                                <div>
+                                    <label for="sunsetOffset">Sunset Offset (min)</label>
+                                    <input type="number" id="sunsetOffset" value="0" placeholder="+/- min">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -163,6 +176,9 @@ export function getWebviewContent(
                     </div>
                     <div class="form-group">
                         <label id="gpsCoordinatesLabel">GPS Coordinates</label>
+                        <button class="button secondary small" id="detectLocationAndSave" style="margin-bottom: 8px;">
+                            <span class="codicon codicon-location"></span> Detect Location
+                        </button>
                         <div class="time-inputs">
                             <div>
                                 <label for="latitude">Latitude</label>

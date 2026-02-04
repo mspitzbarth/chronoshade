@@ -19,5 +19,8 @@
   "config.nightCronExpression": "Wyrażenie cron określające, kiedy przełączyć na motyw nocny.",
   "config.useLocationBasedTimes": "Użyj współrzędnych GPS do automatycznego określenia czasów wschodu/zachodu słońca zamiast ręcznych czasów.",
   "config.latitude": "Twoja współrzędna szerokości geograficznej (do automatycznego obliczania wschodu/zachodu słońca).",
-  "config.longitude": "Twoja współrzędna długości geograficznej (do automatycznego obliczania wschodu/zachodu słońca)."
+  "config.longitude": "Twoja współrzędna długości geograficznej (do automatycznego obliczania wschodu/zachodu słońca).",
+  "config.sunriseOffset": "Offset in minutes added to the sunrise time (can be negative).",
+  "config.sunsetOffset": "Offset in minutes added to the sunset time (can be negative).",
+  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes."
 }

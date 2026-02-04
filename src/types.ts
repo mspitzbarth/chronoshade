@@ -44,6 +44,9 @@ export interface SaveSettingsMessage extends BaseMessage {
   useLocationBasedTimes: boolean;
   latitude: number;
   longitude: number;
+  sunriseOffset: number;
+  sunsetOffset: number;
+  systemThemeSync: boolean;
 }
 
 export interface StartIntervalCheckMessage extends BaseMessage {
@@ -74,11 +77,28 @@ export interface TestLocationMessage extends BaseMessage {
   saveAfterFetch?: boolean;
 }
 
+export interface DetectLocationMessage extends BaseMessage {
+  command: "detectLocation";
+}
+
+export interface DetectLocationAndSaveMessage extends BaseMessage {
+  command: "detectLocationAndSave";
+}
+
+export interface LocationDetectedResponse extends BaseMessage {
+  command: "locationDetected";
+  success: boolean;
+  latitude?: number;
+  longitude?: number;
+  message?: string; // e.g., "Detected: New York, US"
+  error?: string;
+}
+
 export interface DisableAutoSwitchMessage extends BaseMessage {
   command: "disableAutoSwitch";
 }
 
-export type WebviewMessage = 
+export type WebviewMessage =
   | GetThemesMessage
   | PreviewThemeMessage
   | SwitchThemeMessage
@@ -89,6 +109,8 @@ export type WebviewMessage =
   | ForceDayThemeMessage
   | ForceNightThemeMessage
   | TestLocationMessage
+  | DetectLocationMessage
+  | DetectLocationAndSaveMessage
   | DisableAutoSwitchMessage;
 
 // Response message types
@@ -108,6 +130,9 @@ export interface UpdateThemesResponse extends BaseMessage {
     useLocationBasedTimes: boolean;
     latitude: number;
     longitude: number;
+    sunriseOffset: number;
+    sunsetOffset: number;
+    systemThemeSync: boolean;
     language: string;
   };
 }
@@ -130,8 +155,18 @@ export interface LocationTestResultResponse extends BaseMessage {
   saveAfterFetch?: boolean;
 }
 
-export type WebviewResponse = 
+export interface LocationDetectedResponse extends BaseMessage {
+  command: "locationDetected";
+  success: boolean;
+  latitude?: number;
+  longitude?: number;
+  message?: string; // e.g., "Detected: New York, US"
+  error?: string;
+}
+
+export type WebviewResponse =
   | UpdateThemesResponse
   | UpdateCurrentThemeResponse
   | TranslationsResponse
-  | LocationTestResultResponse;
+  | LocationTestResultResponse
+  | LocationDetectedResponse;

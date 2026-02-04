@@ -19,5 +19,8 @@
   "config.nightCronExpression": "Cron kifejezés, amely meghatározza, mikor váltson az éjszakai témára.",
   "config.useLocationBasedTimes": "GPS koordináták használata a napkelte/napnyugta idők automatikus meghatározásához a kézi idők helyett.",
   "config.latitude": "Az Ön szélességi koordinátája (automatikus napkelte/napnyugta számításhoz).",
-  "config.longitude": "Az Ön hosszúsági koordinátája (automatikus napkelte/napnyugta számításhoz)."
+  "config.longitude": "Az Ön hosszúsági koordinátája (automatikus napkelte/napnyugta számításhoz).",
+  "config.sunriseOffset": "Eltolás percekben a napkelte idejéhez adva (lehet negatív).",
+  "config.sunsetOffset": "Eltolás percekben a napnyugta idejéhez adva (lehet negatív).",
+  "config.systemThemeSync": "Automatikusan követi a rendszer színtéma változásait (világos/sötét mód) a konfigurált nappali és éjszakai témák közötti váltáshoz."
 }

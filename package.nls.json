@@ -18,5 +18,8 @@
   "config.nightCronExpression": "Cron expression that defines when to switch to the night theme.",
   "config.useLocationBasedTimes": "Use GPS coordinates to automatically determine sunrise/sunset times instead of manual times.",
   "config.latitude": "Your latitude coordinate (for automatic sunrise/sunset calculation).",
-  "config.longitude": "Your longitude coordinate (for automatic sunrise/sunset calculation)."
+  "config.longitude": "Your longitude coordinate (for automatic sunrise/sunset calculation).",
+  "config.sunriseOffset": "Offset in minutes added to the sunrise time (can be negative).",
+  "config.sunsetOffset": "Offset in minutes added to the sunset time (can be negative).",
+  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes."
 }
