@@ -170,8 +170,43 @@ export function getWebviewScript(): string {
                 if (selectedCityName) {
                     const city = ${JSON.stringify(DEFAULT_CITIES)}.find(c => c.name === selectedCityName);
                     if (city) {
+                        elements.latitude.value = city.lat.toString();
                         elements.longitude.value = city.lng.toString();
+                        
+                        // Trigger schedule update for the new coordinates
+                        vscode.postMessage({ 
+                            command: 'testLocation', 
+                            latitude: city.lat, 
+                            longitude: city.lng,
+                            saveAfterFetch: false 
+                        });
                     }
+                }
+            });
+
+            elements.latitude.addEventListener('change', function() {
+                const lat = parseFloat(this.value);
+                const lng = parseFloat(elements.longitude.value);
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    vscode.postMessage({ 
+                        command: 'testLocation', 
+                        latitude: lat, 
+                        longitude: lng,
+                        saveAfterFetch: false 
+                    });
+                }
+            });
+
+            elements.longitude.addEventListener('change', function() {
+                const lat = parseFloat(elements.latitude.value);
+                const lng = parseFloat(this.value);
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    vscode.postMessage({ 
+                        command: 'testLocation', 
+                        latitude: lat, 
+                        longitude: lng,
+                        saveAfterFetch: false 
+                    });
                 }
             });
 
@@ -645,6 +680,14 @@ export function getWebviewScript(): string {
                         elements.latitude.value = message.latitude;
                         elements.longitude.value = message.longitude;
                         showStatus(message.message || t('Location detected!'), 'success');
+                        
+                        // Trigger schedule update for the detected coordinates
+                        vscode.postMessage({ 
+                            command: 'testLocation', 
+                            latitude: message.latitude, 
+                            longitude: message.longitude,
+                            saveAfterFetch: false 
+                        });
                     } else {
                         showStatus(t('Location detection failed: {0}', message.error), 'error');
                     }
