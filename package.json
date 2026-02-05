@@ -2,7 +2,7 @@
   "name": "chronoshade",
   "displayName": "%displayName%",
   "description": "%description%",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "publisher": "markusmorita",
   "engines": {
     "vscode": "^1.90.0"

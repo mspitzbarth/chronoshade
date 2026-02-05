@@ -19,5 +19,20 @@
   "Longitude must be between -180 and 180 degrees.": "Der Längengrad muss zwischen -180 und 180 Grad liegen.",
   "Fetching sunrise/sunset times for your location...": "Abrufen der Sonnenauf-/untergangszeiten für Ihren Standort...",
   "Location test successful! Sunrise: {0}, Sunset: {1}": "Standorttest erfolgreich! Sonnenaufgang: {0}, Sonnenuntergang: {1}",
-  "Location test failed: {0}": "Standorttest fehlgeschlagen: {0}"
+  "Location test failed: {0}": "Standorttest fehlgeschlagen: {0}",
+  "Reverted back to: {0}": "Zurückgesetzt auf: {0}",
+  "Failed to preview theme: {0}": "Vorschau des Themes fehlgeschlagen: {0}",
+  "Previewing theme: {0}. Reverting in 5 seconds...": "Vorschau des Themes: {0}. Zurücksetzen in 5 Sekunden...",
+  "[ChronoShade] Auto-detected location: {0}, {1}": "[ChronoShade] Automatisch erkannter Standort: {0}, {1}",
+  "ChronoShade: Invalid cron expression. Please provide valid cron syntax for day and night schedules.": "ChronoShade: Ungültiger Cron-Ausdruck. Bitte geben Sie eine gültige Cron-Syntax für Tag- und Nachtpläne an.",
+  "[ChronoShade] Cron expressions produced no occurrences within the lookback window. Falling back to manual schedule.": "[ChronoShade] Cron-Ausdrücke ergaben keine Vorkommen innerhalb des Rückblickfensters. Fallback auf manuellen Zeitplan.",
+  "Location detected as {0}, {1}! Settings updated.": "Standort erkannt als {0}, {1}! Einstellungen aktualisiert.",
+  "[ChronoShade] Invalid cron expression detected. Falling back to manual schedule.": "[ChronoShade] Ungültiger Cron-Ausdruck erkannt. Fallback auf manuellen Zeitplan.",
+  "ChronoShade settings saved successfully!": "ChronoShade-Einstellungen erfolgreich gespeichert!",
+  "Failed to detect location: {0}": "Standort konnte nicht erkannt werden: {0}",
+  "ChronoShade: Failed to detect location automatically. Error: {0}": "ChronoShade: Automatische Standorterkennung fehlgeschlagen. Fehler: {0}",
+  "Automatic theme switching disabled": "Automatischer Theme-Wechsel deaktiviert",
+  "Detecting location via IP...": "Standort wird über IP erkannt...",
+  "Failed to switch theme: {0}": "Theme-Wechsel fehlgeschlagen: {0}",
+  "Switched to theme: {0}": "Zu Theme gewechselt: {0}"
 }
