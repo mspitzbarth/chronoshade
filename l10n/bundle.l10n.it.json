@@ -34,5 +34,6 @@
   "Automatic theme switching disabled": "Cambio automatico del tema disattivato",
   "Detecting location via IP...": "Rilevamento della posizione tramite IP...",
   "Failed to switch theme: {0}": "Cambio del tema non riuscito: {0}",
-  "Switched to theme: {0}": "Cambiato al tema: {0}"
+  "Switched to theme: {0}": "Cambiato al tema: {0}",
+  "ChronoShade: Location detection failed. Please ensure you have an active internet connection. If you are on a remote machine, automatic detection may be restricted by security policies.": "ChronoShade: Location detection failed. Please ensure you have an active internet connection. If you are on a remote machine, automatic detection may be restricted by security policies."
 }

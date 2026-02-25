@@ -37,6 +37,8 @@ export function getWebviewScript(): string {
             longitude: document.getElementById('longitude'),
             sunriseOffset: document.getElementById('sunriseOffset'),
             sunsetOffset: document.getElementById('sunsetOffset'),
+            sunriseOffsetGps: document.getElementById('sunriseOffsetGps'),
+            sunsetOffsetGps: document.getElementById('sunsetOffsetGps'),
             detectLocationAndSave: document.getElementById('detectLocationAndSave'),
             citySelect: document.getElementById('citySelect'),
             switchSettings: document.getElementById('switchSettings'),
@@ -214,6 +216,20 @@ export function getWebviewScript(): string {
                 showStatus(t('Detecting location...'), 'info');
                 vscode.postMessage({ command: 'detectLocationAndSave' });
             });
+
+            // Sync offset fields
+            elements.sunriseOffset.addEventListener('input', function() {
+                elements.sunriseOffsetGps.value = this.value;
+            });
+            elements.sunriseOffsetGps.addEventListener('input', function() {
+                elements.sunriseOffset.value = this.value;
+            });
+            elements.sunsetOffset.addEventListener('input', function() {
+                elements.sunsetOffsetGps.value = this.value;
+            });
+            elements.sunsetOffsetGps.addEventListener('input', function() {
+                elements.sunsetOffset.value = this.value;
+            });
         }
 
         // Main Functions
@@ -262,8 +278,8 @@ export function getWebviewScript(): string {
                 useLocationBasedTimes: useLocation,
                 latitude: parseFloat(elements.latitude.value) || 0,
                 longitude: parseFloat(elements.longitude.value) || 0,
-                sunriseOffset: parseInt(elements.sunriseOffset.value) || 0,
-                sunsetOffset: parseInt(elements.sunsetOffset.value) || 0
+                sunriseOffset: parseInt(useLocation ? elements.sunriseOffsetGps.value : elements.sunriseOffset.value) || 0,
+                sunsetOffset: parseInt(useLocation ? elements.sunsetOffsetGps.value : elements.sunsetOffset.value) || 0
             };
 
             vscode.postMessage({ command: 'saveSettings', ...settings });
@@ -471,6 +487,8 @@ export function getWebviewScript(): string {
             elements.longitude.value = settings.longitude || '';
             elements.sunriseOffset.value = settings.sunriseOffset || 0;
             elements.sunsetOffset.value = settings.sunsetOffset || 0;
+            elements.sunriseOffsetGps.value = settings.sunriseOffset || 0;
+            elements.sunsetOffsetGps.value = settings.sunsetOffset || 0;
             
             updateThemeSwatches();
             updateTimeline(settings);

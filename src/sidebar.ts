@@ -82,9 +82,6 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       }
     });
 
-    setTimeout(() => {
-      webviewView.webview.postMessage({ command: "getThemes" });
-    }, TIMEOUTS.WEBVIEW_INIT_DELAY);
   }
 
   private async handleGetThemes(
@@ -99,7 +96,9 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       .filter((ext) => ext.packageJSON.contributes?.themes)
       .flatMap((ext) =>
         ext.packageJSON.contributes.themes.map((t: any) => t.label)
-      );
+      )
+      .filter((label, index, self) => label && self.indexOf(label) === index)
+      .sort((a: string, b: string) => a.localeCompare(b));
 
     const config = ConfigurationService.getConfiguration();
     const useCronSchedule = config.useCronSchedule;

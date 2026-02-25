@@ -34,5 +34,6 @@
   "Automatic theme switching disabled": "自动主题切换已禁用",
   "Detecting location via IP...": "正在通过 IP 检测位置...",
   "Failed to switch theme: {0}": "切换主题失败：{0}",
-  "Switched to theme: {0}": "已切换到主题：{0}"
+  "Switched to theme: {0}": "已切换到主题：{0}",
+  "ChronoShade: Location detection failed. Please ensure you have an active internet connection. If you are on a remote machine, automatic detection may be restricted by security policies.": "ChronoShade: Location detection failed. Please ensure you have an active internet connection. If you are on a remote machine, automatic detection may be restricted by security policies."
 }

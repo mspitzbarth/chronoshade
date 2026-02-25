@@ -34,5 +34,6 @@
   "Automatic theme switching disabled": "Automatické přepínání témat je zakázáno",
   "Detecting location via IP...": "Detekce polohy přes IP...",
   "Failed to switch theme: {0}": "Přepnutí tématu se nezdařilo: {0}",
-  "Switched to theme: {0}": "Téma přepnuto na: {0}"
+  "Switched to theme: {0}": "Téma přepnuto na: {0}",
+  "ChronoShade: Location detection failed. Please ensure you have an active internet connection. If you are on a remote machine, automatic detection may be restricted by security policies.": "ChronoShade: Location detection failed. Please ensure you have an active internet connection. If you are on a remote machine, automatic detection may be restricted by security policies."
 }

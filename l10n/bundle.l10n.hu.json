@@ -34,5 +34,6 @@
   "Automatic theme switching disabled": "Automatikus témaváltás letiltva",
   "Detecting location via IP...": "Hely meghatározása IP alapján...",
   "Failed to switch theme: {0}": "A témaváltás nem sikerült: {0}",
-  "Switched to theme: {0}": "Téma váltva erre: {0}"
+  "Switched to theme: {0}": "Téma váltva erre: {0}",
+  "ChronoShade: Location detection failed. Please ensure you have an active internet connection. If you are on a remote machine, automatic detection may be restricted by security policies.": "ChronoShade: Location detection failed. Please ensure you have an active internet connection. If you are on a remote machine, automatic detection may be restricted by security policies."
 }
