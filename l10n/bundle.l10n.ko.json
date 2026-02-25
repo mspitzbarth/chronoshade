@@ -34,5 +34,6 @@
   "Automatic theme switching disabled": "자동 테마 전환이 비활성화되었습니다",
   "Detecting location via IP...": "IP를 통해 위치를 감지하는 중...",
   "Failed to switch theme: {0}": "테마 전환에 실패했습니다: {0}",
-  "Switched to theme: {0}": "{0} 테마로 전환되었습니다"
+  "Switched to theme: {0}": "{0} 테마로 전환되었습니다",
+  "ChronoShade: Location detection failed. Please ensure you have an active internet connection. If you are on a remote machine, automatic detection may be restricted by security policies.": "ChronoShade: Location detection failed. Please ensure you have an active internet connection. If you are on a remote machine, automatic detection may be restricted by security policies."
 }
