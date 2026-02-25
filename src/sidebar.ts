@@ -82,9 +82,7 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       }
     });
 
-    setTimeout(() => {
-      webviewView.webview.postMessage({ command: "getThemes" });
-    }, TIMEOUTS.WEBVIEW_INIT_DELAY);
+    webviewView.webview.html = getWebviewContent(webviewView.webview, this._extensionUri);
   }
 
   private async handleGetThemes(
@@ -95,11 +93,25 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       .getConfiguration("workbench")
       .get("colorTheme");
 
-    const themes = await vscode.extensions.all
-      .filter((ext) => ext.packageJSON.contributes?.themes)
-      .flatMap((ext) =>
-        ext.packageJSON.contributes.themes.map((t: any) => t.label)
-      );
+    const allExtensions = vscode.extensions.all;
+    console.log(`[ChronoShade] Total extensions found: ${allExtensions.length}`);
+
+    const themes = allExtensions
+      .filter((ext) => {
+        const hasThemes = !!ext.packageJSON.contributes?.themes;
+        return hasThemes;
+      })
+      .flatMap((ext) => {
+        const extensionThemes = ext.packageJSON.contributes.themes;
+        return extensionThemes.map((t: any) => t.label);
+      })
+      .filter((label, index, self) => label && self.indexOf(label) === index)
+      .sort((a: string, b: string) => a.localeCompare(b));
+
+    console.log(`[ChronoShade] Unique themes found: ${themes.length}`);
+    if (themes.length === 0) {
+      console.warn("[ChronoShade] No themes found in any extension contributes. This is unexpected.");
+    }
 
     const config = ConfigurationService.getConfiguration();
     const useCronSchedule = config.useCronSchedule;

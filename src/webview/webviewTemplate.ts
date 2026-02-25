@@ -191,6 +191,18 @@ export function getWebviewContent(
                                 <div class="error-message" id="longitudeError">Invalid longitude</div>
                             </div>
                         </div>
+                        <div class="offset-inputs" style="margin-top: 10px;">
+                            <div class="time-inputs">
+                                <div>
+                                    <label for="sunriseOffsetGps">Sunrise Offset (min)</label>
+                                    <input type="number" id="sunriseOffsetGps" value="0" placeholder="+/- min">
+                                </div>
+                                <div>
+                                    <label for="sunsetOffsetGps">Sunset Offset (min)</label>
+                                    <input type="number" id="sunsetOffsetGps" value="0" placeholder="+/- min">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.6.0] - 2026-02-25
+
+### Added
+
+- **Sunrise/Sunset Offsets**: Added Sunrise and Sunset offset fields to both "Manual times" and "GPS Coordinates" sections.
+- **Improved Settings Logic**: Offsets are now correctly wired and saved across both configuration modes.
+
+## [1.5.0] - 2026-02-05
+
+
+### Fixed
+
+- **Quick City Selection**: Fixed a bug where only the longitude was updated when selecting a city; now both latitude and longitude are correctly set.
+- **Dynamic Schedule Updates**: The "Today's Schedule" timeline now updates immediately when coordinates are changed (manually, via quick select, or via GPS detection), providing instant visual feedback.
+
+### Improved
+
+- **UI Responsiveness**: Coordinate changes now trigger an automatic refresh of sunrise/sunset times in the webview.
+- **Internationalization (i18n)**: Completed translations for all 14 supported languages, ensuring all new features and UI elements are fully localized.
+
 ## [1.4.1] - 2026-02-04
 
 ### Fixed

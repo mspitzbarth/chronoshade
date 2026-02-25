@@ -2,7 +2,7 @@
   "name": "chronoshade",
   "displayName": "%displayName%",
   "description": "%description%",
-  "version": "1.4.1",
+  "version": "1.6.0",
   "publisher": "markusmorita",
   "engines": {
     "vscode": "^1.90.0"
@@ -35,6 +35,9 @@
   },
   "main": "./out/extension.js",
   "l10n": "./l10n",
+  "extensionKind": [
+    "ui"
+  ],
   "activationEvents": [
     "*"
   ],
@@ -155,13 +158,13 @@
   },
   "scripts": {
     "vscode:prepublish": "pnpm run compile",
-    "compile": "tsc -p ./",
+    "compile": "rm -rf out && tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "pnpm run compile && pnpm run lint",
     "lint": "eslint src",
     "test": "vscode-test",
-    "package": "pnpm run l10n:extract && pnpm vsce package --no-dependencies",
-    "publish": "pnpm vsce publish --no-dependencies",
+    "package": "rm -rf out && pnpm run compile && pnpm run l10n:extract && pnpm vsce package --no-dependencies",
+    "publish": "rm -rf out && pnpm run compile && pnpm vsce publish --no-dependencies",
     "l10n:extract": "npx @vscode/l10n-dev export --outDir ./l10n ./src",
     "dev:install": "pnpm run package && code --install-extension chronoshade-$(node -p \"require('./package.json').version\").vsix"
   },

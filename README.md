@@ -14,7 +14,7 @@ ChronoShade automatically switches between light and dark themes based on sunris
 - **Manual Theme Control**: Instantly switch between day and night themes with dedicated buttons
 - **Customizable Themes**: Select your preferred light and dark themes from any installed theme
 - **Intuitive Sidebar UI**: Easily manage all settings from the VS Code activity bar
-- **Multi-Language Support**: Available in 15 languages with full localization
+- **Multi-Language Support**: Available in 15 languages (English, Chinese S/T, French, German, Italian, Spanish, Japanese, Korean, Portuguese, Turkish, Polish, Czech, Hungarian, Bulgarian) with full localization
 - **Visual Timeline**: See your daily theme schedule with a visual timeline indicator
 
 ## Usage

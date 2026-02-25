@@ -29,5 +29,6 @@
   "[ChronoShade] Cron expressions produced no occurrences within the lookback window. Falling back to manual schedule.": "[ChronoShade] Cron expressions produced no occurrences within the lookback window. Falling back to manual schedule.",
   "ChronoShade: Failed to switch theme. Please check your settings.": "ChronoShade: Failed to switch theme. Please check your settings.",
   "[ChronoShade] Error fetching sunrise/sunset times: {0}": "[ChronoShade] Error fetching sunrise/sunset times: {0}",
-  "ChronoShade: Failed to detect location automatically. Error: {0}": "ChronoShade: Failed to detect location automatically. Error: {0}"
+  "ChronoShade: Failed to detect location automatically. Error: {0}": "ChronoShade: Failed to detect location automatically. Error: {0}",
+  "ChronoShade: Location detection failed. Please ensure you have an active internet connection. If you are on a remote machine, automatic detection may be restricted by security policies.": "ChronoShade: Location detection failed. Please ensure you have an active internet connection. If you are on a remote machine, automatic detection may be restricted by security policies."
 }
