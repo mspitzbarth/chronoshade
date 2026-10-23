@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.8.0] - 2026-10-23
+
+### Added
+
+- **Redesigned Sidebar**: A status card at the top shows the active theme, whether it's day or night, and when the next switch happens. Day/Night themes get inline preview buttons, time sources are clickable cards, auto-switching has a toggle switch, and the schedule timeline has been refreshed. Everything uses your current theme's colors.
+- **Unsaved Changes Indicator**: A sticky save bar at the bottom shows when you have unsaved edits, and "Settings saved!" now only appears once the extension has actually saved them.
+- **Better Location Detection**: "Detect Location" is now its own full-width button (instead of an unlabeled icon next to the city list) and shows a "Detecting location..." state while it runs.
+- **Theme Pool Keyboard Support**: Press Enter to add the top match and Backspace to remove the last theme; the suggestion list only opens while you're typing.
+- **Complete Translations**: All new and previously untranslated strings (sidebar, notifications, status bar, settings, walkthrough) are now available in all 14 supported languages.
+
+### Fixed
+
+- **Theme Pool Flipping**: With several VS Code windows open, each window kept its own random pick from the pool and re-applied it every minute, so the theme kept switching back and forth. Reloading a window also picked a new theme. ChronoShade now keeps the current theme as long as it belongs to the active day/night pool, so all windows agree.
+- **Sidebar Flickering**: The panel no longer reloads when you hide and reopen it, shows up already in your language instead of switching from English, and appears with your settings already filled in instead of rearranging itself. It also no longer polls for the current theme every 2 seconds; theme changes are pushed to it instead.
+- **Status Messages**: A new status message is no longer cleared early by an older one.
+
+### Changed
+
+- Removed duplicate pop-up notifications for saving settings and fetching/detecting your location; the sidebar already shows these inline. Error notifications are unchanged.
+
 ## [1.7.0] - 2026-09-12
 
 ### Added
