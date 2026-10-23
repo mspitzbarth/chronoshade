@@ -22,5 +22,15 @@
   "config.longitude": "Vaše souřadnice zeměpisné délky (pro automatický výpočet východu/západu slunce).",
   "config.sunriseOffset": "Offset in minutes added to the sunrise time (can be negative).",
   "config.sunsetOffset": "Offset in minutes added to the sunset time (can be negative).",
-  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes."
+  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes.",
+  "config.dayThemePool": "Volitelný seznam denních témat, která se náhodně střídají. Pokud je prázdný, použije se vždy denní téma.",
+  "config.nightThemePool": "Volitelný seznam nočních témat, která se náhodně střídají. Pokud je prázdný, použije se vždy noční téma.",
+  "walkthrough.title": "Začínáme s ChronoShade",
+  "walkthrough.description": "Nastavte automatické přepínání denního/nočního tématu několika kliknutími.",
+  "walkthrough.step.openSidebar.title": "Otevřít postranní panel ChronoShade",
+  "walkthrough.step.openSidebar.description": "Všechna nastavení ChronoShade jsou v jednom panelu.\n[Otevřít ChronoShade](command:workbench.view.extension.chronoShade)",
+  "walkthrough.step.pickThemes.title": "Vyberte denní a noční téma",
+  "walkthrough.step.pickThemes.description": "Vyberte libovolné nainstalované téma pro den a noc a před uložením je vyzkoušejte tlačítky náhledu.",
+  "walkthrough.step.enableAutoSwitch.title": "Zapnout automatické přepínání",
+  "walkthrough.step.enableAutoSwitch.description": "Zapněte automatické přepínání a zvolte zdroj: ruční časy, východ/západ slunce podle GPS, výrazy cron nebo synchronizaci se světlým/tmavým režimem systému."
 }

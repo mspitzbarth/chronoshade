@@ -2,6 +2,8 @@ import * as vscode from "vscode";
 import { ChronoShadeSidebar } from "./sidebar";
 import { ConfigurationService } from "./services/configurationService";
 import { ThemeSwitchService } from "./services/themeSwitchService";
+import { StatusBarService } from "./services/statusBarService";
+import { ReviewPromptService } from "./services/reviewPromptService";
 import { INTERVALS } from "./constants";
 
 
@@ -21,9 +23,14 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
       "chronoShade.sidebar",
-      sidebarProvider
+      sidebarProvider,
+      // Keep the view alive when collapsed so reopening it doesn't reload and flash.
+      { webviewOptions: { retainContextWhenHidden: true } }
     )
   );
+
+  StatusBarService.register(context);
+  ReviewPromptService.maybeShowPrompt(context);
 
   // Register commands
   context.subscriptions.push(
@@ -47,6 +54,7 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("chronoShade.checkThemeSwitch", async () => {
       await ThemeSwitchService.checkAndSwitchTheme();
+      StatusBarService.update();
     })
   );
 
@@ -54,28 +62,38 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("chronoShade.forceDayTheme", async () => {
       await ThemeSwitchService.applyDayTheme();
+      StatusBarService.update();
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand("chronoShade.forceNightTheme", async () => {
       await ThemeSwitchService.applyNightTheme();
+      StatusBarService.update();
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand("chronoShade.openMenu", async () => {
       const selection = await vscode.window.showQuickPick([
-        { label: "Check Theme Switch", description: "Force a check of the theme switch logic" },
-        { label: "Open Settings", description: "Configure ChronoShade" }
+        { label: vscode.l10n.t("Switch to Day"), description: vscode.l10n.t("Apply your day theme now") },
+        { label: vscode.l10n.t("Switch to Night"), description: vscode.l10n.t("Apply your night theme now") },
+        { label: vscode.l10n.t("Check Theme Switch"), description: vscode.l10n.t("Force a check of the theme switch logic") },
+        { label: vscode.l10n.t("Open Settings"), description: vscode.l10n.t("Configure ChronoShade") }
       ]);
 
-      if (selection) {
-        if (selection.label === "Check Theme Switch") {
-          await ThemeSwitchService.checkAndSwitchTheme();
-        } else if (selection.label === "Open Settings") {
-          vscode.commands.executeCommand("workbench.action.openSettings", "chronoShade");
-        }
+      if (!selection) {
+        return;
+      }
+
+      if (selection.label === vscode.l10n.t("Switch to Day")) {
+        await vscode.commands.executeCommand("chronoShade.forceDayTheme");
+      } else if (selection.label === vscode.l10n.t("Switch to Night")) {
+        await vscode.commands.executeCommand("chronoShade.forceNightTheme");
+      } else if (selection.label === vscode.l10n.t("Check Theme Switch")) {
+        await vscode.commands.executeCommand("chronoShade.checkThemeSwitch");
+      } else if (selection.label === vscode.l10n.t("Open Settings")) {
+        vscode.commands.executeCommand("workbench.action.openSettings", "chronoShade");
       }
     })
   );
@@ -91,7 +109,18 @@ export async function activate(context: vscode.ExtensionContext) {
         } else {
           stopIntervalCheck();
         }
+      } else if (e.affectsConfiguration("chronoShade.systemThemeSync") && config.overrideThemeSwitch) {
+        // Restart so the interval cadence (fast-poll for OS sync vs. normal) picks up the change
+        startIntervalCheck();
       }
+
+      StatusBarService.update();
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveColorTheme(() => {
+      StatusBarService.update();
     })
   );
 
@@ -108,11 +137,14 @@ function startIntervalCheck() {
   }
 
   // Run immediately
-  ThemeSwitchService.checkAndSwitchTheme().catch(console.error);
+  ThemeSwitchService.checkAndSwitchTheme().then(() => StatusBarService.update()).catch(console.error);
+
+  const { systemThemeSync } = ConfigurationService.getConfiguration();
+  const delay = systemThemeSync ? INTERVALS.SYSTEM_THEME_CHECK_INTERVAL : INTERVALS.THEME_CHECK_INTERVAL;
 
   intervalId = setInterval(() => {
-    ThemeSwitchService.checkAndSwitchTheme().catch(console.error);
-  }, INTERVALS.THEME_CHECK_INTERVAL);
+    ThemeSwitchService.checkAndSwitchTheme().then(() => StatusBarService.update()).catch(console.error);
+  }, delay);
 }
 
 function stopIntervalCheck() {

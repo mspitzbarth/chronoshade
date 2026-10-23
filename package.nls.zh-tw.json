@@ -22,5 +22,15 @@
   "config.longitude": "您的經度座標（用於自動日出/日落計算）。",
   "config.sunriseOffset": "Offset in minutes added to the sunrise time (can be negative).",
   "config.sunsetOffset": "Offset in minutes added to the sunset time (can be negative).",
-  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes."
+  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes.",
+  "config.dayThemePool": "選用的白天主題清單，將隨機輪替。留空時一律使用白天主題。",
+  "config.nightThemePool": "選用的夜晚主題清單，將隨機輪替。留空時一律使用夜晚主題。",
+  "walkthrough.title": "開始使用 ChronoShade",
+  "walkthrough.description": "只要按幾下即可設定白天/夜晚主題自動切換。",
+  "walkthrough.step.openSidebar.title": "開啟 ChronoShade 側邊欄",
+  "walkthrough.step.openSidebar.description": "ChronoShade 的所有設定都在同一個面板中。\n[開啟 ChronoShade](command:workbench.view.extension.chronoShade)",
+  "walkthrough.step.pickThemes.title": "選擇白天和夜晚主題",
+  "walkthrough.step.pickThemes.description": "為白天和夜晚選擇任何已安裝的主題，然後在儲存前使用預覽按鈕試用。",
+  "walkthrough.step.enableAutoSwitch.title": "啟用自動切換",
+  "walkthrough.step.enableAutoSwitch.description": "開啟自動切換並選擇來源：手動時間、以 GPS 為準的日出/日落、cron 運算式，或與系統的淺色/深色模式同步。"
 }

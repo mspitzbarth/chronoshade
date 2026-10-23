@@ -1,19 +1,30 @@
 # ChronoShade
 
+[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/markusmorita.chronoshade?label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=markusmorita.chronoshade)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/markusmorita.chronoshade)](https://marketplace.visualstudio.com/items?itemName=markusmorita.chronoshade)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/markusmorita.chronoshade)](https://marketplace.visualstudio.com/items?itemName=markusmorita.chronoshade&ssr=false#review-details)
+[![Open VSX](https://img.shields.io/open-vsx/v/markusmorita/chronoshade)](https://open-vsx.org/extension/markusmorita/chronoshade)
+
 ![theme-layout](images/1.png)
 
 ## Overview
 
 ChronoShade automatically switches between light and dark themes based on sunrise/sunset times or custom schedules, ensuring a seamless coding experience that adapts to your daily rhythm.
 
+Available on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=markusmorita.chronoshade) and [Open VSX](https://open-vsx.org/extension/markusmorita/chronoshade) - so it also works in Cursor, Windsurf, VSCodium, and other VS Code-compatible editors.
+
 ## Features
 
 - **Automatic Theme Switching**: Changes themes dynamically based on sunrise/sunset or custom times
+- **Sync with OS Appearance**: Follow your operating system's Light/Dark mode setting directly (macOS, Windows, and GNOME-based Linux)
 - **Location-Based Times**: Automatically fetch sunrise/sunset times using GPS coordinates via the sunrisesunset.io API
 - **Cron-Based Scheduling**: Define advanced day/night schedules with familiar cron expressions
 - **Manual Theme Control**: Instantly switch between day and night themes with dedicated buttons
+- **Status Bar Indicator**: See the active theme and schedule source at a glance, with one click to open the menu
 - **Customizable Themes**: Select your preferred light and dark themes from any installed theme
+- **Random Theme Rotation**: Pick a pool of several day themes and several night themes; ChronoShade rotates through them at random every time it switches
 - **Intuitive Sidebar UI**: Easily manage all settings from the VS Code activity bar
+- **Get Started Walkthrough**: A guided first-run walkthrough helps you configure ChronoShade in a few clicks
 - **Multi-Language Support**: Available in 15 languages (English, Chinese S/T, French, German, Italian, Spanish, Japanese, Korean, Portuguese, Turkish, Polish, Czech, Hungarian, Bulgarian) with full localization
 - **Visual Timeline**: See your daily theme schedule with a visual timeline indicator
 
@@ -64,6 +75,20 @@ ChronoShade intelligently manages your theme preferences:
 - Ideal for irregular routines like weekday-only schedules or multiple switches per day
 - Manual times remain available as a fallback if a cron expression cannot be evaluated
 
+#### Option 4: Sync with OS Appearance
+
+- Select the **Follow OS appearance** source in the sidebar to have ChronoShade mirror your operating system's Light/Dark mode setting
+- Supported on macOS, Windows, and Linux (GNOME/GTK-based desktop environments)
+- Not available over remote/SSH sessions or on unsupported Linux desktops - ChronoShade automatically falls back to your other schedule if detection fails
+
+![ChronoShade v1.7 features](images/2.png)
+
+### Theme Pools (Random Rotation)
+
+- Check **Rotate through multiple themes at random** under Theme Selection, then Ctrl/Cmd-click to pick several Day themes and several Night themes
+- Each time ChronoShade switches between day and night, it picks a new random theme from the matching pool - so your editor doesn't look the same every day
+- Leave a pool empty (or leave the checkbox unchecked) to always use the single Day/Night theme selected above - fully backward compatible with existing setups
+
 ## Commands
 
 - **Switch Theme** (`chronoShade.switchTheme`): Open theme selection
@@ -88,6 +113,9 @@ Access ChronoShade settings through VS Code Settings (Ctrl+,) and search for "Ch
 - `chronoShade.useLocationBasedTimes`: Use GPS coordinates instead of manual times
 - `chronoShade.sunriseOffset`: Offset in minutes from sunrise time (negative for earlier, positive for later)
 - `chronoShade.sunsetOffset`: Offset in minutes from sunset time (negative for earlier, positive for later)
+- `chronoShade.systemThemeSync`: Automatically follow the OS's Light/Dark mode setting instead of manual times, GPS, or cron
+- `chronoShade.dayThemePool`: Optional list of day themes to rotate through at random; empty means always use `dayTheme`
+- `chronoShade.nightThemePool`: Optional list of night themes to rotate through at random; empty means always use `nightTheme`
 
 ## Supported Languages
 

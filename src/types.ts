@@ -47,6 +47,8 @@ export interface SaveSettingsMessage extends BaseMessage {
   sunriseOffset: number;
   sunsetOffset: number;
   systemThemeSync: boolean;
+  dayThemePool: string[];
+  nightThemePool: string[];
 }
 
 export interface StartIntervalCheckMessage extends BaseMessage {
@@ -133,6 +135,8 @@ export interface UpdateThemesResponse extends BaseMessage {
     sunriseOffset: number;
     sunsetOffset: number;
     systemThemeSync: boolean;
+    dayThemePool: string[];
+    nightThemePool: string[];
     language: string;
   };
 }

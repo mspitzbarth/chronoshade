@@ -2,7 +2,7 @@
   "name": "chronoshade",
   "displayName": "%displayName%",
   "description": "%description%",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "publisher": "markusmorita",
   "engines": {
     "vscode": "^1.90.0"
@@ -39,7 +39,7 @@
     "ui"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "contributes": {
     "commands": [
@@ -152,9 +152,66 @@
           "type": "number",
           "default": 0,
           "description": "%config.sunsetOffset%"
+        },
+        "chronoShade.systemThemeSync": {
+          "type": "boolean",
+          "default": false,
+          "description": "%config.systemThemeSync%"
+        },
+        "chronoShade.dayThemePool": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "%config.dayThemePool%"
+        },
+        "chronoShade.nightThemePool": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "%config.nightThemePool%"
         }
       }
-    }
+    },
+    "walkthroughs": [
+      {
+        "id": "chronoShade.gettingStarted",
+        "title": "%walkthrough.title%",
+        "description": "%walkthrough.description%",
+        "steps": [
+          {
+            "id": "openSidebar",
+            "title": "%walkthrough.step.openSidebar.title%",
+            "description": "%walkthrough.step.openSidebar.description%",
+            "media": {
+              "image": "images/1.png",
+              "altText": "ChronoShade sidebar"
+            }
+          },
+          {
+            "id": "pickThemes",
+            "title": "%walkthrough.step.pickThemes.title%",
+            "description": "%walkthrough.step.pickThemes.description%",
+            "media": {
+              "image": "images/1.png",
+              "altText": "ChronoShade theme selection"
+            }
+          },
+          {
+            "id": "enableAutoSwitch",
+            "title": "%walkthrough.step.enableAutoSwitch.title%",
+            "description": "%walkthrough.step.enableAutoSwitch.description%",
+            "media": {
+              "image": "images/1.png",
+              "altText": "ChronoShade automatic switching options"
+            }
+          }
+        ]
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "pnpm run compile",

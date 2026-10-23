@@ -22,5 +22,15 @@
   "config.longitude": "La tua coordinata di longitudine (per il calcolo automatico di alba/tramonto).",
   "config.sunriseOffset": "Offset in minuti aggiunto all'ora dell'alba (può essere negativo).",
   "config.sunsetOffset": "Offset in minuti aggiunto all'ora del tramonto (può essere negativo).",
-  "config.systemThemeSync": "Segui automaticamente i cambiamenti del tema colore del sistema (modalità Chiaro/Scuro) per passare tra i temi Giorno e Notte configurati."
+  "config.systemThemeSync": "Segui automaticamente i cambiamenti del tema colore del sistema (modalità Chiaro/Scuro) per passare tra i temi Giorno e Notte configurati.",
+  "config.dayThemePool": "Elenco facoltativo di temi giorno da alternare a caso. Se vuoto, viene sempre usato il tema giorno.",
+  "config.nightThemePool": "Elenco facoltativo di temi notte da alternare a caso. Se vuoto, viene sempre usato il tema notte.",
+  "walkthrough.title": "Inizia con ChronoShade",
+  "walkthrough.description": "Configura il cambio automatico del tema giorno/notte in pochi clic.",
+  "walkthrough.step.openSidebar.title": "Apri la barra laterale di ChronoShade",
+  "walkthrough.step.openSidebar.description": "Tutte le impostazioni di ChronoShade si trovano in un unico pannello.\n[Apri ChronoShade](command:workbench.view.extension.chronoShade)",
+  "walkthrough.step.pickThemes.title": "Scegli i temi giorno e notte",
+  "walkthrough.step.pickThemes.description": "Scegli un qualsiasi tema installato per il giorno e la notte, poi usa i pulsanti di anteprima per provarli prima di salvare.",
+  "walkthrough.step.enableAutoSwitch.title": "Attiva il cambio automatico",
+  "walkthrough.step.enableAutoSwitch.description": "Attiva il cambio automatico e scegli una fonte: orari manuali, alba/tramonto tramite GPS, espressioni cron o sincronizzazione con la modalità chiara/scura del sistema."
 }

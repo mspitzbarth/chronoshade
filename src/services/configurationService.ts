@@ -16,6 +16,9 @@ export interface ChronoShadeConfiguration {
   longitude: number;
   sunriseOffset: number;
   sunsetOffset: number;
+  systemThemeSync: boolean;
+  dayThemePool: string[];
+  nightThemePool: string[];
 }
 
 export class ConfigurationService {
@@ -41,6 +44,9 @@ export class ConfigurationService {
       longitude: config.get<number>(CONFIG_KEYS.LONGITUDE) ?? DEFAULTS.LONGITUDE,
       sunriseOffset: config.get<number>(CONFIG_KEYS.SUNRISE_OFFSET) ?? DEFAULTS.SUNRISE_OFFSET,
       sunsetOffset: config.get<number>(CONFIG_KEYS.SUNSET_OFFSET) ?? DEFAULTS.SUNSET_OFFSET,
+      systemThemeSync: config.get<boolean>(CONFIG_KEYS.SYSTEM_THEME_SYNC) ?? DEFAULTS.SYSTEM_THEME_SYNC,
+      dayThemePool: config.get<string[]>(CONFIG_KEYS.DAY_THEME_POOL) ?? DEFAULTS.DAY_THEME_POOL,
+      nightThemePool: config.get<string[]>(CONFIG_KEYS.NIGHT_THEME_POOL) ?? DEFAULTS.NIGHT_THEME_POOL,
     };
   }
 
@@ -81,6 +87,9 @@ export class ConfigurationService {
       longitude: CONFIG_KEYS.LONGITUDE,
       sunriseOffset: CONFIG_KEYS.SUNRISE_OFFSET,
       sunsetOffset: CONFIG_KEYS.SUNSET_OFFSET,
+      systemThemeSync: CONFIG_KEYS.SYSTEM_THEME_SYNC,
+      dayThemePool: CONFIG_KEYS.DAY_THEME_POOL,
+      nightThemePool: CONFIG_KEYS.NIGHT_THEME_POOL,
     };
 
     return keyMap[key];

@@ -22,5 +22,15 @@
   "config.longitude": "Az Ön hosszúsági koordinátája (automatikus napkelte/napnyugta számításhoz).",
   "config.sunriseOffset": "Eltolás percekben a napkelte idejéhez adva (lehet negatív).",
   "config.sunsetOffset": "Eltolás percekben a napnyugta idejéhez adva (lehet negatív).",
-  "config.systemThemeSync": "Automatikusan követi a rendszer színtéma változásait (világos/sötét mód) a konfigurált nappali és éjszakai témák közötti váltáshoz."
+  "config.systemThemeSync": "Automatikusan követi a rendszer színtéma változásait (világos/sötét mód) a konfigurált nappali és éjszakai témák közötti váltáshoz.",
+  "config.dayThemePool": "Nappali témák opcionális listája véletlenszerű váltakozáshoz. Ha üres, mindig a nappali téma lesz használva.",
+  "config.nightThemePool": "Éjszakai témák opcionális listája véletlenszerű váltakozáshoz. Ha üres, mindig az éjszakai téma lesz használva.",
+  "walkthrough.title": "Első lépések a ChronoShade-del",
+  "walkthrough.description": "Állítsa be az automatikus nappali/éjszakai témaváltást néhány kattintással.",
+  "walkthrough.step.openSidebar.title": "A ChronoShade oldalsáv megnyitása",
+  "walkthrough.step.openSidebar.description": "A ChronoShade összes beállítása egy panelen található.\n[ChronoShade megnyitása](command:workbench.view.extension.chronoShade)",
+  "walkthrough.step.pickThemes.title": "Válassza ki a nappali és éjszakai témát",
+  "walkthrough.step.pickThemes.description": "Válasszon bármely telepített témát nappalra és éjszakára, majd mentés előtt próbálja ki őket az előnézet gombokkal.",
+  "walkthrough.step.enableAutoSwitch.title": "Automatikus váltás bekapcsolása",
+  "walkthrough.step.enableAutoSwitch.description": "Kapcsolja be az automatikus váltást, és válasszon forrást: kézi időpontok, GPS-alapú napkelte/napnyugta, cron kifejezések vagy szinkronizálás a rendszer világos/sötét módjával."
 }

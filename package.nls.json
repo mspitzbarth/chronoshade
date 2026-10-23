@@ -21,5 +21,15 @@
   "config.longitude": "Your longitude coordinate (for automatic sunrise/sunset calculation).",
   "config.sunriseOffset": "Offset in minutes added to the sunrise time (can be negative).",
   "config.sunsetOffset": "Offset in minutes added to the sunset time (can be negative).",
-  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes."
+  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes.",
+  "config.dayThemePool": "Optional list of day themes to rotate through at random. When empty, Day Theme is used every time.",
+  "config.nightThemePool": "Optional list of night themes to rotate through at random. When empty, Night Theme is used every time.",
+  "walkthrough.title": "Get Started with ChronoShade",
+  "walkthrough.description": "Set up automatic day/night theme switching in a few clicks.",
+  "walkthrough.step.openSidebar.title": "Open the ChronoShade sidebar",
+  "walkthrough.step.openSidebar.description": "All of ChronoShade's settings live in one panel.\n[Open ChronoShade](command:workbench.view.extension.chronoShade)",
+  "walkthrough.step.pickThemes.title": "Choose your Day and Night themes",
+  "walkthrough.step.pickThemes.description": "Pick any installed theme for daytime and nighttime, then use the Preview buttons to try them out before saving.",
+  "walkthrough.step.enableAutoSwitch.title": "Enable automatic switching",
+  "walkthrough.step.enableAutoSwitch.description": "Turn on automatic switching and choose a source: manual times, GPS-based sunrise/sunset, cron expressions, or sync with your OS's Light/Dark mode."
 }

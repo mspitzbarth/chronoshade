@@ -22,5 +22,15 @@
   "config.longitude": "あなたの経度座標（自動日の出/日の入り計算用）。",
   "config.sunriseOffset": "Offset in minutes added to the sunrise time (can be negative).",
   "config.sunsetOffset": "Offset in minutes added to the sunset time (can be negative).",
-  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes."
+  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes.",
+  "config.dayThemePool": "ランダムに切り替える昼のテーマのリスト (省略可)。空の場合は常に昼のテーマを使用します。",
+  "config.nightThemePool": "ランダムに切り替える夜のテーマのリスト (省略可)。空の場合は常に夜のテーマを使用します。",
+  "walkthrough.title": "ChronoShade を始める",
+  "walkthrough.description": "数回のクリックで昼/夜のテーマ自動切り替えを設定します。",
+  "walkthrough.step.openSidebar.title": "ChronoShade サイドバーを開く",
+  "walkthrough.step.openSidebar.description": "ChronoShade のすべての設定は 1 つのパネルにまとまっています。\n[ChronoShade を開く](command:workbench.view.extension.chronoShade)",
+  "walkthrough.step.pickThemes.title": "昼と夜のテーマを選択",
+  "walkthrough.step.pickThemes.description": "昼と夜にインストール済みの任意のテーマを選び、保存する前にプレビュー ボタンで試してみましょう。",
+  "walkthrough.step.enableAutoSwitch.title": "自動切り替えを有効にする",
+  "walkthrough.step.enableAutoSwitch.description": "自動切り替えをオンにして、手動時刻、GPS による日の出/日の入り、cron 式、または OS のライト/ダーク モードとの同期からソースを選択します。"
 }

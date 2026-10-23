@@ -13,6 +13,8 @@ export const CONFIG_KEYS = {
   SUNRISE_OFFSET: "sunriseOffset",
   SUNSET_OFFSET: "sunsetOffset",
   SYSTEM_THEME_SYNC: "systemThemeSync",
+  DAY_THEME_POOL: "dayThemePool",
+  NIGHT_THEME_POOL: "nightThemePool",
 };
 
 // Timing constants
@@ -24,6 +26,7 @@ export const TIMEOUTS = {
 
 export const INTERVALS = {
   THEME_CHECK_INTERVAL: 60_000,     // 1 minute interval for theme checking
+  SYSTEM_THEME_CHECK_INTERVAL: 15_000, // 15 seconds when following OS appearance - there's no OS "theme changed" event to subscribe to, so we poll faster to feel responsive
 } as const;
 
 // Default values
@@ -39,6 +42,8 @@ export const DEFAULTS = {
   SUNRISE_OFFSET: 0,
   SUNSET_OFFSET: 0,
   SYSTEM_THEME_SYNC: false,
+  DAY_THEME_POOL: [] as string[],
+  NIGHT_THEME_POOL: [] as string[],
 } as const;
 
 // Default cities for quick GPS selection

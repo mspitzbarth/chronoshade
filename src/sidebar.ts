@@ -1,6 +1,8 @@
 // src/sidebar.ts
 import * as vscode from "vscode";
-import { CONFIG_KEYS, TIMEOUTS, DEFAULTS } from "./constants";
+import * as fs from "fs";
+import * as path from "path";
+import { TIMEOUTS, DEFAULTS } from "./constants";
 import { getWebviewContent } from "./webview";
 import { SunriseSunsetService } from "./sunriseSunsetService";
 import { isValidTimeFormat } from "./utils";
@@ -14,7 +16,6 @@ import {
   TestLocationMessage,
   PreviewThemeMessage,
   SwitchThemeMessage,
-  GetTranslationsMessage,
   DetectLocationAndSaveMessage,
   LocationDetectedResponse,
 } from "./types";
@@ -34,7 +35,11 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       localResourceRoots: [this._extensionUri]
     };
 
-    webviewView.webview.html = getWebviewContent(webviewView.webview, this._extensionUri);
+    webviewView.webview.html = getWebviewContent(webviewView.webview, this.loadTranslations(vscode.env.language));
+
+    // Push theme changes instead of letting the webview poll for them.
+    const themeListener = vscode.window.onDidChangeActiveColorTheme(() => this.handleGetCurrentTheme(webviewView));
+    webviewView.onDidDispose(() => themeListener.dispose());
 
     webviewView.webview.onDidReceiveMessage(async (message: WebviewMessage) => {
       const config = vscode.workspace.getConfiguration("chronoShade");
@@ -57,9 +62,6 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
           break;
         case "getCurrentTheme":
           await this.handleGetCurrentTheme(webviewView);
-          break;
-        case "getTranslations":
-          await this.handleGetTranslations((message as GetTranslationsMessage).language, webviewView);
           break;
         case "forceDayTheme":
           await this.handleForceDayTheme();
@@ -119,6 +121,9 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       longitude: config.longitude,
       sunriseOffset: config.sunriseOffset,
       sunsetOffset: config.sunsetOffset,
+      systemThemeSync: config.systemThemeSync,
+      dayThemePool: config.dayThemePool,
+      nightThemePool: config.nightThemePool,
       language: vscode.env.language,
     };
 
@@ -166,6 +171,7 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
   ) {
     const useCronSchedule = message.useCronSchedule;
     const useLocationBasedTimes = !useCronSchedule && message.useLocationBasedTimes;
+    const systemThemeSync = !useCronSchedule && !useLocationBasedTimes && message.systemThemeSync;
 
     if (useCronSchedule) {
       if (!validateCronExpression(message.dayCronExpression) || !validateCronExpression(message.nightCronExpression)) {
@@ -213,6 +219,9 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       longitude: message.longitude,
       sunriseOffset: message.sunriseOffset,
       sunsetOffset: message.sunsetOffset,
+      systemThemeSync,
+      dayThemePool: message.dayThemePool || [],
+      nightThemePool: message.nightThemePool || [],
     });
 
     if (message.overrideThemeSwitch) {
@@ -233,18 +242,7 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       }
     }
 
-
-
-    // Update current theme display after a short delay to allow theme switch
-    setTimeout(() => {
-      if (this._view) {
-        this.handleGetCurrentTheme(this._view);
-      }
-    }, TIMEOUTS.THEME_UPDATE_DELAY);
-
-    vscode.window.showInformationMessage(
-      vscode.l10n.t("ChronoShade settings saved successfully!")
-    );
+    this._view?.webview.postMessage({ command: "settingsSaved" });
   }
 
   private async handleGetCurrentTheme(webviewView: vscode.WebviewView) {
@@ -258,35 +256,17 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
     });
   }
 
-  private async handleGetTranslations(language: string, webviewView: vscode.WebviewView) {
-    try {
-      const fs = await import('fs/promises');
-      const path = await import('path');
-
-      let filePath = path.join(this._extensionUri.fsPath, 'l10n', `webview.l10n.${language}.json`);
-
-      // Fallback to English if language file doesn't exist
+  // Inlined into the HTML so the first paint is already localized.
+  private loadTranslations(language: string): Record<string, string> {
+    const dir = path.join(this._extensionUri.fsPath, "l10n");
+    for (const file of [`webview.l10n.${language}.json`, "webview.l10n.json"]) {
       try {
-        await fs.access(filePath);
+        return JSON.parse(fs.readFileSync(path.join(dir, file), "utf8"));
       } catch {
-        filePath = path.join(this._extensionUri.fsPath, 'l10n', 'webview.l10n.json');
+        // try the next fallback
       }
-
-      const translationsContent = await fs.readFile(filePath, 'utf8');
-      const translations = JSON.parse(translationsContent);
-
-      webviewView.webview.postMessage({
-        command: 'translations',
-        translations
-      });
-    } catch (error) {
-      console.error('Failed to load webview translations:', error);
-      // Send empty translations object to prevent webview from waiting
-      webviewView.webview.postMessage({
-        command: 'translations',
-        translations: {}
-      });
     }
+    return {};
   }
 
 
@@ -297,13 +277,6 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       vscode.window.showInformationMessage(
         vscode.l10n.t("Switched to day theme: {0}", config.dayTheme)
       );
-
-      // Update current theme display after a short delay
-      setTimeout(() => {
-        if (this._view) {
-          this.handleGetCurrentTheme(this._view);
-        }
-      }, TIMEOUTS.THEME_UPDATE_DELAY);
     } catch (error) {
       vscode.window.showWarningMessage(String(error));
     }
@@ -316,13 +289,6 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
       vscode.window.showInformationMessage(
         vscode.l10n.t("Switched to night theme: {0}", config.nightTheme)
       );
-
-      // Update current theme display after a short delay
-      setTimeout(() => {
-        if (this._view) {
-          this.handleGetCurrentTheme(this._view);
-        }
-      }, TIMEOUTS.THEME_UPDATE_DELAY);
     } catch (error) {
       vscode.window.showWarningMessage(String(error));
     }
@@ -342,18 +308,8 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
         return;
       }
 
-      // Show progress message
-      vscode.window.showInformationMessage(
-        vscode.l10n.t("Fetching sunrise/sunset times for your location...")
-      );
-
       // Fetch times
       const times = await SunriseSunsetService.getSunriseSunsetTimes(latitude, longitude);
-
-      // Show success message
-      vscode.window.showInformationMessage(
-        vscode.l10n.t("Location test successful! Sunrise: {0}, Sunset: {1}", times.sunrise, times.sunset)
-      );
 
       // Update the webview with the fetched times (for preview)
       webviewView.webview.postMessage({
@@ -392,7 +348,6 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
 
   private async handleDetectLocationAndSave(webviewView: vscode.WebviewView) {
     try {
-      vscode.window.showInformationMessage(vscode.l10n.t("Detecting location via IP..."));
       const data = await LocationService.detectLocation();
 
       if (data && typeof data.lat === 'number' && typeof data.lon === 'number') {
@@ -400,7 +355,6 @@ export class ChronoShadeSidebar implements vscode.WebviewViewProvider {
         await ConfigurationService.updateSingleValue('longitude', data.lon);
 
         const detectedMessage = vscode.l10n.t("Location detected as {0}, {1}! Settings updated.", data.city, data.country);
-        vscode.window.showInformationMessage(detectedMessage);
 
         webviewView.webview.postMessage({
           command: 'locationDetected',

@@ -22,5 +22,15 @@
   "config.longitude": "귀하의 경도 좌표 (자동 일출/일몰 계산용).",
   "config.sunriseOffset": "Offset in minutes added to the sunrise time (can be negative).",
   "config.sunsetOffset": "Offset in minutes added to the sunset time (can be negative).",
-  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes."
+  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes.",
+  "config.dayThemePool": "무작위로 순환할 주간 테마 목록(선택 사항). 비어 있으면 항상 주간 테마를 사용합니다.",
+  "config.nightThemePool": "무작위로 순환할 야간 테마 목록(선택 사항). 비어 있으면 항상 야간 테마를 사용합니다.",
+  "walkthrough.title": "ChronoShade 시작하기",
+  "walkthrough.description": "몇 번의 클릭으로 주간/야간 테마 자동 전환을 설정하세요.",
+  "walkthrough.step.openSidebar.title": "ChronoShade 사이드바 열기",
+  "walkthrough.step.openSidebar.description": "ChronoShade의 모든 설정은 하나의 패널에 있습니다.\n[ChronoShade 열기](command:workbench.view.extension.chronoShade)",
+  "walkthrough.step.pickThemes.title": "주간 및 야간 테마 선택",
+  "walkthrough.step.pickThemes.description": "주간과 야간에 사용할 설치된 테마를 선택한 후 저장하기 전에 미리 보기 버튼으로 확인해 보세요.",
+  "walkthrough.step.enableAutoSwitch.title": "자동 전환 사용",
+  "walkthrough.step.enableAutoSwitch.description": "자동 전환을 켜고 수동 시간, GPS 기반 일출/일몰, cron 식 또는 OS 라이트/다크 모드 동기화 중에서 소스를 선택하세요."
 }

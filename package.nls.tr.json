@@ -22,5 +22,15 @@
   "config.longitude": "Boylam koordinatınız (otomatik gün doğumu/batımı hesaplaması için).",
   "config.sunriseOffset": "Offset in minutes added to the sunrise time (can be negative).",
   "config.sunsetOffset": "Offset in minutes added to the sunset time (can be negative).",
-  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes."
+  "config.systemThemeSync": "Automatically follow the system's color theme changes (Light/Dark mode) to switch between your configured Day and Night themes.",
+  "config.dayThemePool": "Rastgele dönüşümlü kullanılacak isteğe bağlı gündüz temaları listesi. Boşsa her zaman Gündüz Teması kullanılır.",
+  "config.nightThemePool": "Rastgele dönüşümlü kullanılacak isteğe bağlı gece temaları listesi. Boşsa her zaman Gece Teması kullanılır.",
+  "walkthrough.title": "ChronoShade ile Başlayın",
+  "walkthrough.description": "Otomatik gündüz/gece tema geçişini birkaç tıklamayla ayarlayın.",
+  "walkthrough.step.openSidebar.title": "ChronoShade kenar çubuğunu açın",
+  "walkthrough.step.openSidebar.description": "ChronoShade'in tüm ayarları tek bir panelde.\n[ChronoShade'i Aç](command:workbench.view.extension.chronoShade)",
+  "walkthrough.step.pickThemes.title": "Gündüz ve Gece temalarınızı seçin",
+  "walkthrough.step.pickThemes.description": "Gündüz ve gece için yüklü herhangi bir temayı seçin, ardından kaydetmeden önce önizleme düğmeleriyle deneyin.",
+  "walkthrough.step.enableAutoSwitch.title": "Otomatik geçişi etkinleştirin",
+  "walkthrough.step.enableAutoSwitch.description": "Otomatik geçişi açın ve bir kaynak seçin: manuel saatler, GPS tabanlı gün doğumu/batımı, cron ifadeleri veya sisteminizin Açık/Koyu moduyla eşitleme."
 }

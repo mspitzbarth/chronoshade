@@ -22,5 +22,15 @@
   "config.longitude": "Votre coordonnée de longitude (pour le calcul automatique du lever/coucher de soleil).",
   "config.sunriseOffset": "Décalage en minutes ajouté à l'heure du lever du soleil (peut être négatif).",
   "config.sunsetOffset": "Décalage en minutes ajouté à l'heure du coucher du soleil (peut être négatif).",
-  "config.systemThemeSync": "Suivre automatiquement les changements de thème de couleur du système (mode Clair/Sombre) pour basculer entre vos thèmes Jour et Nuit configurés."
+  "config.systemThemeSync": "Suivre automatiquement les changements de thème de couleur du système (mode Clair/Sombre) pour basculer entre vos thèmes Jour et Nuit configurés.",
+  "config.dayThemePool": "Liste facultative de thèmes de jour à alterner au hasard. Si elle est vide, le thème de jour est toujours utilisé.",
+  "config.nightThemePool": "Liste facultative de thèmes de nuit à alterner au hasard. Si elle est vide, le thème de nuit est toujours utilisé.",
+  "walkthrough.title": "Premiers pas avec ChronoShade",
+  "walkthrough.description": "Configurez le changement automatique de thème jour/nuit en quelques clics.",
+  "walkthrough.step.openSidebar.title": "Ouvrir la barre latérale ChronoShade",
+  "walkthrough.step.openSidebar.description": "Tous les paramètres de ChronoShade se trouvent dans un seul panneau.\n[Ouvrir ChronoShade](command:workbench.view.extension.chronoShade)",
+  "walkthrough.step.pickThemes.title": "Choisir vos thèmes de jour et de nuit",
+  "walkthrough.step.pickThemes.description": "Choisissez n'importe quel thème installé pour le jour et la nuit, puis utilisez les boutons d'aperçu pour les essayer avant d'enregistrer.",
+  "walkthrough.step.enableAutoSwitch.title": "Activer le changement automatique",
+  "walkthrough.step.enableAutoSwitch.description": "Activez le changement automatique et choisissez une source : heures manuelles, lever/coucher du soleil via GPS, expressions cron ou synchronisation avec le mode clair/sombre du système."
 }

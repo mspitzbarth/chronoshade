@@ -1,11 +1,12 @@
 // src/services/themeSwitchService.ts
 import * as vscode from "vscode";
-import { isValidTimeFormat } from "../utils";
+import { isValidTimeFormat, pickThemeFromPool } from "../utils";
 import { ConfigurationService, ChronoShadeConfiguration } from "./configurationService";
 import { SunriseSunsetService, SunriseSunsetTimes } from "../sunriseSunsetService";
 import { LocationService } from "./locationService";
 import { DEFAULTS, TIMEOUTS } from "../constants";
 import { getLastCronOccurrence, validateCronExpression } from "../cronUtils";
+import { getSystemTheme, SystemTheme } from "./systemThemeService";
 
 export interface ThemeTimes {
   dayTimeStart: string;
@@ -15,7 +16,32 @@ export interface ThemeTimes {
 export class ThemeSwitchService {
   private static cachedLocationTimes: { sunrise: string; sunset: string; cachedDate: string; latitude: number; longitude: number } | null = null;
 
+  // Last confirmed OS appearance reading. Reused when a detection attempt
+  // fails transiently (timeout, spawn hiccup) so a single blip can't flip
+  // the theme to a disagreeing schedule - only an actual OS change should.
+  private static lastKnownSystemTheme: SystemTheme | null = null;
+
+  // checkAndSwitchTheme() can be triggered from several places in quick
+  // succession (the interval tick, a manual "check now" command, and the
+  // settings-save flow all fire it around the same time). Without this guard,
+  // overlapping calls each roll their own random pick from the theme pool
+  // independently, applying two different themes back-to-back - visible as a
+  // flicker - instead of a single, consistent selection.
+  private static inFlightCheck: Promise<void> | null = null;
+
   public static async checkAndSwitchTheme(): Promise<void> {
+    if (this.inFlightCheck) {
+      return this.inFlightCheck;
+    }
+
+    this.inFlightCheck = this.performCheckAndSwitchTheme().finally(() => {
+      this.inFlightCheck = null;
+    });
+
+    return this.inFlightCheck;
+  }
+
+  private static async performCheckAndSwitchTheme(): Promise<void> {
     const config = ConfigurationService.getConfiguration();
 
     if (!config.overrideThemeSwitch) {
@@ -25,7 +51,24 @@ export class ThemeSwitchService {
 
     let isNightTime: boolean | null = null;
 
-    if (config.useCronSchedule) {
+    if (config.systemThemeSync) {
+      const systemTheme = await getSystemTheme();
+      if (systemTheme) {
+        this.lastKnownSystemTheme = systemTheme;
+        isNightTime = systemTheme === "dark";
+      } else if (this.lastKnownSystemTheme) {
+        // Detection failed this time, but we've read the OS appearance
+        // successfully before - keep using that instead of falling through
+        // to a schedule that may say something completely different.
+        isNightTime = this.lastKnownSystemTheme === "dark";
+      } else {
+        console.warn(
+          vscode.l10n.t("[ChronoShade] Could not detect OS appearance on this platform/session. Falling back to your other schedule.")
+        );
+      }
+    }
+
+    if (isNightTime === null && config.useCronSchedule) {
       isNightTime = this.determineIsNightTimeFromCron(config);
     }
 
@@ -34,7 +77,7 @@ export class ThemeSwitchService {
       isNightTime = this.determineIsNightTime(dayTimeStart, nightTimeStart);
     }
 
-    const theme = this.selectTheme(config, isNightTime);
+    const theme = this.selectPooledTheme(config, isNightTime);
     await this.applyTheme(theme);
   }
 
@@ -43,7 +86,8 @@ export class ThemeSwitchService {
     if (!config.dayTheme) {
       throw new Error(vscode.l10n.t("Please configure a day theme first in ChronoShade settings."));
     }
-    await this.applyTheme(config.dayTheme);
+    const theme = pickThemeFromPool(config.dayThemePool, config.dayTheme);
+    await this.applyTheme(theme);
   }
 
   public static async applyNightTheme(): Promise<void> {
@@ -51,7 +95,8 @@ export class ThemeSwitchService {
     if (!config.nightTheme) {
       throw new Error(vscode.l10n.t("Please configure a night theme first in ChronoShade settings."));
     }
-    await this.applyTheme(config.nightTheme);
+    const theme = pickThemeFromPool(config.nightThemePool, config.nightTheme);
+    await this.applyTheme(theme);
   }
 
   public static async previewTheme(theme: string, duration: number = TIMEOUTS.PREVIEW_THEME_DURATION): Promise<string> {
@@ -160,8 +205,15 @@ export class ThemeSwitchService {
     return isNightTime;
   }
 
-  private static selectTheme(config: ChronoShadeConfiguration, isNightTime: boolean): string {
-    return isNightTime ? config.nightTheme : config.dayTheme;
+  // Deliberately stateless: each VS Code window runs its own extension host but
+  // colorTheme is global, so a per-window in-memory pick made windows overwrite
+  // each other's random choice on every tick. Keeping the applied theme while
+  // it is still valid for the phase makes all windows (and reloads) agree.
+  private static selectPooledTheme(config: ChronoShadeConfiguration, isNightTime: boolean): string {
+    const currentTheme = vscode.workspace.getConfiguration("workbench").get<string>("colorTheme");
+    return isNightTime
+      ? pickThemeFromPool(config.nightThemePool, config.nightTheme, currentTheme)
+      : pickThemeFromPool(config.dayThemePool, config.dayTheme, currentTheme);
   }
 
   private static determineIsNightTimeFromCron(config: ChronoShadeConfiguration): boolean | null {

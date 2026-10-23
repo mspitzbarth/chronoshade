@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.7.0] - 2026-09-12
+
+### Added
+
+- **Sync with OS Appearance**: A new automatic-switching source that follows your operating system's Light/Dark mode setting (macOS, Windows, GNOME-based Linux), with graceful fallback to your other schedule when detection isn't available. Polls every 15 seconds while active (there's no native OS "theme changed" event to subscribe to) instead of the usual 60-second check.
+- **Status Bar Indicator**: Shows the active theme and current schedule source at a glance; click it to open the ChronoShade quick menu (now including instant Day/Night switching).
+- **Get Started Walkthrough**: A guided first-run walkthrough for configuring themes and automatic switching.
+- **Open VSX Publishing**: ChronoShade is now also published to Open VSX for Cursor, Windsurf, VSCodium, and other compatible editors.
+- **Review Prompt**: A gentle, one-time nudge to rate ChronoShade after two weeks of use, easily dismissed permanently.
+- **Random Theme Rotation**: Optional Day and Night theme pools with a redesigned chip-style picker (type to search, click to add, click to remove) - select several themes for each and ChronoShade picks a new random one every time it switches between day and night. Fully backward compatible: leave a pool empty to keep using a single fixed theme.
+
+### Fixed
+
+- **OS Appearance Sync Flickering**: A transient failure to read the OS Light/Dark setting (e.g. a slow/contended `defaults read` call, more likely now that detection polls every 15 seconds) was incorrectly treated as a confirmed "Light mode" reading, causing the theme to flip back and forth even though the OS setting never changed. Detection failures are now only trusted when they unambiguously mean Light mode; any other failure reuses the last confirmed OS reading instead of guessing.
+
+### Changed
+
+- Reduced activation from `*` to `onStartupFinished` to avoid unnecessarily activating on every VS Code launch.
+
+### Fixed
+
+- Corrected the CI/CD workflow to use the project's actual package manager (pnpm) and build script, fixing a broken publish pipeline.
+- Fixed `.vscodeignore` excluding internal dev files (`.claude/`, `.history/`, `pnpm-lock.yaml`, stray archives) from the packaged extension - the shipped `.vsix` was ~50% larger than it needed to be.
+
 ## [1.5.0] - 2026-02-05
 
 ### Fixed
